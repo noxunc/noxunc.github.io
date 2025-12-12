@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NOX | About</title>
+    
+    <link rel="icon" type="image/png" href="Favicon.png"> 
+    
+    <link rel="apple-touch-icon" href="Favicon.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <style>
+        /* ======================================================= */
+        /* 1. 폰트 설정 */
+        /* ======================================================= */
+        @font-face {
+            font-family: 'Cafe24ProUp';
+            src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/2507-1@1.0/Cafe24PROUP.woff2') format('woff2');
+            font-weight: normal;
+            font-display: swap;
+        }
+        @font-face {
+            font-family: 'DosStory';
+            src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2304-2@1.0/DOSIyagiMedium.woff2') format('woff2');
+            font-weight: normal;
+            font-display: swap;
+        }
+        
+        /* ======================================================= */
+        /* 2. 기본 스타일 및 레이아웃 */
+        /* ======================================================= */
+        html, body {
+            height: 100%; 
+            margin: 0;
+            scroll-behavior: smooth; 
+        }
+        
+        body {
+            font-family: 'Cafe24ProUp', Arial, sans-serif; 
+            background-color: white; 
+            color: #333; 
+            transition: background-color 0.5s, color 0.5s; 
+            cursor: none !important;
+        }
+        
+        main {
+            min-height: 750px !important; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+        }
+        
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 40px; 
+            border-bottom: 1px solid #eee;
+            background-color: black; 
+            position: sticky; 
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            font-size: 24px; font-weight: bold; color: white; 
+            text-transform: uppercase;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            align-items: center; 
+            gap: 25px;
+        }
+        
+        nav ul li a.menu-item {
+            color: white; 
+            text-decoration: none; 
+            transition: color 0.5s;
+            font-size: 18px; 
+        }
+        
+        /* ======================================================= */
+        /* 3. 다크 모드 스타일 및 토글 스위치 */
+        /* ======================================================= */
+        body.dark-mode {
+            background-color: #121212;
+            color: #d1fc25; 
+        }
+        body.dark-mode header {
+             background-color: #121212; 
+             border-bottom-color: #333;
+        }
+        body.dark-mode nav ul li a.menu-item {
+            color: white;
+        }
+        
+        .toggle-container {
+            position: relative;
+            display: inline-block;
+            width: 60px; 
+            height: 34px; 
+        }
+
+        .toggle-container input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc; 
+            transition: 0.4s;
+            border-radius: 34px; 
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: 0.4s;
+            border-radius: 50%; 
+        }
+
+        input:checked + .slider {
+            background-color: #d1fc25; 
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(26px); 
+        }
+        
+        body.dark-mode .slider {
+            background-color: #777;
+        }
+        
+        body.dark-mode input:checked + .slider {
+            background-color: #d1fc25; 
+        }
+        
+        
+        /* ======================================================= */
+        /* 4. About 페이지 전용 스타일 */
+        /* ======================================================= */
+
+        .about-page-section {
+            max-width: 1400px; 
+            margin: 0 auto; 
+            padding: 40px;
+            line-height: 1.6;
+            text-align: left;
+            font-family: 'DosStory', sans-serif;
+            font-size: 24px; 
+            
+            display: flex;
+            justify-content: space-between; 
+            align-items: flex-start; 
+            gap: 50px; 
+        }
+        
+        .about-text-content {
+            flex-grow: 1; 
+            max-width: 700px; 
+        }
+        
+        .about-header {
+            display: flex;
+            align-items: center; 
+            gap: 10px;
+            margin-bottom: 4px;
+        }
+        
+        .about-page-section h2 {
+            font-size: 72px; 
+            margin-top: 0; 
+            margin-bottom: 1px;
+        }
+        
+        /* 언어 전환 버튼 */
+        .lang-button {
+            padding: 5px 10px;
+            font-size: 16px;
+            font-weight: bold;
+            border: 1px solid #333;
+            border-radius: 5px;
+            background-color: transparent;
+            cursor: pointer;
+            transition: all 0.2s;
+            color: #333;
+        }
+        
+        body.dark-mode .lang-button {
+            border-color: #d1fc25;
+            color: #d1fc25;
+        }
+
+        /* **** [수정된 부분]: 라이트 모드 Hover 색상 변경 **** */
+        .lang-button:hover {
+            background-color: #9e9e9e; 
+            color: white; 
+            border-color: #9e9e9e;
+        }
+        
+        /* 다크 모드 Hover는 아래에서 오버라이드 */
+        body.dark-mode .lang-button:hover {
+            background-color: #d1fc25;
+            color: #121212;
+            border-color: #d1fc25;
+        }
+        
+        /* 프로필 이미지 */
+        .profile-wrapper {
+            display: flex;
+            flex-direction: column; 
+            align-items: center; 
+            flex-shrink: 0;
+        }
+        
+        .profile-image-container {
+            width: 500px; 
+            height: 500px; 
+            background-color: #333; 
+            border: 1.5px solid #d1fc25; 
+            border-radius: 15px; 
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white; 
+            font-size: 16px;
+            margin-bottom: 30px; 
+        }
+        
+        .profile-image-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; 
+        }
+
+        body:not(.dark-mode) .profile-image-container {
+            border-color: #333;
+            background-color: #f0f0f0;
+            color: #333;
+        }
+        
+        /* 소셜 링크 */
+        .social-links {
+            display: flex;
+            gap: 30px;
+            padding: 10px 0;
+        }
+
+        .social-links a {
+            text-decoration: none;
+            font-size: 36px;
+            color: #d1fc25;
+            transition: color 0.3s, transform 0.3s;
+        }
+
+        body:not(.dark-mode) .social-links a {
+            color: #333;
+        }
+
+        .social-links a:hover {
+            color: #9cfc00; 
+            transform: translateY(-5px);
+        }
+        
+        
+        /* ======================================================= */
+        /* 5. 푸터 및 롤링 텍스트 */
+        /* ======================================================= */
+        .scrolling-wrapper {
+            width: 100%;
+            margin: 0; 
+            overflow: hidden; 
+            display: flex;
+            white-space: nowrap;
+        }
+
+        .tool-list {
+            display: inline-block;
+            padding-right: 40px; 
+            animation: scroll-left 15s linear infinite; 
+            white-space: nowrap;
+        }
+
+        .tool-list span {
+            font-family: 'Cafe24ProUp', Arial, sans-serif;
+            font-size: 1.5rem; 
+            font-weight: 600;
+        }
+
+        @keyframes scroll-left {
+            0% {
+                transform: translateX(0); 
+            }
+            100% {
+                transform: translateX(-50%); 
+            }
+        }
+
+        body.dark-mode .tool-list span {
+            color: #d1fc25;
+        }
+        body:not(.dark-mode) .tool-list span {
+            color: #333;
+        }
+        
+        footer {
+            width: 100%;
+            padding: 20px 0 20px 0; 
+            text-align: center;
+            border-top: 1px solid #333; 
+            transition: opacity 0.8s ease-out, border-color 0.5s;
+            opacity: 0; 
+        }
+
+        body.dark-mode footer {
+            border-top-color: #d1fc25;
+        }
+        
+        footer.is-loaded {
+            opacity: 1;
+        }
+
+        .copyright {
+            font-size: 0.8rem;
+            color: #262626;
+            margin-top: 20px;
+        }
+        
+        /* ======================================================= */
+        /* 6. 커스텀 마우스 커서 */
+        /* ======================================================= */
+        .custom-cursor {
+            position: fixed; 
+            width: 8px;
+            height: 8px;
+            background-color: #d1fc25; 
+            border-radius: 50%;
+            pointer-events: none; 
+            z-index: 9999; 
+            transform: translate(-50%, -50%); 
+            transition: width 0.3s ease, height 0.3s ease, background-color 0.3s ease;
+        }
+
+        .custom-cursor.hovered {
+            width: 30px; 
+            height: 30px; 
+            background-color: rgba(209, 252, 37, 0.4); 
+            border: 1px solid #d1fc25;
+        }
+
+        body:not(.dark-mode) .custom-cursor {
+            background-color: #333;
+        }
+
+        body:not(.dark-mode) .custom-cursor.hovered {
+            background-color: rgba(51, 51, 51, 0.2); 
+            border: 1px solid #333;
+        }
+
+
+        /* ======================================================= */
+        /* 7. 반응형 디자인 */
+        /* ======================================================= */
+        @media (max-width: 1000px) {
+            .about-page-section {
+                flex-direction: column;
+                align-items: center; 
+                gap: 30px;
+                max-width: 800px;
+            }
+            
+            .about-page-section h2 {
+                font-size: 50px; 
+            }
+        }
+
+        @media (max-width: 768px) {
+             body {
+                 cursor: auto !important;
+             }
+             .custom-cursor {
+                 display: none !important;
+             }
+            
+            .profile-image-container {
+                width: 300px;
+                height: 300px;
+            }
+            
+            .about-page-section h2 {
+                font-size: 30px; 
+            }
+             .about-page-section {
+                 font-size: 18px;
+             }
+        }
+    </style>
+</head>
+<body class="dark-mode">
+    <header>
+        <a href="index.html" class="logo" id="logo">nox</a> 
+        
+        <nav>
+            <ul>
+                <li>
+                    <label class="toggle-container switch">
+                        <input type="checkbox" id="darkModeToggle" checked>
+                        <span class="slider"></span>
+                    </label>
+                </li>
+                
+                <li><a href="about.html" class="menu-item">About</a></li> 
+                <li><a href="contact.html" class="menu-item">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section id="about-content" class="about-page-section">
+            <div class="about-text-content">
+                
+                <div class="about-header">
+                    <h2>About</h2> 
+                    <button id="lang-toggle-btn" class="lang-button">KR</button>
+                </div>
+                
+                <p id="about-text-content-p">
+                    I’m NOX — an animator working in both 2D and 3D animation. Through different forms of movement, I express stories and emotions in motion.
+                    <br><br>
+                    I studied animation at Animation High School and continued my studies in animation at ChungKang University of Cultural Industries. Driven by a desire to create my own works, I explored every part of the production process, becoming a versatile generalist artist.
+                </p>
+            </div>
+            
+            <div class="profile-wrapper">
+                <div class="profile-image-container">
+                    <img src="https://imgcdn.stablediffusionweb.com/2025/12/10/856672bc-3fba-4d95-92bf-f91a0b9eb9df.webp" 
+                                 alt="프로필 사진">
+                </div>
+                
+                <div class="social-links">
+                    <a href="https://x.com/4124sd" target="_blank" title="Twitter/X">
+                        <i class="fa-brands fa-x-twitter"></i>
+                    </a> 
+                    <a href="https://www.instagram.com/creatio_in_nox/?next=%2F__nunc___%2F" target="_blank" title="Instagram">
+                        <i class="fa-brands fa-instagram"></i>
+                    </a>
+                    <a href="https://www.youtube.com/@twins_noxx" target="_blank" title="YouTube">
+                        <i class="fa-brands fa-youtube"></i>
+                    </a>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <footer>
+        <div class="scrolling-wrapper">
+            <div class="tool-list">
+                <span>#Photoshop | #Illustrator | #AfterEffects | #PremierePro | #Blender | #ClipStudio | #3DsMax | #Maya | #Zbrush | </span>
+                <span>#Photoshop | #Illustrator | #AfterEffects | #PremierePro | #Blender | #ClipStudio | #3DsMax | #Maya | #Zbrush</span>
+            </div>
+            </div>
+        
+        <p class="copyright">
+            &copy; NOX Portfolio. All rights reserved.
+        </p>
+    </footer>
+    
+    <div class="custom-cursor" id="custom-cursor"></div>
+    
+    <script>
+        const toggle = document.getElementById('darkModeToggle');
+        const body = document.body;
+        const footerElement = document.querySelector('footer'); 
+        const customCursor = document.getElementById('custom-cursor'); 
+        
+        // About 섹션 언어 전환 요소
+        const aboutTextElement = document.getElementById('about-text-content-p');
+        const langToggleBtn = document.getElementById('lang-toggle-btn'); 
+        
+        // 초기 언어 상태를 localStorage에서 가져오거나 기본값 'EN'으로 설정
+        let currentLang = localStorage.getItem('aboutLang') || 'EN'; 
+        
+        const interactiveElements = document.querySelectorAll('a, button, input[type="checkbox"], label[for="darkModeToggle"], .toggle-container, .social-links a, #lang-toggle-btn'); 
+        
+        // 언어별 텍스트 정의 (학교명 수정됨)
+        const langTexts = {
+            'EN': `
+                I’m NOX — an animator working in both 2D and 3D animation. Through different forms of movement, I express stories and emotions in motion.
+                <br><br>
+                I studied animation at Animation High School and continued my studies in animation at ChungKang University of Cultural Industries. Driven by a desire to create my own works, I explored every part of the production process, becoming a versatile generalist artist.
+            `,
+            'KR': `
+                제너럴 아티스트 NOX입니다. 2D와 3D 애니메이션을 제작하는 애니메이터로서 다양한 움직임을 통해 스토리와 감정을 작품으로 표현합니다.
+                <br><br>
+                애니메이션 고등학교를 졸업하고 청강문화산업대학교 애니메이션과에서 애니메이션을 전공했습니다. 저만의 작품을 만들고자 하는 열망으로 제작 과정의 모든 부분을 탐구하며 다재다능한 제너럴 아티스트로 성장했습니다.
+            `
+        };
+
+
+        // --------------------------------------------------------------------------
+        // 1. 다크/라이트 모드
+        // --------------------------------------------------------------------------
+        function loadDarkModeState() {
+            const savedMode = localStorage.getItem('darkMode');
+            
+            if (savedMode === 'light') {
+                body.classList.remove('dark-mode');
+                toggle.checked = false; 
+            } else {
+                body.classList.add('dark-mode');
+                toggle.checked = true; 
+            }
+        }
+
+        toggle.addEventListener('change', function() {
+            if (this.checked) {
+                body.classList.add('dark-mode');
+                localStorage.setItem('darkMode', 'dark'); 
+            } else {
+                body.classList.remove('dark-mode');
+                localStorage.setItem('darkMode', 'light'); 
+            }
+        });
+
+        loadDarkModeState();
+        
+        // --------------------------------------------------------------------------
+        // 2. About 섹션 언어 전환 및 상태 저장
+        // --------------------------------------------------------------------------
+        
+        function setLanguage(lang) {
+            aboutTextElement.innerHTML = langTexts[lang].trim(); // 공백 제거
+            langToggleBtn.textContent = lang === 'EN' ? 'KR' : 'EN';
+            currentLang = lang;
+            localStorage.setItem('aboutLang', lang); // 언어 상태 저장
+        }
+
+        langToggleBtn.addEventListener('click', () => {
+            const newLang = currentLang === 'EN' ? 'KR' : 'EN';
+            setLanguage(newLang);
+        });
+
+        // --------------------------------------------------------------------------
+        // 3. 페이지 로드 및 푸터 애니메이션
+        // --------------------------------------------------------------------------
+        window.addEventListener('load', () => {
+            footerElement.classList.add('is-loaded'); 
+            setLanguage(currentLang); // 저장된 언어 상태로 About 섹션 로드
+        });
+
+        // --------------------------------------------------------------------------
+        // 4. 커스텀 마우스 커서
+        // --------------------------------------------------------------------------
+        
+        if (customCursor) {
+            document.addEventListener('mousemove', (e) => {
+                customCursor.style.left = e.clientX + 'px';
+                customCursor.style.top = e.clientY + 'px';
+            });
+
+            interactiveElements.forEach(element => {
+                element.addEventListener('mouseenter', () => {
+                    customCursor.classList.add('hovered');
+                });
+                element.addEventListener('mouseleave', () => {
+                    customCursor.classList.remove('hovered');
+                });
+            });
+        }
+    </script>
+</body>
+</html>

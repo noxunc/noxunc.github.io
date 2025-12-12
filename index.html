@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NOX</title>
+    
+    <link rel="icon" type="image/png" href="Favicon.png"> 
+    
+    <link rel="apple-touch-icon" href="Favicon.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <style>
+        /* ======================================================= */
+        /* 1. 폰트 설정 */
+        /* ======================================================= */
+        @font-face {
+            font-family: 'Cafe24ProUp';
+            src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/2507-1@1.0/Cafe24PROUP.woff2') format('woff2');
+            font-weight: normal;
+            font-display: swap;
+        }
+        @font-face {
+            font-family: 'DosStory';
+            src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2304-2@1.0/DOSIyagiMedium.woff2') format('woff2');
+            font-weight: normal;
+            font-display: swap;
+        }
+        
+        /* ======================================================= */
+        /* 2. 기본 스타일 및 다크 모드 설정 */
+        /* ======================================================= */
+        html, body {
+            height: 100%; 
+            margin: 0;
+            scroll-behavior: smooth;
+        }
+        
+        body {
+            font-family: 'Cafe24ProUp', Arial, sans-serif; 
+            background-color: white; 
+            color: #333; 
+            transition: background-color 0.5s, color 0.5s; 
+            cursor: none !important;
+        }
+        
+        main {
+            min-height: 750px !important; 
+            display: block;
+        }
+        
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 40px; 
+            border-bottom: 1px solid #eee;
+            background-color: black; 
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            font-size: 24px; font-weight: bold; color: white; 
+            text-transform: uppercase;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            align-items: center; 
+            gap: 25px;
+        }
+        
+        nav ul li a.menu-item {
+            color: white; 
+            text-decoration: none; 
+            transition: color 0.5s;
+            font-size: 18px; 
+            cursor: pointer;
+        }
+        
+        /* 다크 모드 스타일 */
+        body.dark-mode {
+            background-color: #121212;
+            color: white; /* 기본 텍스트 색상을 흰색으로 조정 */
+        }
+        body.dark-mode header {
+            background-color: #121212; 
+            border-bottom-color: #333;
+        }
+        body.dark-mode nav ul li a.menu-item {
+            color: white;
+        }
+
+        /* ======================================================= */
+        /* 3. 다크 모드 토글 스위치 스타일 */
+        /* ======================================================= */
+        .toggle-container {
+            position: relative;
+            display: inline-block;
+            width: 60px; 
+            height: 34px; 
+        }
+
+        .toggle-container input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc; 
+            transition: 0.4s;
+            border-radius: 34px; 
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: 0.4s;
+            border-radius: 50%; 
+        }
+
+        input:checked + .slider {
+            background-color: #d1fc25; 
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(26px); 
+        }
+        
+        body.dark-mode .slider {
+            background-color: #777;
+        }
+        
+        body.dark-mode input:checked + .slider {
+            background-color: #d1fc25; 
+        }
+        
+        
+        /* ======================================================= */
+        /* 4. 메인 화면 스타일 */
+        /* ======================================================= */
+        
+        .main-screen-wrapper {
+            min-height: 750px !important; 
+            display: flex;
+            align-items: center; 
+            justify-content: center; 
+            flex-direction: column; 
+        }
+
+        #category-tabs-container {
+            width: 100%; 
+            max-width: 1800px; 
+            margin: 0 auto; 
+            padding: 0 40px; 
+            display: grid; 
+            grid-template-columns: repeat(3, 1fr); 
+            gap: 40px; 
+            text-align: center;
+        }
+        
+        
+        /* ======================================================= */
+        /* 5. 카테고리 박스 스타일 */
+        /* ======================================================= */
+        
+        .category-box {
+            height: auto; 
+            aspect-ratio: 16 / 9; 
+            
+            display: block; 
+            text-decoration: none; 
+
+            border-radius: 20px; cursor: pointer; overflow: hidden; position: relative; 
+            background-color: #F7F7F7; border: 1px solid #ddd; color: #333;
+            opacity: 0; transform: translateY(20px); 
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out, transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+        }
+        .category-box.is-loaded { opacity: 1; transform: translateY(0); }
+        .category-box:hover { transform: translateY(-10px); box-shadow: none; }
+        
+        body.dark-mode .category-box {
+            background-color: #1E1E1E;
+            border: 1px solid #d1fc25; 
+            color: #d1fc25; 
+        }
+        
+        .category-box .box-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; 
+            position: absolute; 
+            top: 0;
+            left: 0;
+            z-index: 1; 
+            opacity: 0.6; 
+            transition: opacity 0.5s;
+        }
+
+        .category-box:hover .box-image {
+            opacity: 1; 
+        }
+
+        .box-text {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            display: flex; justify-content: center; align-items: center; 
+            font-size: 22.5px; 
+            font-weight: bold; 
+            z-index: 2; 
+            background-color: rgba(255, 255, 255, 0.4); color: #333; transition: background-color 0.3s;
+        }
+
+        body.dark-mode .box-text {
+            background-color: rgba(0, 0, 0, 0.4);
+            color: #d1fc25; 
+            z-index: 2; 
+        }
+        
+        
+        /* ======================================================= */
+        /* 6. 타이핑 문구 스타일 */
+        /* ======================================================= */
+        .typing-text-container {
+            width: 100%;
+            padding: 0 40px 180px 40px; 
+            text-align: center;
+            margin-top: -70px; 
+            
+            height: 100px;
+            min-height: 100px;
+            box-sizing: border-box; 
+        }
+
+        #typing-text {
+            display: inline-block; 
+            font-size: 3.5vw; 
+            font-family: 'DosStory', sans-serif;
+            white-space: nowrap; 
+            overflow: hidden; 
+            margin: 0;
+            padding: 0;
+            border-right: 0.15em solid #333; 
+            animation: 
+                blink-caret 0.75s step-end infinite;
+        }
+        
+        body.dark-mode #typing-text {
+            color: #d1fc25; 
+            border-right-color: #d1fc25; 
+        }
+
+        @keyframes blink-caret {
+            from, to { border-color: transparent }
+            50% { border-color: inherit; } 
+        }
+        
+        /* ======================================================= */
+        /* 7. 무한 롤링 텍스트 스타일 */
+        /* ======================================================= */
+        .scrolling-wrapper {
+            width: 100%;
+            margin: 0; 
+            overflow: hidden; 
+            display: flex;
+            white-space: nowrap;
+            opacity: 1; 
+            transform: translateY(0); 
+        }
+
+        .tool-list {
+            display: inline-block;
+            padding-right: 40px; 
+            animation: scroll-left 15s linear infinite; 
+            white-space: nowrap;
+        }
+
+        .tool-list span {
+            font-family: 'Cafe24ProUp', Arial, sans-serif;
+            font-size: 1.5rem; 
+            font-weight: 600;
+        }
+
+        @keyframes scroll-left {
+            0% {
+                transform: translateX(0); 
+            }
+            100% {
+                transform: translateX(-50%); 
+            }
+        }
+
+        body.dark-mode .tool-list span {
+            color: #d1fc25;
+        }
+        body:not(.dark-mode) .tool-list span {
+            color: #333;
+        }
+        
+        /* ======================================================= */
+        /* 8. 푸터 스타일 */
+        /* ======================================================= */
+        footer {
+            width: 100%;
+            padding: 20px 0 20px 0; 
+            text-align: center;
+            border-top: 1px solid #333; 
+            transition: opacity 0.8s ease-out, border-color 0.5s;
+            opacity: 0;
+        }
+
+        body.dark-mode footer {
+            border-top-color: #d1fc25;
+        }
+        
+        footer.is-loaded {
+            opacity: 1;
+        }
+
+        .copyright {
+            font-size: 0.8rem;
+            color: #262626;
+            margin-top: 20px;
+        }
+        
+        /* ======================================================= */
+        /* 9. 커스텀 마우스 커서 스타일 */
+        /* ======================================================= */
+        .custom-cursor {
+            position: fixed; 
+            width: 8px;
+            height: 8px;
+            background-color: #d1fc25; 
+            border-radius: 50%;
+            pointer-events: none; 
+            z-index: 9999; 
+            transform: translate(-50%, -50%); 
+            transition: width 0.3s ease, height 0.3s ease, background-color 0.3s ease;
+        }
+
+        .custom-cursor.hovered {
+            width: 30px; 
+            height: 30px; 
+            background-color: rgba(209, 252, 37, 0.4); 
+            border: 1px solid #d1fc25;
+        }
+
+        body:not(.dark-mode) .custom-cursor {
+            background-color: #333;
+        }
+
+        body:not(.dark-mode) .custom-cursor.hovered {
+            background-color: rgba(51, 51, 51, 0.2); 
+            border: 1px solid #333;
+        }
+
+
+        /* ======================================================= */
+        /* 10. 반응형 디자인 업데이트 */
+        /* ======================================================= */
+        @media (max-width: 1000px) {
+            #category-tabs-container {
+                padding: 0 20px;
+                gap: 30px; 
+            }
+        }
+
+        @media (max-width: 768px) {
+            body {
+                cursor: auto !important;
+            }
+            .custom-cursor {
+                display: none !important;
+            }
+            
+            #category-tabs-container {
+                grid-template-columns: 1fr; 
+                max-width: 500px; 
+                gap: 30px;
+                margin: 0 auto; 
+            }
+        }
+    </style>
+</head>
+<body class="dark-mode">
+    <div class="custom-cursor" id="custom-cursor"></div>
+
+    <header>
+        <a href="#main" class="logo" id="logo">nox</a> 
+        
+        <nav>
+            <ul>
+                <li>
+                    <label class="toggle-container switch" title="다크 모드 전환">
+                        <input type="checkbox" id="darkModeToggle" checked>
+                        <span class="slider"></span>
+                    </label>
+                </li>
+                <li><a class="menu-item" href="about.html" id="menu-about">About</a></li> 
+                <li><a class="menu-item" href="contact.html" id="menu-contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+    
+    <main>
+        <section id="main-screen-wrapper" class="main-screen-wrapper">
+            <div class="typing-text-container">
+                <h1 id="typing-text"></h1>
+            </div>
+
+            <div id="category-tabs-container">
+                <a href="2d_animation.html" class="category-box">
+                    <img src="https://imgcdn.stablediffusionweb.com/2025/12/10/f1f08c26-7c9e-48eb-b92f-d99a44d93b86.webp" 
+                          alt="2D Animation Artwork" class="box-image">
+                    <div class="box-text">2D Animation</div>
+                </a>
+                
+                <a href="3d_animation.html" class="category-box">
+                   <img src="https://imgcdn.stablediffusionweb.com/2025/12/10/e2b6492d-8f68-4ad4-975d-995142a1e321.webp" 
+                          alt="3D Animation Artwork" class="box-image">
+                    <div class="box-text">3D Animation</div>
+                </a>
+                
+                <a href="modeling_rigging.html" class="category-box">
+                    <img src="https://imgcdn.stablediffusionweb.com/2025/12/10/865157a6-8497-453a-aa7c-8eaa50122273.webp" 
+                          alt="ETC Project Artwork" class="box-image">
+                    <div class="box-text">Modeling & Rigging</div>
+                </a>
+            </div>
+        </section>
+        
+        </main>
+    
+    <footer>
+        <div class="scrolling-wrapper">
+            <div class="tool-list">
+                <span>#Photoshop | #Illustrator | #AfterEffects | #PremierePro | #Blender | #ClipStudio | #3DsMax | #Maya | #Zbrush | </span>
+                <span>#Photoshop | #Illustrator | #AfterEffects | #PremierePro | #Blender | #ClipStudio | #3DsMax | #Maya | #Zbrush</span>
+            </div>
+        </div>
+        
+        <p class="copyright">
+            &copy; NOX Portfolio. All rights reserved.
+        </p>
+    </footer>
+    
+    <script>
+        const toggle = document.getElementById('darkModeToggle');
+        const body = document.body;
+        const categoryBoxes = document.querySelectorAll('.category-box');
+        const logo = document.getElementById('logo'); 
+        const mainScreenWrapper = document.getElementById('main-screen-wrapper'); 
+        const footerElement = document.querySelector('footer'); 
+        
+        const customCursor = document.getElementById('custom-cursor'); 
+        
+        // 커스텀 커서 상호작용 요소 목록 정의
+        const interactiveElements = document.querySelectorAll('a, button, .category-box, input[type="checkbox"], label[for="darkModeToggle"]'); 
+        
+        // --------------------------------------------------------------------------
+        // 1. 다크/라이트 모드 (localStorage를 사용하여 상태 유지 기능 추가)
+        // --------------------------------------------------------------------------
+
+        function loadDarkModeState() {
+            const savedMode = localStorage.getItem('darkMode');
+            
+            if (savedMode === 'light') {
+                body.classList.remove('dark-mode');
+                toggle.checked = false; 
+            } else {
+                body.classList.add('dark-mode');
+                toggle.checked = true; 
+            }
+        }
+
+        toggle.addEventListener('change', function() {
+            if (this.checked) {
+                body.classList.add('dark-mode');
+                localStorage.setItem('darkMode', 'dark');
+            } else {
+                body.classList.remove('dark-mode');
+                localStorage.setItem('darkMode', 'light');
+            }
+        });
+
+        loadDarkModeState();
+        
+        // --------------------------------------------------------------------------
+        // 2. 화면 전환 및 로딩 애니메이션
+        // --------------------------------------------------------------------------
+        
+        /* 카테고리 박스 로딩 애니메이션 */
+        function loadCategoryBoxes() {
+            categoryBoxes.forEach((box, index) => {
+                box.classList.remove('is-loaded'); 
+                setTimeout(() => {
+                    box.classList.add('is-loaded');
+                }, index * 150); 
+            });
+        }
+        
+        /* 메인 화면 표시 및 로딩 */
+        function showMainScreen() {
+            mainScreenWrapper.style.display = 'flex'; 
+            loadCategoryBoxes();
+            footerElement.classList.add('is-loaded'); 
+        }
+
+        // 초기 로딩 시 메인 화면 표시
+        window.addEventListener('load', () => {
+            showMainScreen(); 
+            startTypingEffect(); 
+        });
+
+        // --------------------------------------------------------------------------
+        // 3. 이벤트 리스너 (로고 클릭)
+        // --------------------------------------------------------------------------
+        
+        // 로고 클릭 시 메인 화면으로 돌아오기 (페이지 새로고침)
+        logo.addEventListener('click', (e) => {
+            e.preventDefault();
+            
+            // 메인 페이지로 이동 (이 경우, 페이지를 새로고침하는 것과 동일한 효과)
+            window.location.href = 'index.html'; 
+        });
+
+
+        // --------------------------------------------------------------------------
+        // 4. 타이핑 효과
+        // --------------------------------------------------------------------------
+        
+        const typingTextElement = document.getElementById('typing-text');
+        const phrases = [
+            "Hello, World!",
+            "I'm NOX, a General Arist.",
+            "Welcome to my Portfolio.",
+            "Explore 2D, 3D, and more!"
+        ];
+        let phraseIndex = 0;
+        let charIndex = 0;
+        let isDeleting = false;
+        
+        function type() {
+            // 이 페이지는 메인 화면이 항상 표시되므로, 숨김 상태 확인 로직을 제거
+            
+            const currentPhrase = phrases[phraseIndex];
+            
+            if (isDeleting) {
+                typingTextElement.textContent = currentPhrase.substring(0, charIndex - 1);
+                charIndex--;
+            } else {
+                typingTextElement.textContent = currentPhrase.substring(0, charIndex + 1);
+                charIndex++;
+            }
+            
+            let typingSpeed = 100;
+
+            if (isDeleting) {
+                typingSpeed /= 2;
+            }
+            
+            if (!isDeleting && charIndex === currentPhrase.length) {
+                typingSpeed = 1500;
+                isDeleting = true;
+            } else if (isDeleting && charIndex === 0) {
+                isDeleting = false;
+                phraseIndex = (phraseIndex + 1) % phrases.length;
+                typingSpeed = 500;
+            }
+            
+            setTimeout(type, typingSpeed);
+        }
+
+        function startTypingEffect() {
+            type();
+        }
+
+
+        // --------------------------------------------------------------------------
+        // 5. 커스텀 마우스 커서
+        // --------------------------------------------------------------------------
+        
+        if (customCursor) {
+            document.addEventListener('mousemove', (e) => {
+                if (window.innerWidth > 768) {
+                    customCursor.style.left = e.clientX + 'px';
+                    customCursor.style.top = e.clientY + 'px';
+                }
+            });
+
+            interactiveElements.forEach(element => {
+                element.addEventListener('mouseenter', () => {
+                    customCursor.classList.add('hovered');
+                });
+                element.addEventListener('mouseleave', () => {
+                    customCursor.classList.remove('hovered');
+                });
+            });
+        }
+    </script>
+</body>
+</html>
