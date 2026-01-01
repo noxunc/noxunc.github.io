@@ -35,7 +35,7 @@
         }
 
         /* 3. 커스텀 커서 */
-        header a, nav a, .home-button, .circle-icon, .category-card, .modal-close-button, .external-link, .works-link, .menu-toggle { 
+        header a, nav a, .home-button, .circle-icon, .category-card, .modal-close-button, .external-link, .works-link, .menu-toggle, .filter-button { 
             cursor: none !important; 
         }
         .custom-cursor {
@@ -96,7 +96,7 @@
         }
         .page-title-container {
             display: flex; align-items: center; justify-content: center; gap: 1.5vw; 
-            margin: 4vw 0 6vw 0; opacity: 0; transform: translateY(25px);
+            margin: 4vw 0 2vw 0; opacity: 0; transform: translateY(25px);
             transition: opacity 0.8s ease-out, transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
         }
         .page-title-container.visible { opacity: 1; transform: translateY(0); }
@@ -106,15 +106,39 @@
         #sparkle-1 { align-self: flex-start; margin-top: -1vw; }
         #sparkle-2 { align-self: flex-end; margin-bottom: -1vw; }
 
+        .filter-container {
+            display: flex; justify-content: center; 
+            gap: clamp(8px, 1vw, 15px); 
+            margin-bottom: 4vw; 
+            opacity: 0; 
+            transform: translateY(20px);
+            transition: opacity 0.8s ease-out, transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+        .filter-container.visible { opacity: 1; transform: translateY(0); }
+        .filter-button {
+            padding: clamp(4px, 0.6vw, 10px) clamp(12px, 1.5vw, 28px); 
+            border: 1.5px solid black; background-color: transparent;
+            font-family: 'GowoonDodum', sans-serif; 
+            font-size: clamp(11px, 0.8vw, 16px); 
+            font-weight: bold;
+            border-radius: 50px; transition: 0.3s;
+            white-space: nowrap;
+            color: black;
+            box-sizing: border-box;
+        }
+        .filter-button.active { background-color: #888; color: black; border: 1.5px solid black; }
+
         /* 카테고리 그리드 */
         .category-section { width: 100%; display: flex; justify-content: center; z-index: 8; margin-bottom: 50px; }
         .category-grid { display: flex; gap: 20px; padding: 0 40px; box-sizing: border-box; width: 100%; flex-wrap: wrap; justify-content: center; }
         .card-group {
             display: flex; flex-direction: column; width: calc((100% - 40px) / 3); 
             text-align: center; margin-bottom: 40px; opacity: 0; 
-            transform: translateY(40px); transition: all 0.8s ease-out;
+            transform: translateY(40px); transition: all 0.5s ease-out;
         }
         .card-group.visible { opacity: 1; transform: translateY(0); }
+        .card-group.hidden { display: none; } 
+
         .category-card {
             background-color: #F2F2F2; border-radius: 15px; width: 100%; position: relative; padding-top: 56.25%; 
             border: 2px solid black; transition: transform 0.3s; display: block; overflow: hidden; 
@@ -130,13 +154,17 @@
         .modal-close-button { position: absolute; right: -10px; top: -10px; font-size: 40px; background-color: #ffffff; border: 2px solid #333; border-radius: 50%; width: 50px; height: 50px; display: flex; justify-content: center; align-items: center; z-index: 2010; color: #333; }
         .modal-header { width: 100%; height: 0; padding-top: 56.25%; background-color: #E0E0E0; position: relative; }
         .modal-media { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; }
-        .modal-media video { width: 100%; height: 100%; object-fit: cover; }
+        
+        .modal-media iframe { width: 100%; height: 100%; border: 0; }
+        .sketchfab-embed-wrapper { width: 100%; height: 100%; }
+
         .modal-title { font-family: 'GowoonDodum', sans-serif; font-size: 2em; margin: 30px 40px 10px 40px; }
         
-        /* [Software 정보를 하단으로 보내기 위해 보더 위치 및 마진 조정] */
-        .modal-extra-image { width: 100%; padding: 0 40px; box-sizing: border-box; margin-top: 20px; text-align: center; }
+        /* 상세페이지 하단 별개 이미지 영역 */
+        .modal-extra-image { width: 100%; padding: 0 40px; box-sizing: border-box; margin-top: 25px; text-align: center; }
         .modal-extra-image img { width: 100%; height: auto; display: block; margin: 0 auto; border-radius: 10px; }
 
+        /* 상세페이지 소프트웨어 정보 영역 (최하단 고정용) */
         .modal-info { font-family: 'GowoonDodum', sans-serif; padding: 25px 40px 10px 40px; border-top: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; margin-top: 30px; }
         .modal-info p { margin: 0; }
         
@@ -171,29 +199,24 @@
             .works-item p { font-size: 0.75em; color: #888; }
             
             .card-group { width: 90%; }
-
-            .page-title-container { 
-                width: 100%; 
-                margin: 15vw 0 18vw 0; 
-                gap: 2.5vw; 
+            .page-title-container { width: 100%; margin: 15vw 0 8vw 0; gap: 2.5vw; }
+            
+            .filter-container { margin-bottom: 10vw; gap: 1.5vw; }
+            .filter-button { 
+                padding: clamp(2px, 1.5vw, 15px) clamp(5px, 4vw, 35px); 
+                font-size: clamp(5px, 3.5vw, 18px); 
+                border: 1.5px solid black; min-width: 0; 
             }
-            .page-title { 
-                font-size: clamp(10px, 13vw, 85px); 
-                line-height: 1;
-                white-space: nowrap; 
-            } 
-            .sparkle-svg { 
-                width: clamp(5px, 6vw, 35px); 
-            } 
-            #sparkle-1 { margin-top: -2vw; }
-            #sparkle-2 { margin-bottom: -2vw; }
+            .filter-button.active { border: 1.5px solid black; }
 
+            .page-title { font-size: clamp(10px, 13vw, 85px); line-height: 1; white-space: nowrap; } 
+            .sparkle-svg { width: clamp(5px, 6vw, 35px); } 
             .card-title { font-size: clamp(10px, 4.2vw, 20px); } 
-
             .custom-cursor { display: none; }
             body { cursor: auto; }
-            
+
             .modal-extra-image { padding: 0 20px; }
+            .modal-info { padding: 20px; flex-direction: column; gap: 10px; align-items: flex-start; }
         }
     </style>
 </head>
@@ -221,41 +244,88 @@
         <main>
             <div class="page-title-container" id="pageTitleContainer">
                 <img src="images/sparkle.svg" alt="sparkle" class="sparkle-svg" id="sparkle-1">
-                <h1 class="page-title">3d animation</h1>
+                <h1 class="page-title">assets</h1>
                 <img src="images/sparkle.svg" alt="sparkle" class="sparkle-svg" id="sparkle-2">
+            </div>
+
+            <div class="filter-container" id="filterContainer">
+                <button class="filter-button active" data-filter="all">ALL</button>
+                <button class="filter-button" data-filter="CH">CH</button>
+                <button class="filter-button" data-filter="BG">BG</button>
             </div>
 
             <section class="category-section">
                 <div class="category-grid">
-                    <div class="card-group">
-                        <a href="#" class="category-card" data-video-file="videos/CTA_trailer.mp4" data-title="Cookierun - CTA Trailer" data-software="Maya" data-behance-url="https://www.behance.net/gallery/197694507/-Tower-of-Adventure-Pre-registeration-Trailer"> 
-                            <img src="images/cta_trailer.png" alt="Thumbnail">
+                    <div class="card-group" data-category="CH">
+                        <a href="#" class="category-card" 
+                           data-sketchfab-url="https://sketchfab.com/models/a49f1b8e4f5c4ecf9e1fe7d81915ad38/embed" 
+                           data-title="CH - 01" 
+                           data-software="Maya, Blender, Substance Painter" 
+                           data-artstation-url="https://www.artstation.com/"
+                           data-extra-img="images/ch_01_sheet.png"> 
+                            <img src="images/ch_01_thumbnail.png" alt="Thumbnail">
                         </a>
-                        <div class="card-title">Cookierun - CTA Trailer</div>
+                        <div class="card-title">CH - 01</div>
                     </div>
-                    <div class="card-group">
-                        <a href="#" class="category-card" data-video-file="videos/BraveAdventure_Store.mp4" data-title="Cookierun - Brave Adventure Store" data-software="Maya" data-behance-url="https://www.behance.net/gallery/175289869/CookieRun-Store-Brave-Adventure"> 
-                            <img src="images/brave_adventure.png" alt="Thumbnail">
+                    
+                    <div class="card-group" data-category="BG">
+                        <a href="#" class="category-card" 
+                           data-sketchfab-url="https://sketchfab.com/models/a49f1b8e4f5c4ecf9e1fe7d81915ad38/embed" 
+                           data-title="BG - 01" 
+                           data-software="Maya, Blender, Substance Painter" 
+                           data-artstation-url="https://www.artstation.com/"
+                           data-extra-img="images/bg_01_sheet.png"> 
+                            <img src="images/bg_01_thumbnail.png" alt="Thumbnail">
                         </a>
-                        <div class="card-title">Cookierun - Brave Adventure Store</div>
+                        <div class="card-title">BG - 01</div>
                     </div>
-                    <div class="card-group">
-                        <a href="#" class="category-card" data-video-file="videos/bts.mp4" data-title="Cookierun - BTS Anamorphic Project" data-software="Maya" data-behance-url="https://www.behance.net/gallery/156234905/BTS-Kpopsquare-3d-anamorphic-project"> 
-                            <img src="images/bts.png" alt="Thumbnail">
+
+                    <div class="card-group" data-category="CH">
+                        <a href="#" class="category-card" 
+                           data-sketchfab-url="https://sketchfab.com/models/a49f1b8e4f5c4ecf9e1fe7d81915ad38/embed" 
+                           data-title="CH - 02" 
+                           data-software="Maya, Blender, Substance Painter" 
+                           data-artstation-url="https://www.artstation.com/"
+                           data-extra-img="images/ch_02_sheet.png"> 
+                            <img src="images/ch_02_thumbnail.png" alt="Thumbnail">
                         </a>
-                        <div class="card-title">Cookierun - BTS Anamorphic Project</div> 
+                        <div class="card-title">CH - 02</div> 
                     </div>
-                    <div class="card-group">
-                        <a href="#" class="category-card" data-video-file="videos/kuya.mp4" data-title="Kuya Original Animation Series" data-software="Maya" data-youtube-url="https://www.youtube.com/watch?v=hHFmyVOkDM4&list=PLZpydps5ZvhLs7tpjOadrzDaRm0kpWbAw" data-extra-img="images/kuya_sheet.png"> 
-                            <img src="images/kuya.png" alt="Thumbnail">
+
+                    <div class="card-group" data-category="CH">
+                        <a href="#" class="category-card" 
+                           data-sketchfab-url="https://sketchfab.com/models/a49f1b8e4f5c4ecf9e1fe7d81915ad38/embed" 
+                           data-title="CH - 03" 
+                           data-software="Maya, Blender, Substance Painter" 
+                           data-artstation-url="https://www.artstation.com/"
+                           data-extra-img="images/ch_03_sheet.png"> 
+                            <img src="images/ch_03_thumbnail.png" alt="Thumbnail">
                         </a>
-                        <div class="card-title">Kuya Original Animation Series</div> 
+                        <div class="card-title">CH - 03</div> 
                     </div>
-                    <div class="card-group">
-                        <a href="#" class="category-card" data-video-file="videos/secondworld_Trailer.mp4" data-title="제 2의 나라 - 엔지니어 Trailer" data-software="Maya" data-youtube-url="https://youtu.be/v0F2OJOLge4" data-extra-img="images/secondworld_sheet.png"> 
-                            <img src="images/secondworld_Trailer.png" alt="Thumbnail">
+
+                    <div class="card-group" data-category="BG">
+                        <a href="#" class="category-card" 
+                           data-sketchfab-url="https://sketchfab.com/models/a49f1b8e4f5c4ecf9e1fe7d81915ad38/embed" 
+                           data-title="BG - 02" 
+                           data-software="Maya, Blender, Substance Painter" 
+                           data-artstation-url="https://www.artstation.com/"
+                           data-extra-img="images/bg_02_sheet.png"> 
+                            <img src="images/bg_02_thumbnail.png" alt="Thumbnail">
                         </a>
-                        <div class="card-title">제 2의 나라 - 엔지니어 Trailer</div> 
+                        <div class="card-title">BG - 02</div> 
+                    </div>
+
+                    <div class="card-group" data-category="BG">
+                        <a href="#" class="category-card" 
+                           data-sketchfab-url="https://sketchfab.com/models/a49f1b8e4f5c4ecf9e1fe7d81915ad38/embed" 
+                           data-title="BG - 03" 
+                           data-software="Maya, Blender, Substance Painter" 
+                           data-artstation-url="https://www.artstation.com/"
+                           data-extra-img="images/bg_03_sheet.png"> 
+                            <img src="images/bg_02_thumbnail.png" alt="Thumbnail">
+                        </a>
+                        <div class="card-title">BG - 03</div> 
                     </div>
                 </div>
             </section>
@@ -267,7 +337,7 @@
                 <h1 class="modal-title"></h1> 
                 <div class="modal-header"><div class="modal-media"></div></div>
                 <div class="modal-body">
-                    <div class="modal-extra-image" id="modalExtraImage"></div>
+                    <div id="modalExtraImage" class="modal-extra-image"></div>
                     <div class="modal-info"></div>
                 </div>
             </div>
@@ -292,22 +362,43 @@
 
             setTimeout(() => { document.getElementById('header').classList.add('visible'); }, 200);
             setTimeout(() => { document.getElementById('pageTitleContainer').classList.add('visible'); }, 300);
-            document.querySelectorAll('.card-group').forEach((group, index) => {
-                setTimeout(() => { group.classList.add('visible'); }, 500 + (index * 150));
+            setTimeout(() => { document.getElementById('filterContainer').classList.add('visible'); }, 400);
+            
+            const cards = document.querySelectorAll('.card-group');
+            cards.forEach((group, index) => {
+                setTimeout(() => { group.classList.add('visible'); }, 500 + (index * 100));
             });
-            setTimeout(() => { document.getElementById('footer').classList.add('visible'); }, 1500);
+            setTimeout(() => { document.getElementById('footer').classList.add('visible'); }, 1200);
 
+            // 필터링 기능
+            const filterButtons = document.querySelectorAll('.filter-button');
+            filterButtons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    filterButtons.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    const filterValue = btn.getAttribute('data-filter');
+                    cards.forEach(card => {
+                        const cardCategory = card.getAttribute('data-category');
+                        if (filterValue === 'all' || cardCategory === filterValue) {
+                            card.classList.remove('hidden');
+                            card.style.opacity = "0";
+                            setTimeout(() => { card.style.opacity = "1"; }, 10);
+                        } else {
+                            card.classList.add('hidden');
+                        }
+                    });
+                });
+            });
+
+            // 메뉴 토글
             const menuToggle = document.getElementById('menuToggle');
             const navMenu = document.getElementById('navMenu');
-            const worksContainer = document.getElementById('worksContainer');
             const worksLink = document.querySelector('.works-link');
             const worksIcons = document.getElementById('worksIcons');
 
             function toggleScroll() {
                 if (navMenu.classList.contains('open')) {
-                    if (window.innerWidth <= 768) {
-                        document.body.classList.add('no-scroll');
-                    }
+                    if (window.innerWidth <= 768) document.body.classList.add('no-scroll');
                 } else {
                     document.body.classList.remove('no-scroll');
                 }
@@ -323,18 +414,15 @@
                 worksIcons.classList.toggle('open'); 
             });
 
-            worksContainer.addEventListener('mouseleave', () => { 
-                if (window.innerWidth > 768) worksIcons.classList.remove('open'); 
-            });
-
             document.addEventListener('click', (e) => {
                 if (!menuToggle.contains(e.target) && !navMenu.contains(e.target)) {
                     navMenu.classList.remove('open');
                     worksIcons.classList.remove('open');
-                    document.body.classList.remove('no-scroll'); 
+                    document.body.classList.remove('no-scroll');
                 }
             });
 
+            // 모달 로직
             const detailModal = document.getElementById('detailModal');
             const closeButton = document.querySelector('.modal-close-button');
             const modalTitle = document.querySelector('.modal-title');
@@ -345,22 +433,26 @@
             document.querySelectorAll('.category-card').forEach(card => {
                 card.addEventListener('click', (e) => {
                     e.preventDefault();
-                    const { videoFile, title, software, behanceUrl, youtubeUrl, extraImg } = card.dataset;
+                    const { sketchfabUrl, title, software, artstationUrl, extraImg } = card.dataset;
+                    
                     modalTitle.textContent = title;
-                    modalMedia.innerHTML = videoFile ? `<video src="${videoFile}" controls autoplay loop></video>` : '';
                     
-                    let linkHtml = behanceUrl ? `<a href="${behanceUrl}" target="_blank" class="external-link"><i class="fab fa-behance"></i> Behance</a>` : (youtubeUrl ? `<a href="${youtubeUrl}" target="_blank" class="external-link"><i class="fab fa-youtube"></i> Youtube</a>` : '');
-                    
-                    // Software 정보 및 아이콘/링크 생성
-                    modalInfo.innerHTML = `<p><strong>Software:</strong> ${software}</p>${linkHtml}`;
-                    
-                    // 추가 이미지 생성 (이미지 영역은 CSS 구조상 modal-info보다 위에 있음)
+                    // 1. Sketchfab 설정
+                    if (sketchfabUrl) {
+                        modalMedia.innerHTML = `<div class="sketchfab-embed-wrapper"><iframe src="${sketchfabUrl}" frameborder="0" allowfullscreen allow="autoplay; fullscreen;"></iframe></div>`;
+                    }
+
+                    // 2. 별개 상세 이미지 설정 (data-extra-img 사용)
                     if (extraImg) {
-                        modalExtraImage.innerHTML = `<img src="${extraImg}" alt="Extra Sheet">`;
+                        modalExtraImage.innerHTML = `<img src="${extraImg}" alt="Detail Reference">`;
                     } else {
                         modalExtraImage.innerHTML = '';
                     }
 
+                    // 3. 최하단 소프트웨어 정보 설정
+                    let linkHtml = artstationUrl ? `<a href="${artstationUrl}" target="_blank" class="external-link"><i class="fab fa-artstation"></i> Artstation</a>` : '';
+                    modalInfo.innerHTML = `<p><strong>Software:</strong> ${software}</p>${linkHtml}`;
+                    
                     detailModal.classList.add('visible');
                     document.body.classList.add('no-scroll');
                 });
@@ -369,7 +461,7 @@
             const closeModal = () => { 
                 detailModal.classList.remove('visible'); 
                 modalMedia.innerHTML = ''; 
-                modalExtraImage.innerHTML = '';
+                modalExtraImage.innerHTML = ''; 
                 document.body.classList.remove('no-scroll'); 
             };
             closeButton.addEventListener('click', closeModal);

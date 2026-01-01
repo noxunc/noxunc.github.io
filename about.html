@@ -3,590 +3,343 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NOX | About</title>
+    <title>NOX</title>
     
-    <link rel="icon" type="image/png" href="Favicon.png"> 
-    
-    <link rel="apple-touch-icon" href="Favicon.png">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="icon" type="image/png" href="https://img.icons8.com/material-rounded/24/sparkles.png"> 
+
     <style>
-        /* ======================================================= */
-        /* 1. 폰트 설정 */
-        /* ======================================================= */
-        @font-face {
-            font-family: 'Cafe24ProUp';
-            src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/2507-1@1.0/Cafe24PROUP.woff2') format('woff2');
-            font-weight: normal;
-            font-display: swap;
-        }
-        @font-face {
-            font-family: 'DosStory';
-            src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2304-2@1.0/DOSIyagiMedium.woff2') format('woff2');
-            font-weight: normal;
-            font-display: swap;
-        }
-        
-        /* ======================================================= */
-        /* 2. 기본 스타일 및 레이아웃 */
-        /* ======================================================= */
-        html, body {
-            height: 100%; 
-            margin: 0;
-            scroll-behavior: smooth; 
-        }
-        
+        /* 1. 기본 및 스크롤 설정 */
+        html { overflow: hidden; height: 100%; }
         body {
-            font-family: 'Cafe24ProUp', Arial, sans-serif; 
-            background-color: white; 
-            color: #333; 
-            transition: background-color 0.5s, color 0.5s; 
-            cursor: none !important;
+            background-color: #F2F2F2; margin: 0; padding: 0;
+            width: 100%; height: 100%; overflow-y: auto; overflow-x: hidden;
+            display: flex; flex-direction: column; cursor: none; 
+            -webkit-font-smoothing: antialiased;
         }
-        
-        main {
-            min-height: 750px !important; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-        }
-        
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px 40px; 
-            border-bottom: 1px solid #eee;
-            background-color: black; 
-            position: sticky; 
-            top: 0;
-            z-index: 100;
+        body::-webkit-scrollbar { width: 8px; }
+        body::-webkit-scrollbar-track { background: #F2F2F2; }
+        body::-webkit-scrollbar-thumb { background: #BCBCBC; border-radius: 10px; }
+
+        /* 모바일 메뉴 오픈 시 스크롤 방지 (데스크탑 영향 없음) */
+        body.no-scroll {
+            overflow: hidden !important;
         }
 
-        .logo {
-            font-size: 24px; font-weight: bold; color: white; 
-            text-transform: uppercase;
-            text-decoration: none;
-            cursor: pointer;
+        @font-face {
+            font-family: 'GowoonDodum';
+            src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2108@1.1/GowunDodum-Regular.woff') format('woff');
+        }
+        @font-face {
+            font-family: 'AmoreChristmas';
+            src: url('fonts/Amore Christmas.otf') format('opentype');
         }
 
-        nav ul {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-            display: flex;
-            align-items: center; 
-            gap: 25px;
-        }
-        
-        nav ul li a.menu-item {
-            color: white; 
-            text-decoration: none; 
-            transition: color 0.5s;
-            font-size: 18px; 
-        }
-        
-        /* ======================================================= */
-        /* 3. 다크 모드 스타일 및 토글 스위치 */
-        /* ======================================================= */
-        body.dark-mode {
-            background-color: #121212;
-            color: #d1fc25; 
-        }
-        body.dark-mode header {
-             background-color: #121212; 
-             border-bottom-color: #333;
-        }
-        body.dark-mode nav ul li a.menu-item {
-            color: white;
-        }
-        
-        .toggle-container {
-            position: relative;
-            display: inline-block;
-            width: 60px; 
-            height: 34px; 
-        }
-
-        .toggle-container input {
-            opacity: 0;
-            width: 0;
-            height: 0;
-        }
-
-        .slider {
-            position: absolute;
-            cursor: pointer;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: #ccc; 
-            transition: 0.4s;
-            border-radius: 34px; 
-        }
-
-        .slider:before {
-            position: absolute;
-            content: "";
-            height: 26px;
-            width: 26px;
-            left: 4px;
-            bottom: 4px;
-            background-color: white;
-            transition: 0.4s;
-            border-radius: 50%; 
-        }
-
-        input:checked + .slider {
-            background-color: #d1fc25; 
-        }
-
-        input:checked + .slider:before {
-            transform: translateX(26px); 
-        }
-        
-        body.dark-mode .slider {
-            background-color: #777;
-        }
-        
-        body.dark-mode input:checked + .slider {
-            background-color: #d1fc25; 
-        }
-        
-        
-        /* ======================================================= */
-        /* 4. About 페이지 전용 스타일 */
-        /* ======================================================= */
-
-        .about-page-section {
-            max-width: 1400px; 
-            margin: 0 auto; 
-            padding: 40px;
-            line-height: 1.6;
-            text-align: left;
-            font-family: 'DosStory', sans-serif;
-            font-size: 24px; 
-            
-            display: flex;
-            justify-content: space-between; 
-            align-items: flex-start; 
-            gap: 50px; 
-        }
-        
-        .about-text-content {
-            flex-grow: 1; 
-            max-width: 700px; 
-        }
-        
-        .about-header {
-            display: flex;
-            align-items: center; 
-            gap: 10px;
-            margin-bottom: 4px;
-        }
-        
-        .about-page-section h2 {
-            font-size: 72px; 
-            margin-top: 0; 
-            margin-bottom: 1px;
-        }
-        
-        /* 언어 전환 버튼 */
-        .lang-button {
-            padding: 5px 10px;
-            font-size: 16px;
-            font-weight: bold;
-            border: 1px solid #333;
-            border-radius: 5px;
-            background-color: transparent;
-            cursor: pointer;
-            transition: all 0.2s;
-            color: #333;
-        }
-        
-        body.dark-mode .lang-button {
-            border-color: #d1fc25;
-            color: #d1fc25;
-        }
-
-        /* **** [수정된 부분]: 라이트 모드 Hover 색상 변경 **** */
-        .lang-button:hover {
-            background-color: #9e9e9e; 
-            color: white; 
-            border-color: #9e9e9e;
-        }
-        
-        /* 다크 모드 Hover는 아래에서 오버라이드 */
-        body.dark-mode .lang-button:hover {
-            background-color: #d1fc25;
-            color: #121212;
-            border-color: #d1fc25;
-        }
-        
-        /* 프로필 이미지 */
-        .profile-wrapper {
-            display: flex;
-            flex-direction: column; 
-            align-items: center; 
-            flex-shrink: 0;
-        }
-        
-        .profile-image-container {
-            width: 500px; 
-            height: 500px; 
-            background-color: #333; 
-            border: 1.5px solid #d1fc25; 
-            border-radius: 15px; 
-            overflow: hidden;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            color: white; 
-            font-size: 16px;
-            margin-bottom: 30px; 
-        }
-        
-        .profile-image-container img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover; 
-        }
-
-        body:not(.dark-mode) .profile-image-container {
-            border-color: #333;
-            background-color: #f0f0f0;
-            color: #333;
-        }
-        
-        /* 소셜 링크 */
-        .social-links {
-            display: flex;
-            gap: 30px;
-            padding: 10px 0;
-        }
-
-        .social-links a {
-            text-decoration: none;
-            font-size: 36px;
-            color: #d1fc25;
-            transition: color 0.3s, transform 0.3s;
-        }
-
-        body:not(.dark-mode) .social-links a {
-            color: #333;
-        }
-
-        .social-links a:hover {
-            color: #9cfc00; 
-            transform: translateY(-5px);
-        }
-        
-        
-        /* ======================================================= */
-        /* 5. 푸터 및 롤링 텍스트 */
-        /* ======================================================= */
-        .scrolling-wrapper {
-            width: 100%;
-            margin: 0; 
-            overflow: hidden; 
-            display: flex;
-            white-space: nowrap;
-        }
-
-        .tool-list {
-            display: inline-block;
-            padding-right: 40px; 
-            animation: scroll-left 15s linear infinite; 
-            white-space: nowrap;
-        }
-
-        .tool-list span {
-            font-family: 'Cafe24ProUp', Arial, sans-serif;
-            font-size: 1.5rem; 
-            font-weight: 600;
-        }
-
-        @keyframes scroll-left {
-            0% {
-                transform: translateX(0); 
-            }
-            100% {
-                transform: translateX(-50%); 
-            }
-        }
-
-        body.dark-mode .tool-list span {
-            color: #d1fc25;
-        }
-        body:not(.dark-mode) .tool-list span {
-            color: #333;
-        }
-        
-        footer {
-            width: 100%;
-            padding: 20px 0 20px 0; 
-            text-align: center;
-            border-top: 1px solid #333; 
-            transition: opacity 0.8s ease-out, border-color 0.5s;
-            opacity: 0; 
-        }
-
-        body.dark-mode footer {
-            border-top-color: #d1fc25;
-        }
-        
-        footer.is-loaded {
-            opacity: 1;
-        }
-
-        .copyright {
-            font-size: 0.8rem;
-            color: #262626;
-            margin-top: 20px;
-        }
-        
-        /* ======================================================= */
-        /* 6. 커스텀 마우스 커서 */
-        /* ======================================================= */
+        /* 2. 공통 UI */
+        header a, nav a, .home-button, .circle-icon, .menu-toggle { cursor: none !important; }
         .custom-cursor {
-            position: fixed; 
-            width: 8px;
-            height: 8px;
-            background-color: #d1fc25; 
-            border-radius: 50%;
-            pointer-events: none; 
-            z-index: 9999; 
-            transform: translate(-50%, -50%); 
-            transition: width 0.3s ease, height 0.3s ease, background-color 0.3s ease;
+            width: 12px; height: 12px; border-radius: 50%;
+            background-color: black; position: fixed; 
+            pointer-events: none; z-index: 9999; 
+            transform: translate(-50%, -50%); transition: transform 0.1s ease-out; 
         }
 
-        .custom-cursor.hovered {
-            width: 30px; 
-            height: 30px; 
-            background-color: rgba(209, 252, 37, 0.4); 
-            border: 1px solid #d1fc25;
+        header, .main-wrapper, footer { width: 100%; max-width: 1920px; margin: 0 auto; box-sizing: border-box; }
+
+        header { 
+            display: flex; justify-content: space-between; align-items: center; padding: 20px 40px; 
+            z-index: 1000; position: relative; opacity: 0; transform: translateY(-10px); 
+            transition: opacity 1.2s ease-out, transform 1.2s ease-out; 
+        }
+        header.visible { opacity: 1; transform: translateY(0); }
+        .circle-icon { width: 24px; height: 24px; background-color: black; border-radius: 50%; display: block; }
+        
+        nav { display: flex; align-items: center; }
+        
+        nav a, .works-link { 
+            font-family: 'GowoonDodum', sans-serif; 
+            text-decoration: none; 
+            color: black; 
+            margin-left: 25px; 
+            font-size: 1.1em; 
+            margin-top: 0; 
+            margin-bottom: 0; 
+            line-height: 1; 
+            display: block; 
+            cursor: none;
+        }
+        
+        .menu-toggle { display: none; flex-direction: column; gap: 5px; background: none; border: none; padding: 10px; z-index: 1002; }
+        .menu-toggle span { display: block; width: 25px; height: 2px; background-color: black; transition: 0.3s; }
+
+        /* 3. 데스크탑 레이아웃 */
+        .main-wrapper { flex-grow: 1; display: flex; justify-content: center; align-items: center; padding: 40px; contain: paint; }
+        .profile-section { display: flex; align-items: flex-start; justify-content: center; width: fit-content; gap: 5vw; }
+        
+        .profile-image-container { 
+            width: 35vw; aspect-ratio: 1 / 1; position: relative; max-width: 650px; 
+            border: 2px solid black; border-radius: 15px; background-color: #e0e0e0; 
+            overflow: hidden; flex-shrink: 1; transform-origin: top right; 
+            opacity: 0; transform: scale(0.8) translate(30px, -20px); 
+            transition: all 1.2s cubic-bezier(0.22, 1, 0.36, 1); 
+        }
+        .profile-image-container.visible { opacity: 1; transform: scale(1) translate(0, 0); }
+        .profile-image { position: absolute; width: 100%; height: 100%; object-fit: cover; }
+        
+        .about-text-container { position: relative; max-width: 850px; display: flex; flex-direction: column; gap: clamp(30px, 4vw, 60px); margin-top: -1.2vw; flex: 1; }
+
+        .title-group, .about-description, .info-blocks { opacity: 0; transform: translateY(20px); transition: all 1.0s ease-out; }
+        .visible .title-group, .about-description.visible, .info-blocks.visible { opacity: 1; transform: translateY(0); }
+
+        .title-group { position: relative; width: fit-content; font-size: clamp(4rem, 10.5vw, 13rem); }
+        .about-title { font-family: 'AmoreChristmas', cursive; font-size: 1em; line-height: 0.8; margin: 0; display: inline-block; position: relative; }
+
+        .svg-sparkle {
+            position: absolute; z-index: 10; pointer-events: none; opacity: 0;
+            transform: translateY(20px) scale(0.5);
+            transition: opacity 1.2s ease-out, transform 1.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .svg-sparkle.visible { opacity: 1; transform: translateY(0) scale(1); }
+        .svg-sparkle img { width: 100%; height: auto; }
+        .sparkle-1 { width: 0.25em; top: -0.5em; left: -0.15em; }
+        .sparkle-2 { width: 0.25em; bottom: -0.15em; right: -0.2em; top: auto; left: auto; }
+
+        .about-description { font-family: 'GowoonDodum', sans-serif; font-size: clamp(14px, 1.3vw, 25px); line-height: 1.4; margin: 0; }
+        .info-blocks { display: flex; flex-direction: column; gap: clamp(20px, 2.5vw, 40px); margin: 0; }
+        .info-title { font-family: 'GowoonDodum', sans-serif; font-weight: bold; font-size: clamp(16px, 1.25vw, 24px); margin-bottom: 8px; }
+        .info-block ul { font-family: 'GowoonDodum', sans-serif; list-style: none; padding: 0; margin: 0; font-size: clamp(12px, 1.04vw, 20px); line-height: 1.6; }
+
+        /* 드롭다운 설정 */
+        .works-dropdown-container { position: relative; display: inline-block; }
+        
+        .works-icons { 
+            position: absolute; 
+            top: 200%; 
+            left: 50%; 
+            transform: translateX(-50%); 
+            margin-top: -15px; 
+            display: flex; 
+            flex-direction: column; 
+            gap: 10px; 
+            max-height: 0; 
+            overflow: hidden; 
+            opacity: 0; 
+            padding: 0; 
+            transition: all 0.4s ease-out; 
+            z-index: 1001; 
         }
 
-        body:not(.dark-mode) .custom-cursor {
-            background-color: #333;
+        .works-icons.open { 
+            max-height: 350px; 
+            opacity: 1; 
+            padding: 5px 15px 15px 15px; 
         }
 
-        body:not(.dark-mode) .custom-cursor.hovered {
-            background-color: rgba(51, 51, 51, 0.2); 
-            border: 1px solid #333;
+        .works-item { 
+            text-decoration: none; color: black; width: 100px; height: 45px; 
+            display: flex; justify-content: center; align-items: center; 
+            border: 1px solid black; border-radius: 25px; background-color: #F2F2F2; 
+            opacity: 0; transform: translateY(10px); 
+            transition: all 0.4s ease-out;
         }
+        
+        .works-icons.open .works-item:nth-child(1) { transition-delay: 0.1s; opacity: 1; transform: translateY(0); }
+        .works-icons.open .works-item:nth-child(2) { transition-delay: 0.2s; opacity: 1; transform: translateY(0); }
+        .works-icons.open .works-item:nth-child(3) { transition-delay: 0.3s; opacity: 1; transform: translateY(0); }
 
+        .works-item:hover { background-color: #dddddd; color: white; transition-delay: 0s !important; }
+        .works-item p { font-family: 'GowoonDodum', sans-serif; font-size: 0.9em; margin: 0; }
 
-        /* ======================================================= */
-        /* 7. 반응형 디자인 */
-        /* ======================================================= */
-        @media (max-width: 1000px) {
-            .about-page-section {
-                flex-direction: column;
-                align-items: center; 
-                gap: 30px;
-                max-width: 800px;
-            }
-            
-            .about-page-section h2 {
-                font-size: 50px; 
-            }
-        }
+        footer { padding: 20px 40px; margin-top: auto; opacity: 0; transform: translateY(10px); transition: opacity 1.2s ease-out, transform 1.2s ease-out; }
+        footer.visible { opacity: 1; transform: translateY(0); }
+        .divider-container { display: flex; align-items: center; margin-bottom: 15px; }
+        .divider-circle { width: 8px; height: 8px; background-color: #BCBCBC; border-radius: 50%; }
+        .divider-line { flex-grow: 1; height: 1px; background-color: #BCBCBC; }
+        .copyright { font-family: 'GowoonDodum', sans-serif; color: #555; font-size: 0.8em; text-align: right; }
 
+        /* 4. 모바일 레이아웃 */
         @media (max-width: 768px) {
-             body {
-                 cursor: auto !important;
-             }
-             .custom-cursor {
-                 display: none !important;
-             }
-            
-            .profile-image-container {
-                width: 300px;
-                height: 300px;
+            header { padding: 15px 25px; }
+            .menu-toggle { display: flex; }
+            nav {
+                position: fixed; top: 0; right: -100%; width: 100%; height: 100vh;
+                background-color: #F2F2F2; flex-direction: column; justify-content: center;
+                transition: 0.5s ease-in-out; z-index: 1001;
+                /* 모바일 메뉴가 열렸을 때 뒤의 요소가 안 보이도록 함 */
+                visibility: hidden; 
             }
-            
-            .about-page-section h2 {
-                font-size: 30px; 
+            nav.open { 
+                right: 0; 
+                visibility: visible;
             }
-             .about-page-section {
-                 font-size: 18px;
-             }
+            nav a, .works-link { margin: 15px 0; font-size: 1.5em; margin-left: 0; }
+            .works-dropdown-container { display: flex; flex-direction: column; align-items: center; }
+            .works-icons { 
+                position: static; 
+                transform: none; 
+                opacity: 1; 
+                max-height: none; 
+                display: flex; 
+                flex-direction: column; 
+                align-items: center; 
+                padding: 5px 0; 
+                margin-top: 0; 
+            }
+            .works-item { border: none; background: none; width: auto; height: auto; opacity: 1; transform: none; margin: 5px 0; transition: none; }
+            .works-item p { font-size: 0.75em; color: #888; }
+            
+            .profile-section { flex-direction: column; align-items: center; gap: 30px; }
+            .profile-image-container { width: 70vw; max-width: 320px; } 
+            .about-text-container { text-align: center; width: 100%; gap: 20px; }
+            
+            .title-group { margin: 0 auto; font-size: 18vw; } 
+            .about-description { font-size: 4.5vw; padding: 0 10px; }
+            .info-blocks { text-align: left; padding-left: 10%; margin-top: 10px; }
+            .info-title { font-size: 5vw; }
+            .info-block ul { font-size: 4vw; }
         }
     </style>
 </head>
-<body class="dark-mode">
-    <header>
-        <a href="index.html" class="logo" id="logo">nox</a> 
-        
-        <nav>
-            <ul>
-                <li>
-                    <label class="toggle-container switch">
-                        <input type="checkbox" id="darkModeToggle" checked>
-                        <span class="slider"></span>
-                    </label>
-                </li>
-                
-                <li><a href="about.html" class="menu-item">About</a></li> 
-                <li><a href="contact.html" class="menu-item">Contact</a></li>
-            </ul>
+<body>
+    <div class="custom-cursor"></div>
+    <header id="header">
+        <a href="index.html" class="home-button"><div class="circle-icon"></div></a>
+        <button class="menu-toggle" id="menuToggle">
+            <span></span><span></span><span></span>
+        </button>
+        <nav id="navMenu">
+            <a href="about.html">About</a> 
+            <a href="contact.html">Contact</a> 
+            <div class="works-dropdown-container" id="worksContainer">
+                <p class="works-link">Works</p>
+                <div class="works-icons" id="worksIcons">
+                    <a href="2d_animation.html" class="works-item"><p>2D</p></a>
+                    <a href="3d_animation.html" class="works-item"><p>3D</p></a>
+                    <a href="assets.html" class="works-item"><p>Assets</p></a>
+                </div>
+            </div>
         </nav>
     </header>
 
-    <main>
-        <section id="about-content" class="about-page-section">
-            <div class="about-text-content">
-                
-                <div class="about-header">
-                    <h2>About</h2> 
-                    <button id="lang-toggle-btn" class="lang-button">KR</button>
-                </div>
-                
-                <p id="about-text-content-p">
-                    I’m NOX — an animator working in both 2D and 3D animation. Through different forms of movement, I express stories and emotions in motion.
-                    <br><br>
-                    I studied animation at Animation High School and continued my studies in animation at ChungKang University of Cultural Industries. Driven by a desire to create my own works, I explored every part of the production process, becoming a versatile generalist artist.
-                </p>
+    <div class="main-wrapper">
+        <main class="profile-section"> 
+            <div class="profile-image-container">
+                <img src="images/profile.png" alt="프로필 이미지" class="profile-image">
             </div>
-            
-            <div class="profile-wrapper">
-                <div class="profile-image-container">
-                    <img src="https://imgcdn.stablediffusionweb.com/2025/12/10/856672bc-3fba-4d95-92bf-f91a0b9eb9df.webp" 
-                                 alt="프로필 사진">
+            <div class="about-text-container">
+                <div class="title-group">
+                    <div class="svg-sparkle sparkle-1"><img src="images/sparkle.svg" alt="sparkle"></div>
+                    <h1 class="about-title">about</h1>
+                    <div class="svg-sparkle sparkle-2"><img src="images/sparkle.svg" alt="sparkle"></div>
                 </div>
-                
-                <div class="social-links">
-                    <a href="https://x.com/4124sd" target="_blank" title="Twitter/X">
-                        <i class="fa-brands fa-x-twitter"></i>
-                    </a> 
-                    <a href="https://www.instagram.com/creatio_in_nox/?next=%2F__nunc___%2F" target="_blank" title="Instagram">
-                        <i class="fa-brands fa-instagram"></i>
-                    </a>
-                    <a href="https://www.youtube.com/@twins_noxx" target="_blank" title="YouTube">
-                        <i class="fa-brands fa-youtube"></i>
-                    </a>
+                <p class="about-description">I’m NOX — an animator working in both 2D and 3D animation.</p>
+                <div class="info-blocks">
+                    <div class="info-block education">
+                        <p class="info-title">Education</p>
+                        <ul>
+                            <li>2017-2020 Chungkang College of Cultural Industries</li>
+                            <li>2014-2016 Gangwon Animation High school</li>
+                        </ul>
+                    </div>
+                    <div class="info-block software">
+                        <p class="info-title">Software</p>
+                        <ul>
+                            <li>Maya, Blender, 3ds Max, Zbrush, ClipStudio EX</li>
+                            <li>Adobe Series (After effect, Premiere pro, Illustrator, Photoshop)</li>
+                        </ul>
+                    </div>
                 </div>
             </div>
-        </section>
-    </main>
-    
-    <footer>
-        <div class="scrolling-wrapper">
-            <div class="tool-list">
-                <span>#Photoshop | #Illustrator | #AfterEffects | #PremierePro | #Blender | #ClipStudio | #3DsMax | #Maya | #Zbrush | </span>
-                <span>#Photoshop | #Illustrator | #AfterEffects | #PremierePro | #Blender | #ClipStudio | #3DsMax | #Maya | #Zbrush</span>
-            </div>
-            </div>
-        
-        <p class="copyright">
-            &copy; NOX Portfolio. All rights reserved.
-        </p>
+        </main>
+    </div>
+
+    <footer id="footer">
+        <div class="divider-container"><div class="divider-circle"></div><div class="divider-line"></div><div class="divider-circle"></div></div>
+        <p class="copyright">© 2025 NOX. All rights reserved.</p>
     </footer>
-    
-    <div class="custom-cursor" id="custom-cursor"></div>
-    
+
     <script>
-        const toggle = document.getElementById('darkModeToggle');
-        const body = document.body;
-        const footerElement = document.querySelector('footer'); 
-        const customCursor = document.getElementById('custom-cursor'); 
-        
-        // About 섹션 언어 전환 요소
-        const aboutTextElement = document.getElementById('about-text-content-p');
-        const langToggleBtn = document.getElementById('lang-toggle-btn'); 
-        
-        // 초기 언어 상태를 localStorage에서 가져오거나 기본값 'EN'으로 설정
-        let currentLang = localStorage.getItem('aboutLang') || 'EN'; 
-        
-        const interactiveElements = document.querySelectorAll('a, button, input[type="checkbox"], label[for="darkModeToggle"], .toggle-container, .social-links a, #lang-toggle-btn'); 
-        
-        // 언어별 텍스트 정의 (학교명 수정됨)
-        const langTexts = {
-            'EN': `
-                I’m NOX — an animator working in both 2D and 3D animation. Through different forms of movement, I express stories and emotions in motion.
-                <br><br>
-                I studied animation at Animation High School and continued my studies in animation at ChungKang University of Cultural Industries. Driven by a desire to create my own works, I explored every part of the production process, becoming a versatile generalist artist.
-            `,
-            'KR': `
-                제너럴 아티스트 NOX입니다. 2D와 3D 애니메이션을 제작하는 애니메이터로서 다양한 움직임을 통해 스토리와 감정을 작품으로 표현합니다.
-                <br><br>
-                애니메이션 고등학교를 졸업하고 청강문화산업대학교 애니메이션과에서 애니메이션을 전공했습니다. 저만의 작품을 만들고자 하는 열망으로 제작 과정의 모든 부분을 탐구하며 다재다능한 제너럴 아티스트로 성장했습니다.
-            `
-        };
-
-
-        // --------------------------------------------------------------------------
-        // 1. 다크/라이트 모드
-        // --------------------------------------------------------------------------
-        function loadDarkModeState() {
-            const savedMode = localStorage.getItem('darkMode');
-            
-            if (savedMode === 'light') {
-                body.classList.remove('dark-mode');
-                toggle.checked = false; 
-            } else {
-                body.classList.add('dark-mode');
-                toggle.checked = true; 
-            }
+        function fadeInElements() {
+            setTimeout(() => { document.getElementById('header').classList.add('visible'); }, 200);
+            setTimeout(() => {
+                const pic = document.querySelector('.profile-image-container');
+                if(pic) pic.classList.add('visible');
+                document.getElementById('footer').classList.add('visible');
+            }, 500);
+            setTimeout(() => {
+                const container = document.querySelector('.about-text-container');
+                if(container) container.classList.add('visible'); 
+                const sparkles = document.querySelectorAll('.svg-sparkle');
+                sparkles.forEach(s => s.classList.add('visible'));
+            }, 800);
+            setTimeout(() => {
+                const desc = document.querySelector('.about-description');
+                if(desc) desc.classList.add('visible');
+            }, 900);
+            setTimeout(() => {
+                const info = document.querySelector('.info-blocks');
+                if(info) info.classList.add('visible');
+            }, 1100);
         }
-
-        toggle.addEventListener('change', function() {
-            if (this.checked) {
-                body.classList.add('dark-mode');
-                localStorage.setItem('darkMode', 'dark'); 
-            } else {
-                body.classList.remove('dark-mode');
-                localStorage.setItem('darkMode', 'light'); 
-            }
-        });
-
-        loadDarkModeState();
         
-        // --------------------------------------------------------------------------
-        // 2. About 섹션 언어 전환 및 상태 저장
-        // --------------------------------------------------------------------------
-        
-        function setLanguage(lang) {
-            aboutTextElement.innerHTML = langTexts[lang].trim(); // 공백 제거
-            langToggleBtn.textContent = lang === 'EN' ? 'KR' : 'EN';
-            currentLang = lang;
-            localStorage.setItem('aboutLang', lang); // 언어 상태 저장
-        }
-
-        langToggleBtn.addEventListener('click', () => {
-            const newLang = currentLang === 'EN' ? 'KR' : 'EN';
-            setLanguage(newLang);
-        });
-
-        // --------------------------------------------------------------------------
-        // 3. 페이지 로드 및 푸터 애니메이션
-        // --------------------------------------------------------------------------
-        window.addEventListener('load', () => {
-            footerElement.classList.add('is-loaded'); 
-            setLanguage(currentLang); // 저장된 언어 상태로 About 섹션 로드
-        });
-
-        // --------------------------------------------------------------------------
-        // 4. 커스텀 마우스 커서
-        // --------------------------------------------------------------------------
-        
-        if (customCursor) {
+        document.addEventListener('DOMContentLoaded', () => {
+            const cursor = document.querySelector('.custom-cursor');
             document.addEventListener('mousemove', (e) => {
-                customCursor.style.left = e.clientX + 'px';
-                customCursor.style.top = e.clientY + 'px';
+                cursor.style.left = `${e.clientX}px`;
+                cursor.style.top = `${e.clientY}px`;
+            });
+            fadeInElements(); 
+
+            const menuToggle = document.getElementById('menuToggle');
+            const navMenu = document.getElementById('navMenu');
+            const worksContainer = document.getElementById('worksContainer');
+            const worksLink = document.querySelector('.works-link');
+            const worksIcons = document.getElementById('worksIcons');
+
+            // 메뉴 토글 시 스크롤 제어 함수
+            function toggleScroll() {
+                if (navMenu.classList.contains('open')) {
+                    if (window.innerWidth <= 768) {
+                        document.body.classList.add('no-scroll');
+                    }
+                } else {
+                    document.body.classList.remove('no-scroll');
+                }
+            }
+
+            menuToggle.addEventListener('click', () => {
+                menuToggle.classList.toggle('active');
+                navMenu.classList.toggle('open');
+                toggleScroll(); // 스크롤 상태 업데이트
             });
 
-            interactiveElements.forEach(element => {
-                element.addEventListener('mouseenter', () => {
-                    customCursor.classList.add('hovered');
-                });
-                element.addEventListener('mouseleave', () => {
-                    customCursor.classList.remove('hovered');
-                });
+            worksLink.addEventListener('click', (e) => {
+                e.stopPropagation();
+                worksIcons.classList.toggle('open');
             });
-        }
+
+            worksContainer.addEventListener('mouseleave', () => {
+                if (window.innerWidth > 768) {
+                    worksIcons.classList.remove('open');
+                }
+            });
+
+            document.addEventListener('click', (e) => {
+                if (!menuToggle.contains(e.target) && !navMenu.contains(e.target)) {
+                    menuToggle.classList.remove('active');
+                    navMenu.classList.remove('open');
+                    worksIcons.classList.remove('open');
+                    document.body.classList.remove('no-scroll'); // 메뉴 닫힐 때 스크롤 복구
+                }
+            });
+
+            // 화면 크기 조정 시 예외 처리 (태블릿/데스크탑으로 돌아갈 때 스크롤 복구)
+            window.addEventListener('resize', () => {
+                if (window.innerWidth > 768) {
+                    document.body.classList.remove('no-scroll');
+                }
+            });
+        });
     </script>
 </body>
 </html>

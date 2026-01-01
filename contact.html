@@ -3,481 +3,392 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NOX | Contact</title>
+    <title>NOX</title>
     
-    <link rel="icon" type="image/png" href="Favicon.png"> 
-    
-    <link rel="apple-touch-icon" href="Favicon.png">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="icon" type="image/png" href="https://img.icons8.com/material-rounded/24/sparkles.png"> 
+
     <style>
-        /* ======================================================= */
-        /* 1. 폰트 설정 */
-        /* ======================================================= */
-        @font-face {
-            font-family: 'Cafe24ProUp';
-            src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/2507-1@1.0/Cafe24PROUP.woff2') format('woff2');
-            font-weight: normal;
-            font-display: swap;
-        }
-        @font-face {
-            font-family: 'DosStory';
-            src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2304-2@1.0/DOSIyagiMedium.woff2') format('woff2');
-            font-weight: normal;
-            font-display: swap;
-        }
-        
-        /* ======================================================= */
-        /* 2. 기본 스타일, 헤더, 다크 모드 & 토글 */
-        /* ======================================================= */
-        html, body {
-            height: 100%; 
-            margin: 0;
-            scroll-behavior: smooth; 
-        }
-        
+        /* 1. 기본 설정 및 스크롤 디자인 */
+        html { overflow: hidden; height: 100%; }
         body {
-            font-family: 'Cafe24ProUp', Arial, sans-serif; 
-            background-color: white; 
-            color: #333; 
-            transition: background-color 0.5s, color 0.5s; 
+            background-color: #F2F2F2; margin: 0; padding: 0;
+            width: 100%; height: 100%; overflow-y: auto; overflow-x: hidden;
+            display: flex; flex-direction: column; cursor: none; 
+            -webkit-font-smoothing: antialiased;
+            text-rendering: optimizeLegibility;
+            font-family: 'GowoonDodum', sans-serif;
+        }
+
+        body::-webkit-scrollbar { width: 8px; }
+        body::-webkit-scrollbar-track { background: #F2F2F2; }
+        body::-webkit-scrollbar-thumb { background: #BCBCBC; border-radius: 10px; }
+        body::-webkit-scrollbar-thumb:hover { background: #a8a8a8; }
+
+        /* 모바일 메뉴 오픈 시 스크롤 방지 */
+        body.no-scroll { overflow: hidden !important; }
+
+        @font-face { font-family: 'GowoonDodum'; src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2108@1.1/GowunDodum-Regular.woff') format('woff'); }
+        @font-face { font-family: 'AmoreChristmas'; src: url('fonts/Amore Christmas.otf') format('opentype'); }
+
+        .custom-cursor { width: 12px; height: 12px; border-radius: 50%; background-color: black; position: fixed; pointer-events: none; z-index: 9999; transform: translate(-50%, -50%); transition: transform 0.1s ease-out; }
+
+        /* 2. 헤더 레이아웃 */
+        header { 
+            display: flex; justify-content: space-between; align-items: center; 
+            padding: 19px 40px; 
+            width: 100%; max-width: 1920px; margin: 0 auto; box-sizing: border-box;
+            z-index: 1000; position: relative; opacity: 0; transform: translateY(-10px); 
+            transition: opacity 1.2s ease-out, transform 1.2s ease-out; 
+        }
+        header.visible { opacity: 1; transform: translateY(0); }
+        
+        .home-button, .circle-icon { 
             cursor: none !important;
         }
+
+        .circle-icon { 
+            width: 24px; height: 24px; 
+            background-color: black; border-radius: 50%; flex-shrink: 0; 
+        }
         
-        main {
-            min-height: 750px !important; 
+        nav { 
+            display: flex; align-items: center; 
+        }
+        
+        nav a, .works-link { 
+            font-family: 'GowoonDodum', sans-serif; text-decoration: none; color: black; 
+            font-size: 1.1rem; 
+            white-space: nowrap; margin: 0; 
+            margin-left: 25px; 
+            line-height: 1;
+            display: block;
+            cursor: none;
+        }
+
+        .menu-toggle { display: none; flex-direction: column; gap: 5px; background: none; border: none; padding: 10px; z-index: 1002; cursor: none; }
+        .menu-toggle span { display: block; width: 25px; height: 2px; background-color: black; transition: 0.3s; }
+
+        .works-dropdown-container { position: relative; display: inline-block; }
+        .works-icons { 
+            position: absolute; 
+            top: 200%; 
+            left: 50%; 
+            transform: translateX(-50%); 
+            margin-top: -15px; 
             display: flex; 
-            align-items: center; 
-            justify-content: center; 
-        }
-        
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px 40px; 
-            border-bottom: 1px solid #eee;
-            background-color: black; 
-            position: sticky; 
-            top: 0;
-            z-index: 100;
-        }
-
-        .logo {
-            font-size: 24px; font-weight: bold; color: white; 
-            text-transform: uppercase;
-            text-decoration: none;
-            cursor: pointer;
-        }
-
-        nav ul {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-            display: flex;
-            align-items: center; 
-            gap: 25px;
-        }
-        
-        nav ul li a.menu-item {
-            color: white; 
-            text-decoration: none; 
-            transition: color 0.5s;
-            font-size: 18px; 
-        }
-        
-        /* 다크 모드 스타일 */
-        body.dark-mode {
-            background-color: #121212;
-            color: #d1fc25; 
-        }
-        body.dark-mode header {
-             background-color: #121212; 
-             border-bottom-color: #333;
-        }
-        body.dark-mode nav ul li a.menu-item {
-            color: white;
-        }
-
-        /* 다크 모드 토글 스위치 */
-        .toggle-container {
-            position: relative;
-            display: inline-block;
-            width: 60px; 
-            height: 34px; 
-        }
-
-        .toggle-container input {
-            opacity: 0;
-            width: 0;
-            height: 0;
-        }
-
-        .slider {
-            position: absolute;
-            cursor: pointer;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: #ccc; 
-            transition: 0.4s;
-            border-radius: 34px; 
-        }
-
-        .slider:before {
-            position: absolute;
-            content: "";
-            height: 26px;
-            width: 26px;
-            left: 4px;
-            bottom: 4px;
-            background-color: white;
-            transition: 0.4s;
-            border-radius: 50%; 
-        }
-
-        input:checked + .slider {
-            background-color: #d1fc25; 
-        }
-
-        input:checked + .slider:before {
-            transform: translateX(26px); 
-        }
-        
-        body.dark-mode .slider {
-            background-color: #777;
-        }
-        
-        body.dark-mode input:checked + .slider {
-            background-color: #d1fc25; 
-        }
-        
-        
-        /* ======================================================= */
-        /* 3. Contact 페이지 콘텐츠 */
-        /* ======================================================= */
-        .contact-page-section {
-            display: flex;
             flex-direction: column; 
-            align-items: center;
-            max-width: 800px; 
-            text-align: center; 
-            padding: 40px;
+            gap: 10px; 
+            max-height: 0; 
+            overflow: hidden; 
+            opacity: 0; 
+            padding: 0;
+            transition: all 0.4s ease-out; 
+            z-index: 1001; 
         }
-        
-        .contact-page-section h2 {
-            font-size: 72px; 
-            font-family: 'DosStory', sans-serif;
-            margin-bottom: 30px;
+        .works-icons.open { 
+            max-height: 350px; 
+            opacity: 1; 
+            padding: 5px 15px 15px 15px; 
         }
-        
-        .contact-page-section p {
-            margin: 0; 
-            font-family: 'DosStory', sans-serif;
-            font-size: 20px;
+        .works-item { 
+            text-decoration: none; color: black; 
+            width: 100px; height: 45px; 
+            display: flex; justify-content: center; align-items: center; 
+            border: 1px solid black; 
+            border-radius: 25px; 
+            background-color: #F2F2F2; 
+            opacity: 0; 
+            transform: translateY(10px); 
+            transition: all 0.4s ease-out;
+            cursor: none !important;
         }
 
-        .email-copy-container {
+        .works-icons.open .works-item:nth-child(1) { transition-delay: 0.1s; opacity: 1; transform: translateY(0); }
+        .works-icons.open .works-item:nth-child(2) { transition-delay: 0.2s; opacity: 1; transform: translateY(0); }
+        .works-icons.open .works-item:nth-child(3) { transition-delay: 0.3s; opacity: 1; transform: translateY(0); }
+
+        .works-item:hover { background-color: #dddddd; color: white; transition-delay: 0s !important; }
+        .works-item p { font-family: 'GowoonDodum', sans-serif; font-size: 0.9em; margin: 0; color: inherit; }
+
+        /* 3. 메인 콘텐츠 */
+        .main-wrapper { 
+            flex-grow: 1; 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: center; 
+            align-items: center; 
+            padding: 0 40px; 
+            margin-top: -50px; 
+            text-align: center;
+            transition: all 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+            width: 100%; max-width: 1920px; margin: 0 auto; box-sizing: border-box;
+        }
+
+        .contact-title-container {
+            position: relative; display: inline-block; opacity: 0; transform: translateY(20px);
+            font-size: clamp(2.5rem, 10vw, 11rem);
+            transition: opacity 1.5s ease-out, transform 1.5s ease-out, font-size 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        .contact-title-container.visible { opacity: 1; transform: translateY(0); }
+        .contact-title { font-family: 'AmoreChristmas', cursive; font-size: 1em; margin: 0; line-height: 0.8; letter-spacing: 0.02em; padding: 0 0.15em; }
+
+        .sparkle-svg {
+            position: absolute; width: 0.25em; height: auto; z-index: -1; opacity: 0;
+            transition: opacity 1.2s ease-out 0.2s, transform 1.2s cubic-bezier(0.34, 1.56, 0.64, 1), left 0.8s cubic-bezier(0.22, 1, 0.36, 1), top 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        .contact-title-container.visible .sparkle-svg { opacity: 1; }
+        .sparkle-left { left: -0.22em; top: 20%; transform: translateY(-50%) scale(0.5); }
+        .contact-title-container.visible .sparkle-left { transform: translateY(-50%) scale(1); }
+        .sparkle-right { right: -0.22em; top: 90%; transform: translateY(-50%) scale(0.5); }
+        .contact-title-container.visible .sparkle-right { transform: translateY(-50%) scale(1); }
+
+        .contact-info-container {
+            margin-top: clamp(20px, 4vw, 45px);
+            opacity: 0; transform: translateY(20px);
+            transition: opacity 1.5s ease-out 0.3s, transform 1.5s ease-out 0.3s, margin-top 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .contact-info-container.visible { opacity: 1; transform: translateY(0); }
+
+        .collab-text { 
+            font-size: clamp(8px, 1.4vw, 24px); 
+            margin-bottom: 12px; font-weight: 500; word-break: keep-all; line-height: 1.6;
+            transition: font-size 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        .text-chunk { display: inline-block; white-space: nowrap; }
+
+        .email-text { 
+            display: inline-block; color: black; text-decoration: none; font-weight: bold; background: none; border: none; padding: 0; position: relative; font-family: 'GowoonDodum', sans-serif;
+            font-size: clamp(8px, 1.5vw, 26px);
+            width: fit-content;
+            cursor: none;
+        }
+        .email-text::after { content: ''; position: absolute; width: 100%; height: 2px; bottom: -2px; left: 0; background-color: black; transform: scaleX(0); transition: transform 0.3s ease; }
+        .email-text:hover::after { transform: scaleX(1); }
+
+        /* SNS 아이콘 스타일 (유동적 크기 및 애니메이션) */
+        .sns-container {
+            margin-top: clamp(15px, 3vw, 30px);
+            display: flex;
+            gap: clamp(8px, 2.5vw, 25px);
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 1.5s cubic-bezier(0.22, 1, 0.36, 1) 0.6s, 
+                        transform 1.5s cubic-bezier(0.22, 1, 0.36, 1) 0.6s,
+                        margin-top 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        .sns-container.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .sns-icon {
+            color: black;
+            font-size: clamp(10px, 2vw, 24px);
+            text-decoration: none;
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), color 0.3s ease;
+            cursor: none;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 10px; 
-            margin-top: 10px; 
-            font-size: 25px;
-            font-family: 'DosStory', Arial, sans-serif;
-            font-weight: bold;
         }
-        
-        #copy-email-btn {
-            background: none;
-            border: none;
-            color: inherit; 
-            cursor: pointer;
-            font-size: 24px;
-            transition: color 0.3s;
+        .sns-icon:hover {
+            transform: translateY(-8px) scale(1.1);
+            color: #888;
         }
 
-        #copy-email-btn:hover {
-            color: #d1fc25; 
-        }
+        /* 4. 푸터 */
+        footer { padding: 20px 40px; width: 100%; max-width: 1920px; margin: 0 auto; margin-top: auto; box-sizing: border-box; opacity: 0; transform: translateY(10px); transition: opacity 1.2s ease-out, transform 1.2s ease-out; }
+        footer.visible { opacity: 1; transform: translateY(0); }
+        .divider-container { display: flex; align-items: center; margin-bottom: 15px; }
+        .divider-circle { width: 8px; height: 8px; background-color: #BCBCBC; border-radius: 50%; }
+        .divider-line { flex-grow: 1; height: 1px; background-color: #BCBCBC; }
+        .copyright { font-family: 'GowoonDodum', sans-serif; color: #555; font-size: 0.8em; text-align: right; }
 
-        body:not(.dark-mode) #copy-email-btn:hover {
-            color: #333;
-        }
+        /* 5. 복사 알림 토스트 */
+        .copy-toast { position: fixed; bottom: 100px; left: 50%; transform: translateX(-50%) translateY(20px); background-color: rgba(0, 0, 0, 0.8); color: white; padding: 12px 24px; border-radius: 30px; font-size: 0.9rem; opacity: 0; transition: all 0.3s ease; pointer-events: none; z-index: 2000; }
+        .copy-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
-        #copy-message {
-            margin-top: 10px;
-            color: #d1fc25;
-            font-size: 16px;
-            font-family: 'DosStory', Arial, sans-serif;
-            font-weight: bold;
-        }
-        body:not(.dark-mode) #copy-message {
-            color: #333; 
-        }
-        
-        /* ======================================================= */
-        /* 4. 푸터 및 롤링 텍스트 */
-        /* ======================================================= */
-        .scrolling-wrapper {
-            width: 100%;
-            margin: 0; 
-            overflow: hidden; 
-            display: flex;
-            white-space: nowrap;
-        }
-
-        .tool-list {
-            display: inline-block;
-            padding-right: 40px; 
-            animation: scroll-left 15s linear infinite; 
-            white-space: nowrap;
-        }
-
-        .tool-list span {
-            font-family: 'Cafe24ProUp', Arial, sans-serif;
-            font-size: 1.5rem; 
-            font-weight: 600;
-        }
-
-        @keyframes scroll-left {
-            0% {
-                transform: translateX(0); 
-            }
-            100% {
-                transform: translateX(-50%); 
-            }
-        }
-
-        body.dark-mode .tool-list span {
-            color: #d1fc25;
-        }
-        body:not(.dark-mode) .tool-list span {
-            color: #333;
-        }
-        
-        footer {
-            width: 100%;
-            padding: 20px 0 20px 0; 
-            text-align: center;
-            border-top: 1px solid #333; 
-            transition: opacity 0.8s ease-out, border-color 0.5s;
-            opacity: 0; 
-        }
-
-        body.dark-mode footer {
-            border-top-color: #d1fc25;
-        }
-        
-        footer.is-loaded {
-            opacity: 1;
-        }
-
-        .copyright {
-            font-size: 0.8rem;
-            color: #262626;
-            margin-top: 20px;
-        }
-        
-        /* ======================================================= */
-        /* 5. 커스텀 마우스 커서 및 반응형 */
-        /* ======================================================= */
-        .custom-cursor {
-            position: fixed; 
-            width: 8px;
-            height: 8px;
-            background-color: #d1fc25; 
-            border-radius: 50%;
-            pointer-events: none; 
-            z-index: 9999; 
-            transform: translate(-50%, -50%); 
-            transition: width 0.3s ease, height 0.3s ease, background-color 0.3s ease;
-        }
-
-        .custom-cursor.hovered {
-            width: 30px; 
-            height: 30px; 
-            background-color: rgba(209, 252, 37, 0.4); 
-            border: 1px solid #d1fc25;
-        }
-
-        body:not(.dark-mode) .custom-cursor {
-            background-color: #333;
-        }
-
-        body:not(.dark-mode) .custom-cursor.hovered {
-            background-color: rgba(51, 51, 51, 0.2); 
-            border: 1px solid #333;
-        }
-
+        /* 6. 반응형 (모바일) */
         @media (max-width: 768px) {
-             body {
-                 cursor: auto !important;
-             }
-             .custom-cursor {
-                 display: none !important;
-             }
-            
-            .contact-page-section h2 {
-                font-size: 40px; 
+            header { padding: 15px 25px; }
+            .menu-toggle { display: flex; }
+            nav {
+                position: fixed; top: 0; right: -100%; width: 100%; height: 100vh;
+                background-color: #F2F2F2; flex-direction: column; justify-content: center;
+                transition: 0.5s ease-in-out; z-index: 1001;
+                visibility: hidden; 
             }
-             .contact-page-section p {
-                 font-size: 16px;
-             }
-             .email-copy-container {
-                 font-size: 20px;
-             }
-             #copy-email-btn {
-                 font-size: 18px;
-             }
+            nav.open { 
+                right: 0; 
+                visibility: visible;
+            }
+            nav a, .works-link { margin: 15px 0; font-size: 1.5em; margin-left: 0; }
+            .works-dropdown-container { display: flex; flex-direction: column; align-items: center; }
+            .works-icons { 
+                position: static; 
+                transform: none; 
+                opacity: 1; 
+                max-height: none; 
+                display: flex; 
+                flex-direction: column; 
+                align-items: center; 
+                padding: 5px 0; 
+                margin-top: 0; 
+            }
+            .works-item { border: none; background: none; width: auto; height: auto; opacity: 1; transform: none; margin: 5px 0; transition: none; }
+            .works-item p { font-size: 0.75em; color: #888; }
+            
+            .collab-text, .email-text { 
+                font-size: clamp(8px, 4.5vw, 18px); 
+                padding: 0; 
+                width: fit-content; 
+            }
+            .contact-title-container { font-size: clamp(1.5rem, 16vw, 5rem); }
+            .main-wrapper { 
+                padding-top: 0; 
+                margin-top: -30px; 
+            }
+            .sns-container {
+                margin-top: 20px;
+                gap: clamp(10px, 4vw, 20px);
+            }
+            .sns-icon {
+                font-size: clamp(10px, 4.5vw, 20px);
+            }
         }
     </style>
 </head>
-<body class="dark-mode">
-    <header>
-        <a href="index.html" class="logo" id="logo">nox</a> 
-        
-        <nav>
-            <ul>
-                <li>
-                    <label class="toggle-container switch">
-                        <input type="checkbox" id="darkModeToggle" checked>
-                        <span class="slider"></span>
-                    </label>
-                </li>
-                
-                <li><a href="about.html" class="menu-item">About</a></li> 
-                <li><a href="contact.html" class="menu-item">Contact</a></li>
-            </ul>
+<body>
+    <div class="custom-cursor"></div>
+    <header id="header">
+        <a href="index.html" class="home-button"><div class="circle-icon"></div></a>
+        <button class="menu-toggle" id="menuToggle"><span></span><span></span><span></span></button>
+        <nav id="navMenu">
+            <a href="about.html">About</a> 
+            <a href="contact.html">Contact</a> 
+            <div class="works-dropdown-container" id="worksContainer">
+                <p class="works-link">Works</p>
+                <div class="works-icons" id="worksIcons">
+                    <a href="2d_animation.html" class="works-item"><p>2D</p></a>
+                    <a href="3d_animation.html" class="works-item"><p>3D</p></a>
+                    <a href="assets.html" class="works-item"><p>Assets</p></a>
+                </div>
+            </div>
         </nav>
     </header>
 
-    <main>
-        <section id="contact-content" class="contact-page-section">
-            <h2>Contact Me</h2>
-            <p>
-                프로젝트 문의 및 협업 제안은 아래 이메일로 연락 주시기 바랍니다!
+    <div class="main-wrapper">
+        <div class="contact-title-container" id="contactTitleContainer">
+            <img src="images/sparkle.svg" alt="sparkle" class="sparkle-svg sparkle-left">
+            <h1 class="contact-title">contact</h1>
+            <img src="images/sparkle.svg" alt="sparkle" class="sparkle-svg sparkle-right">
+        </div>
+        
+        <div class="contact-info-container" id="contactInfo">
+            <p class="collab-text">
+                <span class="text-chunk">프로젝트 및 협업문의는 아래</span>
+                <span class="text-chunk">이메일로 연락주시길 바랍니다</span>
             </p>
+            <button class="email-text" id="emailCopyBtn">4124sd@naver.com</button>
             
-            <div class="email-copy-container">
-                <span class="email-icon">
-                    <i class="fa-solid fa-envelope"></i>
-                </span>
-                <span id="contact-email">4124sd@naver.com</span>
-                <button id="copy-email-btn" title="이메일 주소 복사">
-                    <i class="fa-solid fa-copy"></i>
-                </button>
+            <div class="sns-container" id="snsContainer">
+                <a href="https://x.com/4124sd" target="_blank" class="sns-icon" title="Twitter"><i class="fa-brands fa-x-twitter"></i></a>
+                <a href="https://www.instagram.com/creatio_in_nox/?next=%2F__nunc___%2F" target="_blank" class="sns-icon" title="Instagram"><i class="fa-brands fa-instagram"></i></a>
+                <a href="https://www.youtube.com/@twins_noxx" target="_blank" class="sns-icon" title="YouTube"><i class="fa-brands fa-youtube"></i></a>
             </div>
-            <div id="copy-message"></div>
-        </section>
-    </main>
-    
-    <footer>
-        <div class="scrolling-wrapper">
-            <div class="tool-list">
-                <span>#Photoshop | #Illustrator | #AfterEffects | #PremierePro | #Blender | #ClipStudio | #3DsMax | #Maya | #Zbrush | </span>
-                <span>#Photoshop | #Illustrator | #AfterEffects | #PremierePro | #Blender | #ClipStudio | #3DsMax | #Maya | #Zbrush</span>
-            </div>
-            </div>
-        
-        <p class="copyright">
-            &copy; NOX Portfolio. All rights reserved.
-        </p>
+        </div>
+    </div>
+
+    <div class="copy-toast" id="copyToast">이메일 주소가 복사되었습니다.</div>
+
+    <footer id="footer">
+        <div class="divider-container"><div class="divider-circle"></div><div class="divider-line"></div><div class="divider-circle"></div></div>
+        <p class="copyright">© 2025 NOX. All rights reserved.</p>
     </footer>
-    
-    <div class="custom-cursor" id="custom-cursor"></div>
-    
+
     <script>
-        const toggle = document.getElementById('darkModeToggle');
-        const body = document.body;
-        const footerElement = document.querySelector('footer'); 
-        const customCursor = document.getElementById('custom-cursor'); 
-        
-        // Contact 섹션 이메일 복사 요소
-        const copyEmailBtn = document.getElementById('copy-email-btn');
-        const contactEmail = document.getElementById('contact-email');
-        const copyMessage = document.getElementById('copy-message');
-
-        // 커서 호버링 대상 목록에서 현재 페이지에 없는 '.social-links a'를 제거했습니다.
-        const interactiveElements = document.querySelectorAll('a, button, input[type="checkbox"], label[for="darkModeToggle"], .toggle-container, #copy-email-btn'); 
-        
-        // --------------------------------------------------------------------------
-        // 1. 다크/라이트 모드 (localStorage를 사용하여 상태 유지 기능 포함)
-        // --------------------------------------------------------------------------
-
-        function loadDarkModeState() {
-            const savedMode = localStorage.getItem('darkMode');
-            
-            if (savedMode === 'light') {
-                body.classList.remove('dark-mode');
-                toggle.checked = false; 
-            } else {
-                body.classList.add('dark-mode');
-                toggle.checked = true; 
-            }
-        }
-
-        toggle.addEventListener('change', function() {
-            if (this.checked) {
-                body.classList.add('dark-mode');
-                localStorage.setItem('darkMode', 'dark'); 
-            } else {
-                body.classList.remove('dark-mode');
-                localStorage.setItem('darkMode', 'light'); 
-            }
-        });
-
-        loadDarkModeState();
-        
-        // --------------------------------------------------------------------------
-        // 2. 초기 로딩 및 푸터 애니메이션
-        // --------------------------------------------------------------------------
-        window.addEventListener('load', () => {
-            footerElement.classList.add('is-loaded'); 
-        });
-
-        // --------------------------------------------------------------------------
-        // 3. 이메일 복사 기능
-        // --------------------------------------------------------------------------
-        
-        copyEmailBtn.addEventListener('click', () => {
-            const email = contactEmail.textContent;
-            
-            navigator.clipboard.writeText(email).then(() => {
-                copyMessage.textContent = '이메일 주소가 복사되었습니다!';
-                setTimeout(() => {
-                    copyMessage.textContent = '';
-                }, 2000);
-            }).catch(err => {
-                console.error('클립보드 복사 실패:', err);
-                copyMessage.textContent = '복사에 실패했습니다.';
-                setTimeout(() => {
-                    copyMessage.textContent = '';
-                }, 2000);
-            });
-        });
-
-
-        // --------------------------------------------------------------------------
-        // 4. 커스텀 마우스 커서
-        // --------------------------------------------------------------------------
-        
-        if (customCursor) {
+        document.addEventListener('DOMContentLoaded', () => {
+            const cursor = document.querySelector('.custom-cursor');
             document.addEventListener('mousemove', (e) => {
-                customCursor.style.left = e.clientX + 'px';
-                customCursor.style.top = e.clientY + 'px';
+                cursor.style.left = `${e.clientX}px`;
+                cursor.style.top = `${e.clientY}px`;
             });
 
-            interactiveElements.forEach(element => {
-                element.addEventListener('mouseenter', () => {
-                    customCursor.classList.add('hovered');
-                });
-                element.addEventListener('mouseleave', () => {
-                    customCursor.classList.remove('hovered');
+            // 순차적 페이드인
+            setTimeout(() => { document.getElementById('header').classList.add('visible'); }, 200);
+            
+            setTimeout(() => { 
+                document.getElementById('contactTitleContainer').classList.add('visible'); 
+                document.getElementById('footer').classList.add('visible');
+            }, 500);
+
+            setTimeout(() => { 
+                document.getElementById('contactInfo').classList.add('visible'); 
+                document.getElementById('snsContainer').classList.add('visible'); 
+            }, 900);
+
+            // 이메일 복사
+            const emailBtn = document.getElementById('emailCopyBtn');
+            const toast = document.getElementById('copyToast');
+            emailBtn.addEventListener('click', () => {
+                navigator.clipboard.writeText(emailBtn.innerText).then(() => {
+                    toast.classList.add('show');
+                    setTimeout(() => toast.classList.remove('show'), 2000);
                 });
             });
-        }
+
+            // 네비게이션 제어 스크립트
+            const menuToggle = document.getElementById('menuToggle');
+            const navMenu = document.getElementById('navMenu');
+            const worksContainer = document.getElementById('worksContainer');
+            const worksLink = document.querySelector('.works-link');
+            const worksIcons = document.getElementById('worksIcons');
+
+            function toggleScroll() {
+                if (navMenu.classList.contains('open')) {
+                    if (window.innerWidth <= 768) {
+                        document.body.classList.add('no-scroll');
+                    }
+                } else {
+                    document.body.classList.remove('no-scroll');
+                }
+            }
+
+            menuToggle.addEventListener('click', () => {
+                menuToggle.classList.toggle('active');
+                navMenu.classList.toggle('open');
+                toggleScroll(); 
+            });
+
+            worksLink.addEventListener('click', (e) => {
+                e.stopPropagation();
+                worksIcons.classList.toggle('open');
+            });
+
+            worksContainer.addEventListener('mouseleave', () => {
+                if (window.innerWidth > 768) {
+                    worksIcons.classList.remove('open');
+                }
+            });
+
+            document.addEventListener('click', (e) => {
+                if (!menuToggle.contains(e.target) && !navMenu.contains(e.target)) {
+                    menuToggle.classList.remove('active');
+                    navMenu.classList.remove('open');
+                    worksIcons.classList.remove('open');
+                    document.body.classList.remove('no-scroll'); 
+                }
+            });
+
+            window.addEventListener('resize', () => {
+                if (window.innerWidth > 768) {
+                    document.body.classList.remove('no-scroll');
+                }
+            });
+        });
     </script>
 </body>
 </html>
