@@ -14,14 +14,22 @@
         body {
             background-color: #F2F2F2; margin: 0; padding: 0;
             width: 100%; height: 100%; overflow-y: auto; overflow-x: hidden;
-            display: flex; flex-direction: column; cursor: none; 
+            display: flex; flex-direction: column; 
+            /* 모든 상황에서 기본 커서 숨김 */
+            cursor: none !important; 
             -webkit-font-smoothing: antialiased;
         }
+        
+        /* 모든 인터랙션 요소에서도 기본 커서 숨김 강제 */
+        a, button, p, div, span, input {
+            cursor: none !important;
+        }
+
         body::-webkit-scrollbar { width: 8px; }
         body::-webkit-scrollbar-track { background: #F2F2F2; }
         body::-webkit-scrollbar-thumb { background: #BCBCBC; border-radius: 10px; }
 
-        /* 모바일 메뉴 오픈 시 스크롤 방지 (데스크탑 영향 없음) */
+        /* 모바일 메뉴 오픈 시 스크롤 방지 */
         body.no-scroll {
             overflow: hidden !important;
         }
@@ -36,12 +44,13 @@
         }
 
         /* 2. 공통 UI */
-        header a, nav a, .home-button, .circle-icon, .menu-toggle { cursor: none !important; }
         .custom-cursor {
             width: 12px; height: 12px; border-radius: 50%;
             background-color: black; position: fixed; 
             pointer-events: none; z-index: 9999; 
             transform: translate(-50%, -50%); transition: transform 0.1s ease-out; 
+            /* 기본적으로는 숨김 상태로 시작 (마우스 감지 시 표시) */
+            display: none; 
         }
 
         header, .main-wrapper, footer { width: 100%; max-width: 1920px; margin: 0 auto; box-sizing: border-box; }
@@ -66,7 +75,6 @@
             margin-bottom: 0; 
             line-height: 1; 
             display: block; 
-            cursor: none;
         }
         
         .menu-toggle { display: none; flex-direction: column; gap: 5px; background: none; border: none; padding: 10px; z-index: 1002; }
@@ -165,7 +173,6 @@
                 position: fixed; top: 0; right: -100%; width: 100%; height: 100vh;
                 background-color: #F2F2F2; flex-direction: column; justify-content: center;
                 transition: 0.5s ease-in-out; z-index: 1001;
-                /* 모바일 메뉴가 열렸을 때 뒤의 요소가 안 보이도록 함 */
                 visibility: hidden; 
             }
             nav.open { 
@@ -284,10 +291,25 @@
         
         document.addEventListener('DOMContentLoaded', () => {
             const cursor = document.querySelector('.custom-cursor');
-            document.addEventListener('mousemove', (e) => {
-                cursor.style.left = `${e.clientX}px`;
-                cursor.style.top = `${e.clientY}px`;
+            
+            // pointermove 이벤트를 사용하여 마우스와 터치를 구분
+            document.addEventListener('pointermove', (e) => {
+                if (e.pointerType === 'mouse') {
+                    // 마우스인 경우에만 커스텀 커서 표시 및 위치 업데이트
+                    cursor.style.display = 'block';
+                    cursor.style.left = `${e.clientX}px`;
+                    cursor.style.top = `${e.clientY}px`;
+                } else {
+                    // 터치나 펜인 경우 커스텀 커서 숨김
+                    cursor.style.display = 'none';
+                }
             });
+
+            // 마우스가 화면 밖으로 나갈 때 숨김 처리
+            document.addEventListener('pointerleave', () => {
+                cursor.style.display = 'none';
+            });
+
             fadeInElements(); 
 
             const menuToggle = document.getElementById('menuToggle');
@@ -296,7 +318,6 @@
             const worksLink = document.querySelector('.works-link');
             const worksIcons = document.getElementById('worksIcons');
 
-            // 메뉴 토글 시 스크롤 제어 함수
             function toggleScroll() {
                 if (navMenu.classList.contains('open')) {
                     if (window.innerWidth <= 768) {
@@ -310,7 +331,7 @@
             menuToggle.addEventListener('click', () => {
                 menuToggle.classList.toggle('active');
                 navMenu.classList.toggle('open');
-                toggleScroll(); // 스크롤 상태 업데이트
+                toggleScroll();
             });
 
             worksLink.addEventListener('click', (e) => {
@@ -329,11 +350,10 @@
                     menuToggle.classList.remove('active');
                     navMenu.classList.remove('open');
                     worksIcons.classList.remove('open');
-                    document.body.classList.remove('no-scroll'); // 메뉴 닫힐 때 스크롤 복구
+                    document.body.classList.remove('no-scroll');
                 }
             });
 
-            // 화면 크기 조정 시 예외 처리 (태블릿/데스크탑으로 돌아갈 때 스크롤 복구)
             window.addEventListener('resize', () => {
                 if (window.innerWidth > 768) {
                     document.body.classList.remove('no-scroll');

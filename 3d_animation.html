@@ -14,11 +14,17 @@
         body {
             background-color: #F2F2F2; margin: 0; padding: 0;
             width: 100%; min-height: 100%; 
-            display: flex; flex-direction: column; cursor: none; 
+            display: flex; flex-direction: column; cursor: none !important; 
             -webkit-font-smoothing: antialiased;
             text-rendering: optimizeLegibility;
-            font-family: 'GowoonDodum', sans-serif;
+            font-family: 'GowunDodum', sans-serif;
         }
+        
+        /* 모든 요소에서 기본 커서 제거 */
+        header a, nav a, .home-button, .circle-icon, .category-card, .modal-close-button, .external-link, .works-link, .menu-toggle, button, a { 
+            cursor: none !important; 
+        }
+
         html::-webkit-scrollbar { width: 8px; }
         html::-webkit-scrollbar-track { background: #F2F2F2; }
         html::-webkit-scrollbar-thumb { background: #BCBCBC; border-radius: 10px; }
@@ -26,23 +32,23 @@
 
         /* 2. 폰트 설정 */
         @font-face {
-            font-family: 'GowoonDodum';
-            src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2108@1.1/GowunDodum-Regular.woff') format('woff');
+            font-family: 'GowunDodum';
+            src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2108@1.1/GowunDodum-Regular.woff') format('woff');
+            font-weight: normal; font-style: normal;
         }
         @font-face {
             font-family: 'AmoreChristmas';
             src: url('fonts/Amore Christmas.otf') format('opentype');
+            font-weight: normal; font-style: normal;
         }
 
-        /* 3. 커스텀 커서 */
-        header a, nav a, .home-button, .circle-icon, .category-card, .modal-close-button, .external-link, .works-link, .menu-toggle { 
-            cursor: none !important; 
-        }
+        /* 3. 커스텀 커서 - 초기 상태는 숨김 */
         .custom-cursor {
             width: 12px; height: 12px; border-radius: 50%;
             background-color: black; position: fixed; 
             pointer-events: none; z-index: 9999; 
             transform: translate(-50%, -50%); transition: transform 0.1s ease-out; 
+            display: none;
         }
         
         /* 4. 헤더 및 네비게이션 */
@@ -58,7 +64,7 @@
         
         nav { display: flex; align-items: center; }
         nav a, .works-link { 
-            font-family: 'GowoonDodum', sans-serif; text-decoration: none; color: black; 
+            font-family: 'GowunDodum', sans-serif; text-decoration: none; color: black; 
             font-size: 1.1em; margin-left: 25px; line-height: 1; display: block;
         }
 
@@ -67,12 +73,8 @@
 
         .works-dropdown-container { position: relative; display: inline-block; }
         .works-icons { 
-            position: absolute; 
-            top: 55%; 
-            left: 50%; 
-            transform: translateX(-50%); 
-            margin-top: 10px; 
-            display: flex; flex-direction: column; gap: 10px; 
+            position: absolute; top: 55%; left: 50%; transform: translateX(-50%); 
+            margin-top: 10px; display: flex; flex-direction: column; gap: 10px; 
             max-height: 0; overflow: hidden; opacity: 0; padding: 0;
             transition: all 0.4s ease-out; z-index: 1001; 
         }
@@ -87,7 +89,7 @@
         .works-icons.open .works-item:nth-child(2) { transition-delay: 0.2s; opacity: 1; transform: translateY(0); }
         .works-icons.open .works-item:nth-child(3) { transition-delay: 0.3s; opacity: 1; transform: translateY(0); }
         .works-item:hover { background-color: #dddddd; color: white; }
-        .works-item p { font-family: 'GowoonDodum', sans-serif; font-size: 0.9em; margin: 0; color: inherit; }
+        .works-item p { font-family: 'GowunDodum', sans-serif; font-size: 0.9em; margin: 0; color: inherit; }
 
         /* 5. 메인 콘텐츠 스타일 */
         .main-container {
@@ -100,13 +102,17 @@
             transition: opacity 0.8s ease-out, transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
         }
         .page-title-container.visible { opacity: 1; transform: translateY(0); }
-        .page-title { font-family: 'AmoreChristmas', serif; font-size: clamp(40px, 7vw, 150px); line-height: 0.8; margin: 0; white-space: nowrap; }
+        
+        .page-title { 
+            font-family: 'AmoreChristmas', 'Cinzel Decorative', serif; 
+            font-size: clamp(40px, 7vw, 150px); 
+            line-height: 0.8; margin: 0; white-space: nowrap; 
+        }
         
         .sparkle-svg { width: clamp(15px, 2.7vw, 55px); height: auto; display: block; flex-shrink: 0; }
         #sparkle-1 { align-self: flex-start; margin-top: -1vw; }
         #sparkle-2 { align-self: flex-end; margin-bottom: -1vw; }
 
-        /* 카테고리 그리드 */
         .category-section { width: 100%; display: flex; justify-content: center; z-index: 8; margin-bottom: 50px; }
         .category-grid { display: flex; gap: 20px; padding: 0 40px; box-sizing: border-box; width: 100%; flex-wrap: wrap; justify-content: center; }
         .card-group {
@@ -121,79 +127,102 @@
         }
         .category-card:hover { transform: translateY(-5px); }
         .category-card img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; border-radius: 13px; }
-        .card-title { font-family: 'GowoonDodum', sans-serif; font-size: clamp(12px, 1.1vw, 24px); color: black; margin-top: 15px; }
+        .card-title { font-family: 'GowunDodum', sans-serif; font-size: clamp(12px, 1.1vw, 24px); color: black; margin-top: 15px; }
 
         /* 6. 모달 스타일 */
         .detail-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(255, 255, 255, 0.95); backdrop-filter: blur(5px); z-index: 2000; display: flex; justify-content: center; align-items: flex-start; opacity: 0; visibility: hidden; transition: 0.4s; overflow-y: auto; }
         .detail-modal.visible { opacity: 1; visibility: visible; }
-        .modal-content { background-color: #ffffff; width: 90%; max-width: 1000px; margin: 50px auto; border-radius: 15px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2); position: relative; padding-bottom: 30px; }
-        .modal-close-button { position: absolute; right: -10px; top: -10px; font-size: 40px; background-color: #ffffff; border: 2px solid #333; border-radius: 50%; width: 50px; height: 50px; display: flex; justify-content: center; align-items: center; z-index: 2010; color: #333; }
-        .modal-header { width: 100%; height: 0; padding-top: 56.25%; background-color: #E0E0E0; position: relative; }
+        
+        .modal-content { background-color: #ffffff; width: 90%; max-width: 1000px; margin: 50px auto; border-radius: 15px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2); position: relative; padding-bottom: 20px; text-align: left; }
+        
+        .modal-close-button { 
+            position: absolute; right: -10px; top: -10px; background-color: #ffffff; border: 2px solid #333; border-radius: 50%; 
+            display: flex; justify-content: center; align-items: center; z-index: 2010; color: #333;
+            width: clamp(3px, 8vw, 50px); height: clamp(3px, 8vw, 50px); font-size: clamp(3px, 6vw, 40px);
+        }
+        
+        .modal-header { width: 100%; height: auto; background-color: #ffffff; position: relative; padding: 0; display: flex; flex-direction: column; }
+        .modal-video-container { width: 100%; padding-top: 56.25%; position: relative; background-color: #000; border-radius: 15px 15px 0 0; overflow: hidden; }
         .modal-media { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; }
         .modal-media video { width: 100%; height: 100%; object-fit: cover; }
-        .modal-title { font-family: 'GowoonDodum', sans-serif; font-size: 2em; margin: 30px 40px 10px 40px; }
         
-        /* [Software 정보를 하단으로 보내기 위해 보더 위치 및 마진 조정] */
-        .modal-extra-image { width: 100%; padding: 0 40px; box-sizing: border-box; margin-top: 20px; text-align: center; }
-        .modal-extra-image img { width: 100%; height: auto; display: block; margin: 0 auto; border-radius: 10px; }
+        .modal-extra-image { width: 100%; height: auto; display: block; margin: 0 auto; }
+        .modal-extra-image img { width: 100%; height: auto; object-fit: contain; display: block; }
 
-        .modal-info { font-family: 'GowoonDodum', sans-serif; padding: 25px 40px 10px 40px; border-top: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; margin-top: 30px; }
-        .modal-info p { margin: 0; }
+        .modal-title { 
+            font-family: 'GowunDodum', sans-serif; 
+            font-size: clamp(15px, 4vw, 32px); 
+            margin: clamp(10px, 3vw, 30px) clamp(10px, 4vw, 40px);
+            text-align: left; 
+            white-space: nowrap; 
+            line-height: 1.3; 
+            overflow: visible; 
+            max-width: none; 
+        }
         
-        .external-link { text-decoration: none; color: #5e5e5e; font-weight: bold; display: flex; align-items: center; gap: 5px; }
+        .modal-info { 
+            font-family: 'GowunDodum', sans-serif; padding: clamp(8px, 2.5vw, 20px) clamp(10px, 4vw, 40px); 
+            border-top: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; 
+            box-sizing: border-box; font-size: clamp(12px, 2vw, 16px); gap: 5px; overflow: hidden;
+        }
+        .modal-info p { margin: 0; line-height: 1; display: flex; align-items: center; white-space: nowrap; flex-shrink: 1; }
+        
+        .external-link { 
+            text-decoration: none; color: #5e5e5e; font-weight: bold; display: flex; align-items: center; 
+            gap: 4px; white-space: nowrap; flex-shrink: 0; 
+        }
+        .external-link i { font-size: clamp(3px, 2.5vw, 18px); }
 
         /* 7. 푸터 */
         footer { padding: 20px 40px; margin-top: auto; opacity: 0; transform: translateY(10px); transition: 1.2s ease-out; }
         footer.visible { opacity: 1; transform: translateY(0); }
         .divider-line { flex-grow: 1; height: 1px; background-color: #BCBCBC; margin: 0 10px; }
-        .copyright { font-family: 'GowoonDodum', sans-serif; color: #555; font-size: 0.8em; text-align: right; }
+        .copyright { font-family: 'GowunDodum', sans-serif; color: #555; font-size: 0.8em; text-align: right; }
 
-        /* 8. 반응형 (모바일) */
+        /* 8. 반응형 (모바일 768px 이하) */
         @media (max-width: 768px) {
             header { padding: 15px 25px; }
             .menu-toggle { display: flex; }
             nav { 
-                position: fixed; top: 0; right: -100%; width: 100%; height: 100vh; 
-                background-color: #F2F2F2; flex-direction: column; justify-content: center; 
-                transition: 0.5s ease-in-out; z-index: 1001; visibility: hidden; 
+                position: fixed; top: 0; right: -100%; width: 100%; height: 100vh; background-color: #F2F2F2; 
+                flex-direction: column; justify-content: center; transition: 0.5s ease-in-out; z-index: 1001; visibility: hidden; 
             }
             nav.open { right: 0; visibility: visible; }
-            
             nav a, .works-link { margin: 15px 0; font-size: 1.5em; margin-left: 0; }
             .works-dropdown-container { display: flex; flex-direction: column; align-items: center; }
-            
-            .works-icons { 
-                position: static; transform: none; opacity: 1; max-height: none; 
-                display: flex; flex-direction: column; align-items: center; 
-                padding: 5px 0; margin-top: 0; 
-            }
+            .works-icons { position: static; transform: none; opacity: 1; max-height: none; display: flex; flex-direction: column; align-items: center; padding: 5px 0; margin-top: 0; }
             .works-item { border: none; background: none; width: auto; height: auto; opacity: 1; transform: none; margin: 5px 0; transition: none; }
             .works-item p { font-size: 0.75em; color: #888; }
             
-            .card-group { width: 90%; }
-
-            .page-title-container { 
-                width: 100%; 
-                margin: 15vw 0 18vw 0; 
-                gap: 2.5vw; 
-            }
-            .page-title { 
-                font-size: clamp(10px, 13vw, 85px); 
-                line-height: 1;
-                white-space: nowrap; 
-            } 
-            .sparkle-svg { 
-                width: clamp(5px, 6vw, 35px); 
-            } 
+            .category-grid { padding: 0 40px; justify-content: center; }
+            .card-group { width: 90%; text-align: center; }
+            
+            .page-title-container { width: 100%; margin: 15vw 0 18vw 0; gap: 2.5vw; justify-content: center; }
+            .page-title { font-size: clamp(10px, 9vw, 60px); line-height: 1; white-space: nowrap; } 
+            
+            .sparkle-svg { width: clamp(5px, 4.2vw, 25px); } 
             #sparkle-1 { margin-top: -2vw; }
             #sparkle-2 { margin-bottom: -2vw; }
-
             .card-title { font-size: clamp(10px, 4.2vw, 20px); } 
 
-            .custom-cursor { display: none; }
-            body { cursor: auto; }
-            
-            .modal-extra-image { padding: 0 20px; }
+            /* [수정] 모바일/태블릿에서도 커서는 항상 none 유지 (블루투스 마우스 연결 시 JS가 제어) */
+            body { cursor: none !important; }
+            * { cursor: none !important; }
+
+            .modal-content { width: 94%; margin: 20px auto; }
+            .modal-title { 
+                font-size: clamp(16px, 5vw, 22px); 
+                margin: 15px 20px; 
+                white-space: normal; 
+                word-break: keep-all; 
+                overflow-wrap: break-word; 
+                line-height: 1.4; 
+            }
+            .modal-info { 
+                padding: 10px 20px; font-size: clamp(11px, 3.5vw, 14px); 
+                flex-direction: row; justify-content: space-between; gap: 10px;
+            }
+            .modal-close-button { right: -5px; top: -5px; border-width: 1px; width: 30px; height: 30px; font-size: 20px; }
         }
     </style>
 </head>
@@ -265,11 +294,13 @@
             <div class="modal-content">
                 <button class="modal-close-button">&times;</button>
                 <h1 class="modal-title"></h1> 
-                <div class="modal-header"><div class="modal-media"></div></div>
-                <div class="modal-body">
+                <div class="modal-header">
+                    <div class="modal-video-container">
+                        <div class="modal-media"></div>
+                    </div>
                     <div class="modal-extra-image" id="modalExtraImage"></div>
-                    <div class="modal-info"></div>
                 </div>
+                <div class="modal-body"><div class="modal-info"></div></div>
             </div>
         </div>
     </div>
@@ -286,10 +317,32 @@
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const cursor = document.querySelector('.custom-cursor');
+            let isTouchDevice = false;
+
+            // 터치 발생 시 즉시 커서 숨김 처리
+            document.addEventListener('touchstart', () => {
+                isTouchDevice = true;
+                cursor.style.setProperty('display', 'none', 'important');
+            }, {passive: true});
+
+            // 마우스 이동 시 블루투스 마우스인지 터치에 의한 가짜 이동인지 판별
             document.addEventListener('mousemove', (e) => {
-                cursor.style.left = `${e.clientX}px`; cursor.style.top = `${e.clientY}px`;
+                // 터치 기기이더라도 실제 마우스(이동 데이터가 있는 경우)라면 커서 표시
+                const isRealMouse = e.sourceCapabilities ? !e.sourceCapabilities.firesTouchEvents : (e.movementX !== 0 || e.movementY !== 0);
+
+                if (isRealMouse) {
+                    // 마우스 감지 시 CSS display:none !important를 덮어쓰고 강제 표시
+                    cursor.style.setProperty('display', 'block', 'important');
+                    cursor.style.left = `${e.clientX}px`; 
+                    cursor.style.top = `${e.clientY}px`;
+                    isTouchDevice = false; // 마우스 입력이 들어오면 터치 모드 해제
+                } else {
+                    // 단순 터치 드래그 등일 경우 다시 숨김
+                    cursor.style.setProperty('display', 'none', 'important');
+                }
             });
 
+            // 초기 로딩 효과들 (수정 없음)
             setTimeout(() => { document.getElementById('header').classList.add('visible'); }, 200);
             setTimeout(() => { document.getElementById('pageTitleContainer').classList.add('visible'); }, 300);
             document.querySelectorAll('.card-group').forEach((group, index) => {
@@ -346,17 +399,21 @@
                 card.addEventListener('click', (e) => {
                     e.preventDefault();
                     const { videoFile, title, software, behanceUrl, youtubeUrl, extraImg } = card.dataset;
+                    
                     modalTitle.textContent = title;
                     modalMedia.innerHTML = videoFile ? `<video src="${videoFile}" controls autoplay loop></video>` : '';
                     
-                    let linkHtml = behanceUrl ? `<a href="${behanceUrl}" target="_blank" class="external-link"><i class="fab fa-behance"></i> Behance</a>` : (youtubeUrl ? `<a href="${youtubeUrl}" target="_blank" class="external-link"><i class="fab fa-youtube"></i> Youtube</a>` : '');
+                    let linkHtml = "";
+                    if (behanceUrl) {
+                        linkHtml = `<a href="${behanceUrl}" target="_blank" class="external-link"><i class="fab fa-behance"></i> Behance</a>`;
+                    } else if (youtubeUrl) {
+                        linkHtml = `<a href="${youtubeUrl}" target="_blank" class="external-link"><i class="fab fa-youtube"></i> YouTube</a>`;
+                    }
+
+                    modalInfo.innerHTML = `<p><strong>Software:</strong>&nbsp;${software}</p>${linkHtml}`;
                     
-                    // Software 정보 및 아이콘/링크 생성
-                    modalInfo.innerHTML = `<p><strong>Software:</strong> ${software}</p>${linkHtml}`;
-                    
-                    // 추가 이미지 생성 (이미지 영역은 CSS 구조상 modal-info보다 위에 있음)
                     if (extraImg) {
-                        modalExtraImage.innerHTML = `<img src="${extraImg}" alt="Extra Sheet">`;
+                        modalExtraImage.innerHTML = `<img src="${extraImg}" alt="Detail Image">`;
                     } else {
                         modalExtraImage.innerHTML = '';
                     }

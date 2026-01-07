@@ -16,25 +16,29 @@
         body {
             background-color: #F2F2F2; margin: 0; padding: 0;
             width: 100%; min-height: 100%; 
-            display: flex; flex-direction: column; cursor: none; 
+            display: flex; flex-direction: column; cursor: none !important; 
             -webkit-font-smoothing: antialiased;
             text-rendering: optimizeLegibility;
-            font-family: 'GowoonDodum', sans-serif;
+            font-family: 'GowunDodum', sans-serif;
         }
+        
+        header a, nav a, .home-button, .circle-icon, .category-card, .modal-close-button, .external-link, .works-link, .menu-toggle, button, a { 
+            cursor: none !important; 
+        }
+
         html::-webkit-scrollbar { width: 8px; }
         html::-webkit-scrollbar-track { background: #F2F2F2; }
         html::-webkit-scrollbar-thumb { background: #BCBCBC; border-radius: 10px; }
         body.no-scroll { overflow: hidden !important; }
 
-        /* 2. 폰트 설정 (수정됨) */
+        /* 2. 폰트 설정 */
         @font-face {
-            font-family: 'GowoonDodum';
-            src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2108@1.1/GowunDodum-Regular.woff') format('woff');
+            font-family: 'GowunDodum';
+            src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2108@1.1/GowunDodum-Regular.woff') format('woff');
             font-weight: normal;
             font-style: normal;
         }
         
-        /* Amore Christmas가 없을 경우를 대비해 Cinzel Decorative를 함께 지정합니다 */
         @font-face {
             font-family: 'AmoreChristmas';
             src: url('fonts/Amore Christmas.otf') format('opentype');
@@ -43,14 +47,12 @@
         }
 
         /* 3. 커스텀 커서 */
-        header a, nav a, .home-button, .circle-icon, .category-card, .modal-close-button, .external-link, .works-link, .menu-toggle { 
-            cursor: none !important; 
-        }
         .custom-cursor {
             width: 12px; height: 12px; border-radius: 50%;
             background-color: black; position: fixed; 
             pointer-events: none; z-index: 9999; 
             transform: translate(-50%, -50%); transition: transform 0.1s ease-out; 
+            display: none; 
         }
         
         /* 4. 헤더 및 네비게이션 */
@@ -66,7 +68,7 @@
         
         nav { display: flex; align-items: center; }
         nav a, .works-link { 
-            font-family: 'GowoonDodum', sans-serif; text-decoration: none; color: black; 
+            font-family: 'GowunDodum', sans-serif; text-decoration: none; color: black; 
             font-size: 1.1em; margin-left: 25px; line-height: 1; display: block;
         }
 
@@ -95,7 +97,7 @@
         .works-icons.open .works-item:nth-child(2) { transition-delay: 0.2s; opacity: 1; transform: translateY(0); }
         .works-icons.open .works-item:nth-child(3) { transition-delay: 0.3s; opacity: 1; transform: translateY(0); }
         .works-item:hover { background-color: #dddddd; color: white; }
-        .works-item p { font-family: 'GowoonDodum', sans-serif; font-size: 0.9em; margin: 0; color: inherit; }
+        .works-item p { font-family: 'GowunDodum', sans-serif; font-size: 0.9em; margin: 0; color: inherit; }
 
         /* 5. 메인 콘텐츠 스타일 */
         .main-container {
@@ -109,7 +111,6 @@
         }
         .page-title-container.visible { opacity: 1; transform: translateY(0); }
         
-        /* 제목 폰트를 AmoreChristmas 혹은 Cinzel Decorative로 설정 */
         .page-title { 
             font-family: 'AmoreChristmas', 'Cinzel Decorative', serif; 
             font-size: clamp(40px, 7vw, 150px); 
@@ -120,7 +121,6 @@
         #sparkle-1 { align-self: flex-start; margin-top: -1vw; }
         #sparkle-2 { align-self: flex-end; margin-bottom: -1vw; }
 
-        /* 카테고리 그리드 */
         .category-section { width: 100%; display: flex; justify-content: center; z-index: 8; margin-bottom: 50px; }
         .category-grid { display: flex; gap: 20px; padding: 0 40px; box-sizing: border-box; width: 100%; flex-wrap: wrap; justify-content: center; }
         .card-group {
@@ -135,55 +135,68 @@
         }
         .category-card:hover { transform: translateY(-5px); }
         .category-card img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; border-radius: 13px; }
-        .card-title { font-family: 'GowoonDodum', sans-serif; font-size: clamp(12px, 1.1vw, 24px); color: black; margin-top: 15px; }
+        .card-title { font-family: 'GowunDodum', sans-serif; font-size: clamp(12px, 1.1vw, 24px); color: black; margin-top: 15px; }
 
         /* 6. 모달 스타일 */
         .detail-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(255, 255, 255, 0.95); backdrop-filter: blur(5px); z-index: 2000; display: flex; justify-content: center; align-items: flex-start; opacity: 0; visibility: hidden; transition: 0.4s; overflow-y: auto; }
         .detail-modal.visible { opacity: 1; visibility: visible; }
-        .modal-content { background-color: #ffffff; width: 90%; max-width: 1000px; margin: 50px auto; border-radius: 15px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2); position: relative; padding-bottom: 20px; }
-        .modal-close-button { position: absolute; right: -10px; top: -10px; font-size: 40px; background-color: #ffffff; border: 2px solid #333; border-radius: 50%; width: 50px; height: 50px; display: flex; justify-content: center; align-items: center; z-index: 2010; color: #333; }
+        
+        .modal-content { background-color: #ffffff; width: 90%; max-width: 1000px; margin: 50px auto; border-radius: 15px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2); position: relative; padding-bottom: 20px; text-align: left; }
+        
+        .modal-close-button { 
+            position: absolute; right: -10px; top: -10px; background-color: #ffffff; border: 2px solid #333; border-radius: 50%; 
+            display: flex; justify-content: center; align-items: center; z-index: 2010; color: #333;
+            width: clamp(3px, 8vw, 50px); height: clamp(3px, 8vw, 50px); font-size: clamp(3px, 6vw, 40px);
+        }
         
         .modal-header { width: 100%; height: auto; background-color: #ffffff; position: relative; padding: 0; display: flex; flex-direction: column; }
-        .modal-video-container { width: 100%; padding-top: 56.25%; position: relative; background-color: #000; }
+        .modal-video-container { width: 100%; padding-top: 56.25%; position: relative; background-color: #000; border-radius: 15px 15px 0 0; overflow: hidden; }
         .modal-media { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; }
         .modal-media video { width: 100%; height: 100%; object-fit: cover; }
         
         .modal-additional-image { width: 100%; height: auto; display: block; margin: 0 auto; }
         .modal-additional-image img { width: 100%; height: auto; object-fit: contain; display: block; }
 
-        .modal-title { font-family: 'GowoonDodum', sans-serif; font-size: 2em; margin: 30px 40px 10px 40px; }
-        
-        /* [Software 및 아이콘 라인 위치 조정] */
-        .modal-info { 
-            font-family: 'GowoonDodum', sans-serif; 
-            padding: 25px 40px 10px 40px; /* padding-top을 늘려 아래로 내림 */
-            height: auto; /* 고정 높이 해제하여 여백이 반영되도록 함 */
-            min-height: 45px; 
-            border-top: 1px solid #eee; 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-            box-sizing: border-box;
+        /* 제목 설정: 데스크탑 기본 */
+        .modal-title { 
+            font-family: 'GowunDodum', sans-serif; 
+            font-size: clamp(15px, 4vw, 32px); 
+            margin: clamp(10px, 3vw, 30px) clamp(10px, 4vw, 40px);
+            text-align: left; 
+            white-space: nowrap; 
+            line-height: 1.3; 
+            overflow: visible; 
+            text-overflow: clip; 
+            max-width: none; 
         }
-        .modal-info p { margin: 0; line-height: 1; display: flex; align-items: center; }
         
-        .external-link { text-decoration: none; color: #5e5e5e; font-weight: bold; display: flex; align-items: center; gap: 5px; line-height: 1; }
-        .external-link img { height: 20px; width: auto; }
+        .modal-info { 
+            font-family: 'GowunDodum', sans-serif; padding: clamp(8px, 2.5vw, 20px) clamp(10px, 4vw, 40px); 
+            border-top: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; 
+            box-sizing: border-box; font-size: clamp(12px, 2vw, 16px); gap: 5px; overflow: hidden;
+        }
+        .modal-info p { margin: 0; line-height: 1; display: flex; align-items: center; white-space: nowrap; flex-shrink: 1; }
+        
+        .external-link { 
+            text-decoration: none; color: #5e5e5e; font-weight: bold; display: flex; align-items: center; 
+            gap: 4px; white-space: nowrap; flex-shrink: 0; 
+        }
+        .external-link img { height: clamp(3px, 2.5vw, 20px); width: auto; }
+        .external-link i { font-size: clamp(3px, 2.5vw, 18px); }
 
         /* 7. 푸터 */
         footer { padding: 20px 40px; margin-top: auto; opacity: 0; transform: translateY(10px); transition: 1.2s ease-out; }
         footer.visible { opacity: 1; transform: translateY(0); }
         .divider-line { flex-grow: 1; height: 1px; background-color: #BCBCBC; margin: 0 10px; }
-        .copyright { font-family: 'GowoonDodum', sans-serif; color: #555; font-size: 0.8em; text-align: right; }
+        .copyright { font-family: 'GowunDodum', sans-serif; color: #555; font-size: 0.8em; text-align: right; }
 
-        /* 8. 반응형 (모바일) */
+        /* 8. 반응형 (모바일 768px 이하) */
         @media (max-width: 768px) {
             header { padding: 15px 25px; }
             .menu-toggle { display: flex; }
             nav { 
-                position: fixed; top: 0; right: -100%; width: 100%; height: 100vh; 
-                background-color: #F2F2F2; flex-direction: column; justify-content: center; 
-                transition: 0.5s ease-in-out; z-index: 1001; visibility: hidden; 
+                position: fixed; top: 0; right: -100%; width: 100%; height: 100vh; background-color: #F2F2F2; 
+                flex-direction: column; justify-content: center; transition: 0.5s ease-in-out; z-index: 1001; visibility: hidden; 
             }
             nav.open { right: 0; visibility: visible; }
             nav a, .works-link { margin: 15px 0; font-size: 1.5em; margin-left: 0; }
@@ -191,16 +204,52 @@
             .works-icons { position: static; transform: none; opacity: 1; max-height: none; display: flex; flex-direction: column; align-items: center; padding: 5px 0; margin-top: 0; }
             .works-item { border: none; background: none; width: auto; height: auto; opacity: 1; transform: none; margin: 5px 0; transition: none; }
             .works-item p { font-size: 0.75em; color: #888; }
-            .card-group { width: 90%; }
-            .page-title-container { width: 100%; margin: 15vw 0 18vw 0; gap: 2.5vw; }
-            .page-title { font-size: clamp(10px, 13vw, 85px); line-height: 1; white-space: nowrap; } 
-            .sparkle-svg { width: clamp(5px, 6vw, 35px); } 
+            
+            .category-grid { padding: 0 40px; justify-content: center; }
+            .card-group { width: 90%; text-align: center; }
+            
+            .page-title-container { width: 100%; margin: 15vw 0 18vw 0; gap: 2.5vw; justify-content: center; }
+            .page-title { font-size: clamp(10px, 9vw, 60px); line-height: 1; white-space: nowrap; } 
+            
+            .sparkle-svg { width: clamp(5px, 4.2vw, 25px); } 
             #sparkle-1 { margin-top: -2vw; }
             #sparkle-2 { margin-bottom: -2vw; }
             .card-title { font-size: clamp(10px, 4.2vw, 20px); } 
-            .custom-cursor { display: none; }
-            body { cursor: auto; }
+
+            .modal-content { width: 94%; margin: 20px auto; }
+            
+            /* 모바일 모달 제목 수정: 뚫고 나가는 현상 해결 */
+            .modal-title { 
+                font-size: clamp(16px, 5vw, 22px); /* 가변 폰트 적용 */
+                margin: 15px 20px; 
+                white-space: normal;      /* 자동 줄바꿈 허용 */
+                word-break: keep-all;     /* 단어 단위 줄바꿈 */
+                overflow-wrap: break-word; 
+                line-height: 1.4; 
+                width: auto;
+                max-width: 100%;
+                transform: none;          /* 튀는 현상 제거 */
+            }
+
+            .modal-info { 
+                padding: 10px 20px; 
+                font-size: clamp(11px, 3.5vw, 14px); 
+                display: flex;
+                flex-direction: row; 
+                justify-content: space-between;
+                align-items: center;
+                gap: 10px;
+                transform: none;          /* 튀는 현상 제거 */
+            }
+
+            .modal-info p { white-space: nowrap; }
+            .external-link { font-size: inherit; gap: 4px; }
+            .external-link img, .external-link i { height: 14px; font-size: 14px; }
+            
+            .modal-close-button { right: -5px; top: -5px; border-width: 1px; width: 30px; height: 30px; font-size: 20px; }
         }
+
+        /* 불필요한 transform: scale 미디어 쿼리 삭제 완료 */
     </style>
 </head>
 <body>
@@ -237,35 +286,35 @@
                         <a href="#" class="category-card" 
                            data-video-file="https://res.cloudinary.com/delc12dhr/video/upload/v1767274646/IU_drama_lxjtta.mp4" 
                            data-detail-image="images/IU_drama_sheet.png" 
-                           data-title="아이유 - 드라마MV [Fan Made]" 
+                           data-title="너와 보냈던 시간들 - IU Drama" 
                            data-software="After Effects, ClipStudio EX" 
                            data-youtube-url="https://www.youtube.com/"> 
                             <img src="images/IU_drama_thumbnail.png" alt="Thumbnail">
                         </a>
-                        <div class="card-title">아이유 - 드라마MV [Fan Made]</div>
+                        <div class="card-title">너와 보냈던 시간들 - IU Drama</div>
                     </div>
                     <div class="card-group">
                         <a href="#" class="category-card" 
                            data-video-file="https://res.cloudinary.com/delc12dhr/video/upload/v1767274727/Come_home_fuqxk7.mp4" 
                            data-detail-image="images/Come_home_sheet.png" 
-                           data-title="Thomas Day - Come Home MV [Fan Made]" 
+                           data-title="대도시의 사랑법 MV" 
                            data-software="After Effects, ClipStudio EX" 
                            data-youtube-url="https://www.youtube.com/"> 
                             <img src="images/Come_home_thumbnail.png" alt="Thumbnail">
                         </a>
-                        <div class="card-title">Thomas Day - Come Home MV [Fan Made]</div>
+                        <div class="card-title">대도시의 사랑법 MV </div>
                     </div>
                     <div class="card-group">
                         <a href="#" class="category-card" 
                            data-video-file="https://res.cloudinary.com/delc12dhr/video/upload/v1767274692/4weeks_trfnef.mp4" 
                            data-detail-image="images/4weeks_sheet.png" 
-                           data-title="Laftel - 4주애인 / 애니메이팅 참여" 
+                           data-title="4주애인 - 액팅 참여" 
                            data-software="ClipStudio EX" 
                            data-site-name="Laftel"
                            data-youtube-url="https://laftel.net/item/41410"> 
                             <img src="images/4weeks_thumbnail.png" alt="Thumbnail">
                         </a>
-                        <div class="card-title">Laftel - 4주애인 / 애니메이팅 참여</div> 
+                        <div class="card-title">4주애인 - 액팅 참여</div> 
                     </div>
                 </div>
             </section>
@@ -298,9 +347,16 @@
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const cursor = document.querySelector('.custom-cursor');
+            
             document.addEventListener('mousemove', (e) => {
-                cursor.style.left = `${e.clientX}px`; cursor.style.top = `${e.clientY}px`;
+                cursor.style.display = 'block'; 
+                cursor.style.left = `${e.clientX}px`; 
+                cursor.style.top = `${e.clientY}px`;
             });
+
+            document.addEventListener('touchstart', () => {
+                cursor.style.display = 'none';
+            }, {passive: true});
 
             setTimeout(() => { document.getElementById('header').classList.add('visible'); }, 200);
             setTimeout(() => { document.getElementById('pageTitleContainer').classList.add('visible'); }, 300);

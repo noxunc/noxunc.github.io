@@ -14,7 +14,7 @@
         body {
             background-color: #F2F2F2; margin: 0; padding: 0;
             width: 100%; min-height: 100%; 
-            display: flex; flex-direction: column; cursor: none; 
+            display: flex; flex-direction: column; cursor: none !important; 
             -webkit-font-smoothing: antialiased;
             text-rendering: optimizeLegibility;
             font-family: 'GowoonDodum', sans-serif;
@@ -42,7 +42,8 @@
             width: 12px; height: 12px; border-radius: 50%;
             background-color: black; position: fixed; 
             pointer-events: none; z-index: 9999; 
-            transform: translate(-50%, -50%); transition: transform 0.1s ease-out; 
+            transform: translate(-50%, -50%); transition: transform 0.1s ease-out, opacity 0.3s ease; 
+            opacity: 0; 
         }
         
         /* 4. 헤더 및 네비게이션 */
@@ -151,14 +152,26 @@
         .detail-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(255, 255, 255, 0.95); backdrop-filter: blur(5px); z-index: 2000; display: flex; justify-content: center; align-items: flex-start; opacity: 0; visibility: hidden; transition: 0.4s; overflow-y: auto; }
         .detail-modal.visible { opacity: 1; visibility: visible; }
         .modal-content { background-color: #ffffff; width: 90%; max-width: 1000px; margin: 50px auto; border-radius: 15px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2); position: relative; padding-bottom: 30px; }
-        .modal-close-button { position: absolute; right: -10px; top: -10px; font-size: 40px; background-color: #ffffff; border: 2px solid #333; border-radius: 50%; width: 50px; height: 50px; display: flex; justify-content: center; align-items: center; z-index: 2010; color: #333; }
+        
+        .modal-close-button { 
+            position: absolute; right: -10px; top: -10px; font-size: 40px; 
+            background-color: #ffffff; border: 2px solid #333; border-radius: 50%; 
+            width: 50px; height: 50px; display: flex; justify-content: center; 
+            align-items: center; z-index: 2010; color: #333; 
+        }
+        
         .modal-header { width: 100%; height: 0; padding-top: 56.25%; background-color: #E0E0E0; position: relative; }
         .modal-media { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; }
         
         .modal-media iframe { width: 100%; height: 100%; border: 0; }
         .sketchfab-embed-wrapper { width: 100%; height: 100%; }
 
-        .modal-title { font-family: 'GowoonDodum', sans-serif; font-size: 2em; margin: 30px 40px 10px 40px; }
+        /* 요청 사항: 상세페이지 제목 크기 유동적 조절 */
+        .modal-title { 
+            font-family: 'GowoonDodum', sans-serif; 
+            font-size: clamp(1.2em, 4vw, 2em); 
+            margin: 30px 40px 10px 40px; 
+        }
         
         /* 상세페이지 하단 별개 이미지 영역 */
         .modal-extra-image { width: 100%; padding: 0 40px; box-sizing: border-box; margin-top: 25px; text-align: center; }
@@ -209,11 +222,20 @@
             }
             .filter-button.active { border: 1.5px solid black; }
 
-            .page-title { font-size: clamp(10px, 13vw, 85px); line-height: 1; white-space: nowrap; } 
-            .sparkle-svg { width: clamp(5px, 6vw, 35px); } 
+            .page-title { font-size: clamp(10px, 10.5vw, 68px); line-height: 1; white-space: nowrap; } 
+            .sparkle-svg { width: clamp(5px, 4.8vw, 28px); } 
+
             .card-title { font-size: clamp(10px, 4.2vw, 20px); } 
-            .custom-cursor { display: none; }
-            body { cursor: auto; }
+
+            /* 요청 사항: 상세페이지 닫기 버튼 크기 축소 */
+            .modal-close-button { 
+                width: 35px; height: 35px; font-size: 24px; 
+                right: -5px; top: -5px; 
+            }
+            /* 상세페이지 제목 여백 조정 */
+            .modal-title { margin: 20px 20px 10px 20px; }
+            
+            body { cursor: none !important; }
 
             .modal-extra-image { padding: 0 20px; }
             .modal-info { padding: 20px; flex-direction: column; gap: 10px; align-items: flex-start; }
@@ -356,9 +378,18 @@
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const cursor = document.querySelector('.custom-cursor');
+            
             document.addEventListener('mousemove', (e) => {
-                cursor.style.left = `${e.clientX}px`; cursor.style.top = `${e.clientY}px`;
+                cursor.style.left = `${e.clientX}px`; 
+                cursor.style.top = `${e.clientY}px`;
+                if (getComputedStyle(cursor).opacity === "0") {
+                    cursor.style.opacity = "1";
+                }
             });
+
+            document.addEventListener('touchstart', () => {
+                cursor.style.opacity = "0";
+            }, { passive: true });
 
             setTimeout(() => { document.getElementById('header').classList.add('visible'); }, 200);
             setTimeout(() => { document.getElementById('pageTitleContainer').classList.add('visible'); }, 300);
@@ -370,7 +401,6 @@
             });
             setTimeout(() => { document.getElementById('footer').classList.add('visible'); }, 1200);
 
-            // 필터링 기능
             const filterButtons = document.querySelectorAll('.filter-button');
             filterButtons.forEach(btn => {
                 btn.addEventListener('click', () => {
@@ -390,7 +420,6 @@
                 });
             });
 
-            // 메뉴 토글
             const menuToggle = document.getElementById('menuToggle');
             const navMenu = document.getElementById('navMenu');
             const worksLink = document.querySelector('.works-link');
@@ -422,7 +451,6 @@
                 }
             });
 
-            // 모달 로직
             const detailModal = document.getElementById('detailModal');
             const closeButton = document.querySelector('.modal-close-button');
             const modalTitle = document.querySelector('.modal-title');
@@ -437,19 +465,16 @@
                     
                     modalTitle.textContent = title;
                     
-                    // 1. Sketchfab 설정
                     if (sketchfabUrl) {
                         modalMedia.innerHTML = `<div class="sketchfab-embed-wrapper"><iframe src="${sketchfabUrl}" frameborder="0" allowfullscreen allow="autoplay; fullscreen;"></iframe></div>`;
                     }
 
-                    // 2. 별개 상세 이미지 설정 (data-extra-img 사용)
                     if (extraImg) {
                         modalExtraImage.innerHTML = `<img src="${extraImg}" alt="Detail Reference">`;
                     } else {
                         modalExtraImage.innerHTML = '';
                     }
 
-                    // 3. 최하단 소프트웨어 정보 설정
                     let linkHtml = artstationUrl ? `<a href="${artstationUrl}" target="_blank" class="external-link"><i class="fab fa-artstation"></i> Artstation</a>` : '';
                     modalInfo.innerHTML = `<p><strong>Software:</strong> ${software}</p>${linkHtml}`;
                     
