@@ -15,12 +15,10 @@
             background-color: #F2F2F2; margin: 0; padding: 0;
             width: 100%; height: 100%; overflow-y: auto; overflow-x: hidden;
             display: flex; flex-direction: column; 
-            /* 모든 상황에서 기본 커서 숨김 */
             cursor: none !important; 
             -webkit-font-smoothing: antialiased;
         }
         
-        /* 모든 인터랙션 요소에서도 기본 커서 숨김 강제 */
         a, button, p, div, span, input {
             cursor: none !important;
         }
@@ -29,7 +27,6 @@
         body::-webkit-scrollbar-track { background: #F2F2F2; }
         body::-webkit-scrollbar-thumb { background: #BCBCBC; border-radius: 10px; }
 
-        /* 모바일 메뉴 오픈 시 스크롤 방지 */
         body.no-scroll {
             overflow: hidden !important;
         }
@@ -49,7 +46,6 @@
             background-color: black; position: fixed; 
             pointer-events: none; z-index: 9999; 
             transform: translate(-50%, -50%); transition: transform 0.1s ease-out; 
-            /* 기본적으로는 숨김 상태로 시작 (마우스 감지 시 표시) */
             display: none; 
         }
 
@@ -64,15 +60,12 @@
         .circle-icon { width: 24px; height: 24px; background-color: black; border-radius: 50%; display: block; }
         
         nav { display: flex; align-items: center; }
-        
         nav a, .works-link { 
             font-family: 'GowoonDodum', sans-serif; 
             text-decoration: none; 
             color: black; 
             margin-left: 25px; 
             font-size: 1.1em; 
-            margin-top: 0; 
-            margin-bottom: 0; 
             line-height: 1; 
             display: block; 
         }
@@ -81,9 +74,16 @@
         .menu-toggle span { display: block; width: 25px; height: 2px; background-color: black; transition: 0.3s; }
 
         /* 3. 데스크탑 레이아웃 */
-        .main-wrapper { flex-grow: 1; display: flex; justify-content: center; align-items: center; padding: 40px; contain: paint; }
+        .main-wrapper { flex-grow: 1; display: flex; justify-content: center; align-items: center; padding: 40px; position: relative; }
         .profile-section { display: flex; align-items: flex-start; justify-content: center; width: fit-content; gap: 5vw; }
         
+        .profile-left-column {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            align-items: center;
+        }
+
         .profile-image-container { 
             width: 35vw; aspect-ratio: 1 / 1; position: relative; max-width: 650px; 
             border: 2px solid black; border-radius: 15px; background-color: #e0e0e0; 
@@ -94,6 +94,32 @@
         .profile-image-container.visible { opacity: 1; transform: scale(1) translate(0, 0); }
         .profile-image { position: absolute; width: 100%; height: 100%; object-fit: cover; }
         
+        .sns-container {
+            display: flex;
+            gap: clamp(15px, 2.5vw, 40px);
+            width: 100%;
+            justify-content: center;
+            opacity: 0; 
+            transform: scale(0.8) translate(30px, -20px);
+            transform-origin: top right;
+            transition: all 1.2s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        .sns-container.visible { 
+            opacity: 1; 
+            transform: scale(1) translate(0, 0); 
+        }
+
+        .sns-icon {
+            color: black;
+            font-size: clamp(20px, 2.2vw, 35px);
+            text-decoration: none;
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), color 0.3s ease;
+        }
+        .sns-icon:hover {
+            transform: translateY(-5px) scale(1.1);
+            color: #888;
+        }
+
         .about-text-container { position: relative; max-width: 850px; display: flex; flex-direction: column; gap: clamp(30px, 4vw, 60px); margin-top: -1.2vw; flex: 1; }
 
         .title-group, .about-description, .info-blocks { opacity: 0; transform: translateY(20px); transition: all 1.0s ease-out; }
@@ -119,42 +145,22 @@
 
         /* 드롭다운 설정 */
         .works-dropdown-container { position: relative; display: inline-block; }
-        
         .works-icons { 
-            position: absolute; 
-            top: 200%; 
-            left: 50%; 
-            transform: translateX(-50%); 
-            margin-top: -15px; 
-            display: flex; 
-            flex-direction: column; 
-            gap: 10px; 
-            max-height: 0; 
-            overflow: hidden; 
-            opacity: 0; 
-            padding: 0; 
-            transition: all 0.4s ease-out; 
-            z-index: 1001; 
+            position: absolute; top: 200%; left: 50%; transform: translateX(-50%); 
+            margin-top: -15px; display: flex; flex-direction: column; gap: 10px; 
+            max-height: 0; overflow: hidden; opacity: 0; padding: 0; 
+            transition: all 0.4s ease-out; z-index: 1001; 
         }
-
-        .works-icons.open { 
-            max-height: 350px; 
-            opacity: 1; 
-            padding: 5px 15px 15px 15px; 
-        }
-
+        .works-icons.open { max-height: 350px; opacity: 1; padding: 5px 15px 15px 15px; }
         .works-item { 
             text-decoration: none; color: black; width: 100px; height: 45px; 
             display: flex; justify-content: center; align-items: center; 
             border: 1px solid black; border-radius: 25px; background-color: #F2F2F2; 
-            opacity: 0; transform: translateY(10px); 
-            transition: all 0.4s ease-out;
+            opacity: 0; transform: translateY(10px); transition: all 0.4s ease-out;
         }
-        
         .works-icons.open .works-item:nth-child(1) { transition-delay: 0.1s; opacity: 1; transform: translateY(0); }
         .works-icons.open .works-item:nth-child(2) { transition-delay: 0.2s; opacity: 1; transform: translateY(0); }
         .works-icons.open .works-item:nth-child(3) { transition-delay: 0.3s; opacity: 1; transform: translateY(0); }
-
         .works-item:hover { background-color: #dddddd; color: white; transition-delay: 0s !important; }
         .works-item p { font-family: 'GowoonDodum', sans-serif; font-size: 0.9em; margin: 0; }
 
@@ -172,33 +178,62 @@
             nav {
                 position: fixed; top: 0; right: -100%; width: 100%; height: 100vh;
                 background-color: #F2F2F2; flex-direction: column; justify-content: center;
-                transition: 0.5s ease-in-out; z-index: 1001;
-                visibility: hidden; 
+                transition: 0.5s ease-in-out; z-index: 1001; visibility: hidden; 
             }
-            nav.open { 
-                right: 0; 
-                visibility: visible;
-            }
+            nav.open { right: 0; visibility: visible; }
             nav a, .works-link { margin: 15px 0; font-size: 1.5em; margin-left: 0; }
             .works-dropdown-container { display: flex; flex-direction: column; align-items: center; }
-            .works-icons { 
-                position: static; 
-                transform: none; 
-                opacity: 1; 
-                max-height: none; 
-                display: flex; 
-                flex-direction: column; 
-                align-items: center; 
-                padding: 5px 0; 
-                margin-top: 0; 
-            }
+            .works-icons { position: static; transform: none; opacity: 1; max-height: none; display: flex; flex-direction: column; align-items: center; padding: 5px 0; margin-top: 0; }
             .works-item { border: none; background: none; width: auto; height: auto; opacity: 1; transform: none; margin: 5px 0; transition: none; }
             .works-item p { font-size: 0.75em; color: #888; }
             
-            .profile-section { flex-direction: column; align-items: center; gap: 30px; }
-            .profile-image-container { width: 70vw; max-width: 320px; } 
-            .about-text-container { text-align: center; width: 100%; gap: 20px; }
+            /* 모바일 섹션 구조 조정 */
+            .profile-section { 
+                flex-direction: column; 
+                align-items: center; 
+                gap: 40px; 
+                margin-bottom: 60px; 
+            }
             
+            /* 요소 순서 조정: 이미지(1) -> 텍스트(2) -> SNS(3) */
+            .profile-left-column { 
+                display: contents; 
+            }
+            
+            .profile-image-container { 
+                width: 70vw; 
+                max-width: 320px; 
+                order: 1; 
+            } 
+            
+            .about-text-container { 
+                text-align: center; 
+                width: 100%; 
+                gap: 20px; 
+                order: 2; 
+            }
+            
+            /* SNS 컨테이너 모바일 유동적 크기 및 배치 수정 */
+            .sns-container {
+                position: relative;
+                margin-top: 20px;
+                order: 3;
+                width: 100%;
+                justify-content: center;
+                /* 최소 간격을 10px로 낮춰 더 작게 줄어들게 설정 */
+                gap: clamp(10px, 8vw, 50px);
+                transform: scale(0.8) translateY(20px);
+                transform-origin: center;
+            }
+            .sns-container.visible {
+                transform: scale(1) translateY(0);
+            }
+
+            .sns-icon { 
+                /* 최솟값을 12px로 낮추고 비율을 높여 계속 작아지도록 수정 */
+                font-size: clamp(12px, 10vw, 45px) !important; 
+            }
+
             .title-group { margin: 0 auto; font-size: 18vw; } 
             .about-description { font-size: 4.5vw; padding: 0 10px; }
             .info-blocks { text-align: left; padding-left: 10%; margin-top: 10px; }
@@ -230,9 +265,18 @@
 
     <div class="main-wrapper">
         <main class="profile-section"> 
-            <div class="profile-image-container">
-                <img src="images/profile.png" alt="프로필 이미지" class="profile-image">
+            <div class="profile-left-column">
+                <div class="profile-image-container">
+                    <img src="images/profile.png" alt="프로필 이미지" class="profile-image">
+                </div>
+
+                <div class="sns-container" id="snsContainer">
+                    <a href="https://x.com/4124sd" target="_blank" class="sns-icon" title="Twitter"><i class="fa-brands fa-x-twitter"></i></a>
+                    <a href="https://www.instagram.com/creatio_in_nox/?next=%2F__nunc___%2F" target="_blank" class="sns-icon" title="Instagram"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="https://www.youtube.com/@twins_noxx" target="_blank" class="sns-icon" title="YouTube"><i class="fa-brands fa-youtube"></i></a>
+                </div>
             </div>
+
             <div class="about-text-container">
                 <div class="title-group">
                     <div class="svg-sparkle sparkle-1"><img src="images/sparkle.svg" alt="sparkle"></div>
@@ -270,7 +314,10 @@
             setTimeout(() => { document.getElementById('header').classList.add('visible'); }, 200);
             setTimeout(() => {
                 const pic = document.querySelector('.profile-image-container');
+                const sns = document.getElementById('snsContainer');
                 if(pic) pic.classList.add('visible');
+                if(sns) sns.classList.add('visible');
+                
                 document.getElementById('footer').classList.add('visible');
             }, 500);
             setTimeout(() => {
@@ -292,20 +339,16 @@
         document.addEventListener('DOMContentLoaded', () => {
             const cursor = document.querySelector('.custom-cursor');
             
-            // pointermove 이벤트를 사용하여 마우스와 터치를 구분
             document.addEventListener('pointermove', (e) => {
                 if (e.pointerType === 'mouse') {
-                    // 마우스인 경우에만 커스텀 커서 표시 및 위치 업데이트
                     cursor.style.display = 'block';
                     cursor.style.left = `${e.clientX}px`;
                     cursor.style.top = `${e.clientY}px`;
                 } else {
-                    // 터치나 펜인 경우 커스텀 커서 숨김
                     cursor.style.display = 'none';
                 }
             });
 
-            // 마우스가 화면 밖으로 나갈 때 숨김 처리
             document.addEventListener('pointerleave', () => {
                 cursor.style.display = 'none';
             });

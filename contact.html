@@ -294,15 +294,20 @@
         
         <div class="contact-info-container" id="contactInfo">
             <p class="collab-text">
-                <span class="text-chunk">프로젝트 및 협업문의는 아래</span>
-                <span class="text-chunk">이메일로 연락주시길 바랍니다</span>
+                <span class="text-chunk">프로젝트 및 협업문의는 편하신</span>
+                <span class="text-chunk">방식으로 연락주시길 바랍니다</span>
             </p>
-            <button class="email-text" id="emailCopyBtn">4124sd@naver.com</button>
             
             <div class="sns-container" id="snsContainer">
-                <a href="https://x.com/4124sd" target="_blank" class="sns-icon" title="Twitter"><i class="fa-brands fa-x-twitter"></i></a>
-                <a href="https://www.instagram.com/creatio_in_nox/?next=%2F__nunc___%2F" target="_blank" class="sns-icon" title="Instagram"><i class="fa-brands fa-instagram"></i></a>
-                <a href="https://www.youtube.com/@twins_noxx" target="_blank" class="sns-icon" title="YouTube"><i class="fa-brands fa-youtube"></i></a>
+                <button class="sns-icon" id="emailIconBtn" title="Email Copy" style="background: none; border: none; padding: 0; font-family: inherit; cursor: none !important;">
+                    <i class="fa-solid fa-envelope"></i>
+                </button>
+                <a href="https://open.kakao.com/o/sRFV7tai" target="_blank" class="sns-icon" title="KakaoTalk">
+                    <i class="fa-solid fa-comment"></i>
+                </a>
+                <a href="https://discord.com/users/797162830838104114" target="_blank" class="sns-icon" title="Discord">
+                    <i class="fa-brands fa-discord"></i>
+                </a>
             </div>
         </div>
     </div>
@@ -349,15 +354,19 @@
                 document.getElementById('snsContainer').classList.add('visible'); 
             }, 900);
 
-            // 이메일 복사
-            const emailBtn = document.getElementById('emailCopyBtn');
+            // 이메일 복사 기능 (아이콘 버튼 전용)
+            const emailIconBtn = document.getElementById('emailIconBtn');
             const toast = document.getElementById('copyToast');
-            emailBtn.addEventListener('click', () => {
-                navigator.clipboard.writeText(emailBtn.innerText).then(() => {
+            const emailAddress = "4124sd@naver.com";
+
+            function copyEmailAction() {
+                navigator.clipboard.writeText(emailAddress).then(() => {
                     toast.classList.add('show');
                     setTimeout(() => toast.classList.remove('show'), 2000);
                 });
-            });
+            }
+
+            if(emailIconBtn) emailIconBtn.addEventListener('click', copyEmailAction);
 
             // 네비게이션 제어 스크립트
             const menuToggle = document.getElementById('menuToggle');
