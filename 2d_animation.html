@@ -248,8 +248,6 @@
             
             .modal-close-button { right: -5px; top: -5px; border-width: 1px; width: 30px; height: 30px; font-size: 20px; }
         }
-
-        /* 불필요한 transform: scale 미디어 쿼리 삭제 완료 */
     </style>
 </head>
 <body>
@@ -347,15 +345,29 @@
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const cursor = document.querySelector('.custom-cursor');
-            
+            let isTouch = false;
+
+            // 터치가 시작되면 터치 환경으로 판단하여 커서를 숨김
+            document.addEventListener('touchstart', () => {
+                isTouch = true;
+                cursor.style.display = 'none';
+            }, {passive: true});
+
+            // 마우스 움직임이 감지되면 (블루투스 마우스 등) 다시 커서를 보여줌
             document.addEventListener('mousemove', (e) => {
+                // 터치 조작 중에는 mousemove가 같이 발생하므로 필터링
+                if (isTouch) {
+                    isTouch = false; // 다시 마우스 조작으로 돌아올 수 있도록 초기화
+                    return;
+                }
                 cursor.style.display = 'block'; 
                 cursor.style.left = `${e.clientX}px`; 
                 cursor.style.top = `${e.clientY}px`;
             });
 
-            document.addEventListener('touchstart', () => {
-                cursor.style.display = 'none';
+            // 터치 후 바로 발생하는 클릭 시 커서가 잠깐 보이는 현상 방지
+            document.addEventListener('touchend', () => {
+                setTimeout(() => { isTouch = false; }, 500);
             }, {passive: true});
 
             setTimeout(() => { document.getElementById('header').classList.add('visible'); }, 200);

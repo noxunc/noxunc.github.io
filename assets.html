@@ -378,18 +378,34 @@
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const cursor = document.querySelector('.custom-cursor');
-            
+            let isTouch = false;
+
+            // 터치 시작 시 플래그를 true로 설정하고 커서를 숨김
+            document.addEventListener('touchstart', () => {
+                isTouch = true;
+                cursor.style.opacity = "0";
+            }, { passive: true });
+
+            // 마우스 이동 시 터치 상태가 아니면 커서를 보여주고 위치 업데이트
             document.addEventListener('mousemove', (e) => {
+                if (isTouch) {
+                    // 터치 이벤트 후 발생하는 가상의 mousemove 무시
+                    isTouch = false;
+                    return;
+                }
+                
                 cursor.style.left = `${e.clientX}px`; 
                 cursor.style.top = `${e.clientY}px`;
+                
                 if (getComputedStyle(cursor).opacity === "0") {
                     cursor.style.opacity = "1";
                 }
             });
 
-            document.addEventListener('touchstart', () => {
+            // 마우스가 화면을 벗어나면 커서 숨기기
+            document.addEventListener('mouseleave', () => {
                 cursor.style.opacity = "0";
-            }, { passive: true });
+            });
 
             setTimeout(() => { document.getElementById('header').classList.add('visible'); }, 200);
             setTimeout(() => { document.getElementById('pageTitleContainer').classList.add('visible'); }, 300);
