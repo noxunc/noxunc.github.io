@@ -28,7 +28,13 @@
         html::-webkit-scrollbar { width: 8px; }
         html::-webkit-scrollbar-track { background: #F2F2F2; }
         html::-webkit-scrollbar-thumb { background: #BCBCBC; border-radius: 10px; }
-        body.no-scroll { overflow: hidden !important; }
+        
+        /* 스크롤 방지 클래스 강화 */
+        body.no-scroll { 
+            overflow: hidden !important; 
+            touch-action: none; 
+            height: 100vh;
+        }
 
         /* 2. 폰트 설정 */
         @font-face {
@@ -186,6 +192,7 @@
             nav { 
                 position: fixed; top: 0; right: -100%; width: 100%; height: 100vh; background-color: #F2F2F2; 
                 flex-direction: column; justify-content: center; transition: 0.5s ease-in-out; z-index: 1001; visibility: hidden; 
+                overflow: hidden; /* nav 자체 스크롤 방지 */
             }
             nav.open { right: 0; visibility: visible; }
             nav a, .works-link { margin: 15px 0; font-size: 1.5em; margin-left: 0; }
@@ -319,30 +326,23 @@
             const cursor = document.querySelector('.custom-cursor');
             let isTouchDevice = false;
 
-            // 터치 발생 시 즉시 커서 숨김 처리
             document.addEventListener('touchstart', () => {
                 isTouchDevice = true;
                 cursor.style.setProperty('display', 'none', 'important');
             }, {passive: true});
 
-            // 마우스 이동 시 블루투스 마우스인지 터치에 의한 가짜 이동인지 판별
             document.addEventListener('mousemove', (e) => {
-                // 터치 기기이더라도 실제 마우스(이동 데이터가 있는 경우)라면 커서 표시
                 const isRealMouse = e.sourceCapabilities ? !e.sourceCapabilities.firesTouchEvents : (e.movementX !== 0 || e.movementY !== 0);
-
                 if (isRealMouse) {
-                    // 마우스 감지 시 CSS display:none !important를 덮어쓰고 강제 표시
                     cursor.style.setProperty('display', 'block', 'important');
                     cursor.style.left = `${e.clientX}px`; 
                     cursor.style.top = `${e.clientY}px`;
-                    isTouchDevice = false; // 마우스 입력이 들어오면 터치 모드 해제
+                    isTouchDevice = false;
                 } else {
-                    // 단순 터치 드래그 등일 경우 다시 숨김
                     cursor.style.setProperty('display', 'none', 'important');
                 }
             });
 
-            // 초기 로딩 효과들 (수정 없음)
             setTimeout(() => { document.getElementById('header').classList.add('visible'); }, 200);
             setTimeout(() => { document.getElementById('pageTitleContainer').classList.add('visible'); }, 300);
             document.querySelectorAll('.card-group').forEach((group, index) => {
@@ -356,13 +356,14 @@
             const worksLink = document.querySelector('.works-link');
             const worksIcons = document.getElementById('worksIcons');
 
+            // [핵심수정] 스크롤 제어 함수 보강
             function toggleScroll() {
                 if (navMenu.classList.contains('open')) {
-                    if (window.innerWidth <= 768) {
-                        document.body.classList.add('no-scroll');
-                    }
+                    document.body.classList.add('no-scroll');
+                    document.documentElement.style.overflow = 'hidden'; // HTML 태그까지 차단
                 } else {
                     document.body.classList.remove('no-scroll');
+                    document.documentElement.style.overflow = ''; 
                 }
             }
 
@@ -385,6 +386,7 @@
                     navMenu.classList.remove('open');
                     worksIcons.classList.remove('open');
                     document.body.classList.remove('no-scroll'); 
+                    document.documentElement.style.overflow = '';
                 }
             });
 
@@ -420,6 +422,7 @@
 
                     detailModal.classList.add('visible');
                     document.body.classList.add('no-scroll');
+                    document.documentElement.style.overflow = 'hidden';
                 });
             });
 
@@ -428,6 +431,7 @@
                 modalMedia.innerHTML = ''; 
                 modalExtraImage.innerHTML = '';
                 document.body.classList.remove('no-scroll'); 
+                document.documentElement.style.overflow = '';
             };
             closeButton.addEventListener('click', closeModal);
             detailModal.addEventListener('click', (e) => { if(e.target === detailModal) closeModal(); });

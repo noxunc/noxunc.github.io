@@ -18,11 +18,20 @@
             -webkit-font-smoothing: antialiased;
             text-rendering: optimizeLegibility;
             font-family: 'GowoonDodum', sans-serif;
+            position: relative; /* 스크롤 고정 시 위치 기준 */
         }
         html::-webkit-scrollbar { width: 8px; }
         html::-webkit-scrollbar-track { background: #F2F2F2; }
         html::-webkit-scrollbar-thumb { background: #BCBCBC; border-radius: 10px; }
-        body.no-scroll { overflow: hidden !important; }
+        
+        /* [수정] 스크롤 방지 클래스 - fixed를 사용하여 모바일 바운스 및 콘텐츠 노출 원천 차단 */
+        body.no-scroll { 
+            overflow: hidden !important; 
+            position: fixed; 
+            width: 100%; 
+            height: 100%; 
+            touch-action: none; 
+        }
 
         /* 2. 폰트 설정 */
         @font-face {
@@ -129,7 +138,6 @@
         }
         .filter-button.active { background-color: #888; color: black; border: 1.5px solid black; }
 
-        /* 카테고리 그리드 */
         .category-section { width: 100%; display: flex; justify-content: center; z-index: 8; margin-bottom: 50px; }
         .category-grid { display: flex; gap: 20px; padding: 0 40px; box-sizing: border-box; width: 100%; flex-wrap: wrap; justify-content: center; }
         .card-group {
@@ -162,25 +170,20 @@
         
         .modal-header { width: 100%; height: 0; padding-top: 56.25%; background-color: #E0E0E0; position: relative; }
         .modal-media { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; }
-        
         .modal-media iframe { width: 100%; height: 100%; border: 0; }
         .sketchfab-embed-wrapper { width: 100%; height: 100%; }
 
-        /* 요청 사항: 상세페이지 제목 크기 유동적 조절 */
         .modal-title { 
             font-family: 'GowoonDodum', sans-serif; 
             font-size: clamp(1.2em, 4vw, 2em); 
             margin: 30px 40px 10px 40px; 
         }
         
-        /* 상세페이지 하단 별개 이미지 영역 */
         .modal-extra-image { width: 100%; padding: 0 40px; box-sizing: border-box; margin-top: 25px; text-align: center; }
         .modal-extra-image img { width: 100%; height: auto; display: block; margin: 0 auto; border-radius: 10px; }
 
-        /* 상세페이지 소프트웨어 정보 영역 (최하단 고정용) */
         .modal-info { font-family: 'GowoonDodum', sans-serif; padding: 25px 40px 10px 40px; border-top: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; margin-top: 30px; }
         .modal-info p { margin: 0; }
-        
         .external-link { text-decoration: none; color: #5e5e5e; font-weight: bold; display: flex; align-items: center; gap: 5px; }
 
         /* 7. 푸터 */
@@ -193,10 +196,12 @@
         @media (max-width: 768px) {
             header { padding: 15px 25px; }
             .menu-toggle { display: flex; }
+            
             nav { 
                 position: fixed; top: 0; right: -100%; width: 100%; height: 100vh; 
                 background-color: #F2F2F2; flex-direction: column; justify-content: center; 
                 transition: 0.5s ease-in-out; z-index: 1001; visibility: hidden; 
+                opacity: 1; 
             }
             nav.open { right: 0; visibility: visible; }
             
@@ -224,19 +229,14 @@
 
             .page-title { font-size: clamp(10px, 10.5vw, 68px); line-height: 1; white-space: nowrap; } 
             .sparkle-svg { width: clamp(5px, 4.8vw, 28px); } 
-
             .card-title { font-size: clamp(10px, 4.2vw, 20px); } 
 
-            /* 요청 사항: 상세페이지 닫기 버튼 크기 축소 */
             .modal-close-button { 
                 width: 35px; height: 35px; font-size: 24px; 
                 right: -5px; top: -5px; 
             }
-            /* 상세페이지 제목 여백 조정 */
             .modal-title { margin: 20px 20px 10px 20px; }
-            
             body { cursor: none !important; }
-
             .modal-extra-image { padding: 0 20px; }
             .modal-info { padding: 20px; flex-direction: column; gap: 10px; align-items: flex-start; }
         }
@@ -380,29 +380,23 @@
             const cursor = document.querySelector('.custom-cursor');
             let isTouch = false;
 
-            // 터치 시작 시 플래그를 true로 설정하고 커서를 숨김
             document.addEventListener('touchstart', () => {
                 isTouch = true;
                 cursor.style.opacity = "0";
             }, { passive: true });
 
-            // 마우스 이동 시 터치 상태가 아니면 커서를 보여주고 위치 업데이트
             document.addEventListener('mousemove', (e) => {
                 if (isTouch) {
-                    // 터치 이벤트 후 발생하는 가상의 mousemove 무시
                     isTouch = false;
                     return;
                 }
-                
                 cursor.style.left = `${e.clientX}px`; 
                 cursor.style.top = `${e.clientY}px`;
-                
                 if (getComputedStyle(cursor).opacity === "0") {
                     cursor.style.opacity = "1";
                 }
             });
 
-            // 마우스가 화면을 벗어나면 커서 숨기기
             document.addEventListener('mouseleave', () => {
                 cursor.style.opacity = "0";
             });
@@ -441,11 +435,20 @@
             const worksLink = document.querySelector('.works-link');
             const worksIcons = document.getElementById('worksIcons');
 
+            // [수정된 스크롤 제어 로직] 
+            let scrollPosition = 0;
+
             function toggleScroll() {
                 if (navMenu.classList.contains('open')) {
-                    if (window.innerWidth <= 768) document.body.classList.add('no-scroll');
+                    // 메뉴 열릴 때: 현재 스크롤 위치 저장 후 body를 fixed로 고정
+                    scrollPosition = window.pageYOffset;
+                    document.body.style.top = `-${scrollPosition}px`;
+                    document.body.classList.add('no-scroll');
                 } else {
+                    // 메뉴 닫힐 때: 고정 해제 후 원래 위치로 복원
                     document.body.classList.remove('no-scroll');
+                    document.body.style.top = '';
+                    window.scrollTo(0, scrollPosition);
                 }
             }
 
@@ -461,9 +464,11 @@
 
             document.addEventListener('click', (e) => {
                 if (!menuToggle.contains(e.target) && !navMenu.contains(e.target)) {
-                    navMenu.classList.remove('open');
-                    worksIcons.classList.remove('open');
-                    document.body.classList.remove('no-scroll');
+                    if (navMenu.classList.contains('open')) {
+                        navMenu.classList.remove('open');
+                        worksIcons.classList.remove('open');
+                        toggleScroll();
+                    }
                 }
             });
 
@@ -495,6 +500,10 @@
                     modalInfo.innerHTML = `<p><strong>Software:</strong> ${software}</p>${linkHtml}`;
                     
                     detailModal.classList.add('visible');
+                    
+                    // 모달 오픈 시 스크롤 방지 (메뉴와 동일한 로직 적용)
+                    scrollPosition = window.pageYOffset;
+                    document.body.style.top = `-${scrollPosition}px`;
                     document.body.classList.add('no-scroll');
                 });
             });
@@ -503,7 +512,11 @@
                 detailModal.classList.remove('visible'); 
                 modalMedia.innerHTML = ''; 
                 modalExtraImage.innerHTML = ''; 
-                document.body.classList.remove('no-scroll'); 
+                
+                // 스크롤 방지 해제
+                document.body.classList.remove('no-scroll');
+                document.body.style.top = '';
+                window.scrollTo(0, scrollPosition);
             };
             closeButton.addEventListener('click', closeModal);
             detailModal.addEventListener('click', (e) => { if(e.target === detailModal) closeModal(); });
