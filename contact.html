@@ -325,8 +325,9 @@
             
             // 포인터 이벤트를 통해 입력 장치 판별 및 커서 제어
             document.addEventListener('pointermove', (e) => {
-                if (e.pointerType === 'mouse') {
-                    // 마우스(또는 블루투스 마우스)인 경우 표시 및 위치 이동
+                // 'mouse'와 'pen'(타블렛 펜) 타입 모두에서 커서가 보이도록 수정
+                if (e.pointerType === 'mouse' || e.pointerType === 'pen') {
+                    // 마우스 또는 펜인 경우 표시 및 위치 이동
                     cursor.style.display = 'block';
                     cursor.style.left = `${e.clientX}px`;
                     cursor.style.top = `${e.clientY}px`;

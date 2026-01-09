@@ -340,7 +340,8 @@
             const cursor = document.querySelector('.custom-cursor');
             
             document.addEventListener('pointermove', (e) => {
-                if (e.pointerType === 'mouse') {
+                // 'mouse'와 'pen'(타블렛 펜) 타입 모두에서 커서가 보이도록 수정
+                if (e.pointerType === 'mouse' || e.pointerType === 'pen') {
                     cursor.style.display = 'block';
                     cursor.style.left = `${e.clientX}px`;
                     cursor.style.top = `${e.clientY}px`;

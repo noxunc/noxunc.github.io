@@ -211,7 +211,8 @@
             const bgContainer = document.getElementById('three-container');
             
             document.addEventListener('pointermove', (e) => {
-                if (e.pointerType === 'mouse') {
+                // 'mouse'와 'pen'(타블렛 펜)일 때 모두 커스텀 커서를 표시하도록 수정
+                if (e.pointerType === 'mouse' || e.pointerType === 'pen') {
                     cursor.style.display = 'block';
                     cursor.style.left = `${e.clientX}px`;
                     cursor.style.top = `${e.clientY}px`;
