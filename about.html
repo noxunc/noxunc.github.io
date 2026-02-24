@@ -51,9 +51,12 @@
 
         header, .main-wrapper, footer { width: 100%; max-width: 1920px; margin: 0 auto; box-sizing: border-box; }
 
+        /* 헤더: 현재의 높은 위치 유지 */
         header { 
-            display: flex; justify-content: space-between; align-items: center; padding: 20px 40px; 
-            z-index: 1000; position: relative; opacity: 0; transform: translateY(-10px); 
+            display: flex; justify-content: space-between; align-items: center; 
+            padding: 5px 40px; 
+            z-index: 1000; position: relative; opacity: 0; 
+            transform: translateY(-20px); 
             transition: opacity 1.2s ease-out, transform 1.2s ease-out; 
         }
         header.visible { opacity: 1; transform: translateY(0); }
@@ -68,13 +71,19 @@
             font-size: 1.1em; 
             line-height: 1; 
             display: block; 
+            cursor: none !important;
         }
         
         .menu-toggle { display: none; flex-direction: column; gap: 5px; background: none; border: none; padding: 10px; z-index: 1002; }
         .menu-toggle span { display: block; width: 25px; height: 2px; background-color: black; transition: 0.3s; }
 
         /* 3. 데스크탑 레이아웃 */
-        .main-wrapper { flex-grow: 1; display: flex; justify-content: center; align-items: center; padding: 40px; position: relative; }
+        .main-wrapper { 
+            flex-grow: 1; display: flex; justify-content: center; align-items: center; 
+            /* 헤더는 그대로 두고 메인 콘텐츠만 아래로 내림 (기존 20px -> 80px) */
+            padding: 80px 40px 40px 40px; 
+            position: relative; 
+        }
         .profile-section { display: flex; align-items: flex-start; justify-content: center; width: fit-content; gap: 5vw; }
         
         .profile-left-column {
@@ -143,15 +152,30 @@
         .info-title { font-family: 'GowoonDodum', sans-serif; font-weight: bold; font-size: clamp(16px, 1.25vw, 24px); margin-bottom: 8px; }
         .info-block ul { font-family: 'GowoonDodum', sans-serif; list-style: none; padding: 0; margin: 0; font-size: clamp(12px, 1.04vw, 20px); line-height: 1.6; }
 
-        /* 드롭다운 설정 */
+        /* --- 드롭다운 설정 --- */
         .works-dropdown-container { position: relative; display: inline-block; }
+        .works-link { cursor: pointer; }
+        
         .works-icons { 
-            position: absolute; top: 200%; left: 50%; transform: translateX(-50%); 
-            margin-top: -15px; display: flex; flex-direction: column; gap: 10px; 
-            max-height: 0; overflow: hidden; opacity: 0; padding: 0; 
-            transition: all 0.4s ease-out; z-index: 1001; 
+            position: absolute; 
+            top: 55%; 
+            left: 50%; 
+            transform: translateX(-50%); 
+            display: flex; 
+            flex-direction: column; 
+            gap: 10px; 
+            max-height: 0; 
+            overflow: hidden; 
+            opacity: 0; 
+            padding: 0; 
+            transition: all 0.4s ease-out; 
+            z-index: 1001; 
         }
-        .works-icons.open { max-height: 350px; opacity: 1; padding: 5px 15px 15px 15px; }
+        .works-icons.open { 
+            max-height: 350px; 
+            opacity: 1; 
+            padding: 15px 15px; 
+        }
         .works-item { 
             text-decoration: none; color: black; width: 100px; height: 45px; 
             display: flex; justify-content: center; align-items: center; 
@@ -164,7 +188,8 @@
         .works-item:hover { background-color: #dddddd; color: white; transition-delay: 0s !important; }
         .works-item p { font-family: 'GowoonDodum', sans-serif; font-size: 0.9em; margin: 0; }
 
-        footer { padding: 20px 40px; margin-top: auto; opacity: 0; transform: translateY(10px); transition: opacity 1.2s ease-out, transform 1.2s ease-out; }
+        /* 푸터: 하단 여백 추가 (전체적으로 여유를 줌) */
+        footer { padding: 40px 40px; margin-top: auto; opacity: 0; transform: translateY(10px); transition: opacity 1.2s ease-out, transform 1.2s ease-out; }
         footer.visible { opacity: 1; transform: translateY(0); }
         .divider-container { display: flex; align-items: center; margin-bottom: 15px; }
         .divider-circle { width: 8px; height: 8px; background-color: #BCBCBC; border-radius: 50%; }
@@ -174,6 +199,7 @@
         /* 4. 모바일 레이아웃 */
         @media (max-width: 768px) {
             header { padding: 15px 25px; }
+            .main-wrapper { padding: 40px 20px; } /* 모바일은 화면이 좁으니 적정 간격 유지 */
             .menu-toggle { display: flex; }
             nav {
                 position: fixed; top: 0; right: -100%; width: 100%; height: 100vh;
@@ -187,7 +213,6 @@
             .works-item { border: none; background: none; width: auto; height: auto; opacity: 1; transform: none; margin: 5px 0; transition: none; }
             .works-item p { font-size: 0.75em; color: #888; }
             
-            /* 모바일 섹션 구조 조정 */
             .profile-section { 
                 flex-direction: column; 
                 align-items: center; 
@@ -195,7 +220,6 @@
                 margin-bottom: 60px; 
             }
             
-            /* 요소 순서 조정: 이미지(1) -> 텍스트(2) -> SNS(3) */
             .profile-left-column { 
                 display: contents; 
             }
@@ -213,14 +237,12 @@
                 order: 2; 
             }
             
-            /* SNS 컨테이너 모바일 유동적 크기 및 배치 수정 */
             .sns-container {
                 position: relative;
                 margin-top: 20px;
                 order: 3;
                 width: 100%;
                 justify-content: center;
-                /* 최소 간격을 10px로 낮춰 더 작게 줄어들게 설정 */
                 gap: clamp(10px, 8vw, 50px);
                 transform: scale(0.8) translateY(20px);
                 transform-origin: center;
@@ -230,7 +252,6 @@
             }
 
             .sns-icon { 
-                /* 최솟값을 12px로 낮추고 비율을 높여 계속 작아지도록 수정 */
                 font-size: clamp(12px, 10vw, 45px) !important; 
             }
 
@@ -273,7 +294,8 @@
                 <div class="sns-container" id="snsContainer">
                     <a href="https://x.com/4124sd" target="_blank" class="sns-icon" title="Twitter"><i class="fa-brands fa-x-twitter"></i></a>
                     <a href="https://www.instagram.com/creatio_in_nox/?next=%2F__nunc___%2F" target="_blank" class="sns-icon" title="Instagram"><i class="fa-brands fa-instagram"></i></a>
-                    <a href="https://www.youtube.com/@twins_noxx" target="_blank" class="sns-icon" title="YouTube"><i class="fa-brands fa-youtube"></i></a>
+                    <a href="https://www.behance.net/0a5cbf20" target="_blank" class="sns-icon" title="Behance"><i class="fa-brands fa-behance"></i></a>
+                    <a href="https://www.artstation.com/pany" target="_blank" class="sns-icon" title="ArtStation"><i class="fa-brands fa-artstation"></i></a>
                 </div>
             </div>
 
@@ -340,7 +362,6 @@
             const cursor = document.querySelector('.custom-cursor');
             
             document.addEventListener('pointermove', (e) => {
-                // 'mouse'와 'pen'(타블렛 펜) 타입 모두에서 커서가 보이도록 수정
                 if (e.pointerType === 'mouse' || e.pointerType === 'pen') {
                     cursor.style.display = 'block';
                     cursor.style.left = `${e.clientX}px`;
