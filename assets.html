@@ -18,13 +18,12 @@
             -webkit-font-smoothing: antialiased;
             text-rendering: optimizeLegibility;
             font-family: 'GowoonDodum', sans-serif;
-            position: relative; /* 스크롤 고정 시 위치 기준 */
+            position: relative;
         }
         html::-webkit-scrollbar { width: 8px; }
         html::-webkit-scrollbar-track { background: #F2F2F2; }
         html::-webkit-scrollbar-thumb { background: #BCBCBC; border-radius: 10px; }
         
-        /* [수정] 스크롤 방지 클래스 - fixed를 사용하여 모바일 바운스 및 콘텐츠 노출 원천 차단 */
         body.no-scroll { 
             overflow: hidden !important; 
             position: fixed; 
@@ -61,7 +60,7 @@
             padding: 5px 40px 19px 40px; 
             width: 100%; max-width: 1920px; margin: 0 auto; box-sizing: border-box;
             z-index: 1000; position: relative; opacity: 0; transform: translateY(-10px); 
-            transition: opacity 1.2s ease-out, transform 1.2s ease-out; 
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out; 
         }
         header.visible { opacity: 1; transform: translateY(0); }
         .circle-icon { width: 24px; height: 24px; background-color: black; border-radius: 50%; flex-shrink: 0; }
@@ -108,6 +107,7 @@
             display: flex; align-items: center; justify-content: center; gap: 1.5vw; 
             margin: 4vw 0 2vw 0; opacity: 0; transform: translateY(25px);
             transition: opacity 0.8s ease-out, transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+            transition-delay: 0.3s; 
         }
         .page-title-container.visible { opacity: 1; transform: translateY(0); }
         .page-title { font-family: 'AmoreChristmas', serif; font-size: clamp(40px, 7vw, 150px); line-height: 0.8; margin: 0; white-space: nowrap; }
@@ -123,6 +123,7 @@
             opacity: 0; 
             transform: translateY(20px);
             transition: opacity 0.8s ease-out, transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+            transition-delay: 0.5s; 
         }
         .filter-container.visible { opacity: 1; transform: translateY(0); }
         .filter-button {
@@ -138,23 +139,78 @@
         }
         .filter-button.active { background-color: #888; color: black; border: 1.5px solid black; }
 
-        .category-section { width: 100%; display: flex; justify-content: center; z-index: 8; margin-bottom: 50px; }
-        .category-grid { display: flex; gap: 20px; padding: 0 40px; box-sizing: border-box; width: 100%; flex-wrap: wrap; justify-content: center; }
+        /* 카테고리 라벨 + 구분선 스타일 */
+        .section-label-container {
+            width: 100%;
+            max-width: 1440px;
+            margin: 0 auto 25px auto;
+            padding: 0 40px;
+            box-sizing: border-box;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.8s ease-out;
+        }
+        .section-label-container.visible { opacity: 1; transform: translateY(0); }
+        
+        .section-label-text {
+            font-family: 'GowoonDodum', sans-serif;
+            font-size: clamp(16px, 1.4vw, 22px);
+            font-weight: bold;
+            white-space: nowrap;
+            color: #333;
+        }
+
+        .section-line {
+            flex-grow: 1;
+            height: 1px;
+            background-color: #000; 
+            opacity: 0.3;
+        }
+
+        .category-section { width: 100%; display: flex; flex-direction: column; align-items: center; z-index: 8; margin-bottom: 80px; }
+        
+        .category-grid { 
+            display: flex; gap: 20px; padding: 0 40px; box-sizing: border-box; 
+            width: 100%; max-width: 1440px; flex-wrap: wrap; justify-content: flex-start; 
+        }
+        
+        /* 카드 그룹 공통 스타일 */
         .card-group {
-            display: flex; flex-direction: column; width: calc((100% - 40px) / 3); 
-            text-align: center; margin-bottom: 40px; opacity: 0; 
-            transform: translateY(40px); transition: all 0.5s ease-out;
+            display: flex; flex-direction: column; 
+            text-align: center; margin-bottom: 40px; 
+            opacity: 0; transform: translateY(40px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+            transition-property: opacity, transform, top, left; 
         }
         .card-group.visible { opacity: 1; transform: translateY(0); }
-        .card-group.hidden { display: none; } 
 
+        /* [수정사항 적용] PC에서 CH 섹션 카드는 한 줄에 5개 유지 */
+        #chSection .card-group {
+            width: calc((100% - 80px) / 5); 
+        }
+
+        /* [수정사항 적용] PC에서 BG 섹션 카드는 한 줄에 3개 배치 (크기 증가) */
+        #bgSection .card-group {
+            width: calc((100% - 40px) / 3); 
+        }
+
+        /* 카테고리 카드 기본 스타일 */
         .category-card {
-            background-color: #F2F2F2; border-radius: 15px; width: 100%; position: relative; padding-top: 56.25%; 
+            background-color: #F2F2F2; border-radius: 15px; width: 100%; position: relative; 
             border: 2px solid black; transition: transform 0.3s; display: block; overflow: hidden; 
         }
         .category-card:hover { transform: translateY(-5px); }
         .category-card img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; border-radius: 13px; }
-        .card-title { font-family: 'GowoonDodum', sans-serif; font-size: clamp(12px, 1.1vw, 24px); color: black; margin-top: 15px; }
+
+        /* [수정] CH 카드 비율: 4:7 */
+        #chSection .category-card { padding-top: 175%; }
+        /* [수정] BG 카드 비율: 16:9 */
+        #bgSection .category-card { padding-top: 56.25%; }
+        
+        .card-title { font-family: 'GowoonDodum', sans-serif; font-size: clamp(12px, 1vw, 20px); color: black; margin-top: 12px; font-weight: bold; }
 
         /* 6. 모달 스타일 */
         .detail-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(255, 255, 255, 0.95); backdrop-filter: blur(5px); z-index: 2000; display: flex; justify-content: center; align-items: flex-start; opacity: 0; visibility: hidden; transition: 0.4s; overflow-y: auto; }
@@ -216,7 +272,14 @@
             .works-item { border: none; background: none; width: auto; height: auto; opacity: 1; transform: none; margin: 5px 0; transition: none; }
             .works-item p { font-size: 0.75em; color: #888; }
             
-            .card-group { width: 90%; }
+            /* 모바일 CH 섹션: 한 줄에 2개 */
+            #chSection .card-group { width: calc((100% - 20px) / 2); }
+            /* 모바일 BG 섹션: 한 줄에 1개 (시인성 확보) */
+            #bgSection .card-group { width: 100%; }
+            
+            .category-grid { padding: 0 20px; gap: 20px; }
+            .section-label-container { padding: 0 20px; }
+
             .page-title-container { width: 100%; margin: 15vw 0 8vw 0; gap: 2.5vw; }
             
             .filter-container { margin-bottom: 10vw; gap: 1.5vw; }
@@ -229,7 +292,7 @@
 
             .page-title { font-size: clamp(10px, 10.5vw, 68px); line-height: 1; white-space: nowrap; } 
             .sparkle-svg { width: clamp(5px, 4.8vw, 28px); } 
-            .card-title { font-size: clamp(10px, 4.2vw, 20px); } 
+            .card-title { font-size: clamp(10px, 3.5vw, 16px); margin-top: 8px;} 
 
             .modal-close-button { 
                 width: 35px; height: 35px; font-size: 24px; 
@@ -271,83 +334,173 @@
             </div>
 
             <div class="filter-container" id="filterContainer">
-                <button class="filter-button active" data-filter="all">ALL</button>
-                <button class="filter-button" data-filter="CH">CH</button>
+                <button class="filter-button active" data-filter="CH">CH</button>
                 <button class="filter-button" data-filter="BG">BG</button>
             </div>
 
-            <section class="category-section">
+            <section class="category-section" id="chSection">
+                <div class="section-label-container">
+                    <span class="section-label-text">Anime / Game</span>
+                    <div class="section-line"></div>
+                </div>
                 <div class="category-grid">
                     <div class="card-group" data-category="CH">
-                        <a href="#" class="category-card" 
-                           data-sketchfab-url="https://sketchfab.com/models/a49f1b8e4f5c4ecf9e1fe7d81915ad38/embed" 
-                           data-title="CH - 01" 
-                           data-software="Maya, Blender, Substance Painter" 
-                           data-artstation-url="https://www.artstation.com/"
-                           data-extra-img="images/ch_01_sheet.png"> 
+                        <a href="#" class="category-card" data-sketchfab-url="https://sketchfab.com/models/a49f1b8e4f5c4ecf9e1fe7d81915ad38/embed" data-title="CH - 01" data-software="Maya, Blender, Substance Painter" data-artstation-url="https://www.artstation.com/" data-extra-img="images/ch_01_sheet.png"> 
                             <img src="images/ch_01_thumbnail.png" alt="Thumbnail">
                         </a>
                         <div class="card-title">CH - 01</div>
                     </div>
-                    
-                    <div class="card-group" data-category="BG">
-                        <a href="#" class="category-card" 
-                           data-sketchfab-url="https://sketchfab.com/models/a49f1b8e4f5c4ecf9e1fe7d81915ad38/embed" 
-                           data-title="BG - 01" 
-                           data-software="Maya, Blender, Substance Painter" 
-                           data-artstation-url="https://www.artstation.com/"
-                           data-extra-img="images/bg_01_sheet.png"> 
-                            <img src="images/bg_01_thumbnail.png" alt="Thumbnail">
-                        </a>
-                        <div class="card-title">BG - 01</div>
-                    </div>
-
                     <div class="card-group" data-category="CH">
-                        <a href="#" class="category-card" 
-                           data-sketchfab-url="https://sketchfab.com/models/a49f1b8e4f5c4ecf9e1fe7d81915ad38/embed" 
-                           data-title="CH - 02" 
-                           data-software="Maya, Blender, Substance Painter" 
-                           data-artstation-url="https://www.artstation.com/"
-                           data-extra-img="images/ch_02_sheet.png"> 
+                        <a href="#" class="category-card" data-sketchfab-url="https://sketchfab.com/models/a49f1b8e4f5c4ecf9e1fe7d81915ad38/embed" data-title="CH - 04" data-software="Maya, Blender, Substance Painter" data-artstation-url="https://www.artstation.com/" data-extra-img="images/ch_01_sheet.png"> 
+                            <img src="images/ch_01_thumbnail.png" alt="Thumbnail">
+                        </a>
+                        <div class="card-title">CH - 04</div>
+                    </div>
+                    <div class="card-group" data-category="CH">
+                        <a href="#" class="category-card" data-sketchfab-url="https://sketchfab.com/models/a49f1b8e4f5c4ecf9e1fe7d81915ad38/embed" data-title="CH - 05" data-software="Maya, Blender, Substance Painter" data-artstation-url="https://www.artstation.com/" data-extra-img="images/ch_01_sheet.png"> 
+                            <img src="images/ch_01_thumbnail.png" alt="Thumbnail">
+                        </a>
+                        <div class="card-title">CH - 05</div>
+                    </div>
+                    <div class="card-group" data-category="CH">
+                        <a href="#" class="category-card" data-sketchfab-url="https://sketchfab.com/models/a49f1b8e4f5c4ecf9e1fe7d81915ad38/embed" data-title="CH - 06" data-software="Maya, Blender, Substance Painter" data-artstation-url="https://www.artstation.com/" data-extra-img="images/ch_01_sheet.png"> 
+                            <img src="images/ch_01_thumbnail.png" alt="Thumbnail">
+                        </a>
+                        <div class="card-title">CH - 06</div>
+                    </div>
+                    <div class="card-group" data-category="CH">
+                        <a href="#" class="category-card" data-sketchfab-url="https://sketchfab.com/models/a49f1b8e4f5c4ecf9e1fe7d81915ad38/embed" data-title="CH - 07" data-software="Maya, Blender, Substance Painter" data-artstation-url="https://www.artstation.com/" data-extra-img="images/ch_01_sheet.png"> 
+                            <img src="images/ch_01_thumbnail.png" alt="Thumbnail">
+                        </a>
+                        <div class="card-title">CH - 07</div>
+                    </div>
+                </div>
+
+                <div class="section-label-container">
+                    <span class="section-label-text">Figure Style</span>
+                    <div class="section-line"></div>
+                </div>
+                <div class="category-grid">
+                    <div class="card-group" data-category="CH">
+                        <a href="#" class="category-card" data-sketchfab-url="https://sketchfab.com/models/a49f1b8e4f5c4ecf9e1fe7d81915ad38/embed" data-title="CH - 02" data-software="Maya, Blender, Substance Painter" data-artstation-url="https://www.artstation.com/" data-extra-img="images/ch_02_sheet.png"> 
                             <img src="images/ch_02_thumbnail.png" alt="Thumbnail">
                         </a>
                         <div class="card-title">CH - 02</div> 
                     </div>
-
                     <div class="card-group" data-category="CH">
-                        <a href="#" class="category-card" 
-                           data-sketchfab-url="https://sketchfab.com/models/a49f1b8e4f5c4ecf9e1fe7d81915ad38/embed" 
-                           data-title="CH - 03" 
-                           data-software="Maya, Blender, Substance Painter" 
-                           data-artstation-url="https://www.artstation.com/"
-                           data-extra-img="images/ch_03_sheet.png"> 
+                        <a href="#" class="category-card" data-sketchfab-url="https://sketchfab.com/models/a49f1b8e4f5c4ecf9e1fe7d81915ad38/embed" data-title="CH - 08" data-software="Maya, Blender, Substance Painter" data-artstation-url="https://www.artstation.com/" data-extra-img="images/ch_02_sheet.png"> 
+                            <img src="images/ch_02_thumbnail.png" alt="Thumbnail">
+                        </a>
+                        <div class="card-title">CH - 08</div> 
+                    </div>
+                    <div class="card-group" data-category="CH">
+                        <a href="#" class="category-card" data-sketchfab-url="https://sketchfab.com/models/a49f1b8e4f5c4ecf9e1fe7d81915ad38/embed" data-title="CH - 09" data-software="Maya, Blender, Substance Painter" data-artstation-url="https://www.artstation.com/" data-extra-img="images/ch_02_sheet.png"> 
+                            <img src="images/ch_02_thumbnail.png" alt="Thumbnail">
+                        </a>
+                        <div class="card-title">CH - 09</div> 
+                    </div>
+                    <div class="card-group" data-category="CH">
+                        <a href="#" class="category-card" data-sketchfab-url="https://sketchfab.com/models/a49f1b8e4f5c4ecf9e1fe7d81915ad38/embed" data-title="CH - 10" data-software="Maya, Blender, Substance Painter" data-artstation-url="https://www.artstation.com/" data-extra-img="images/ch_02_sheet.png"> 
+                            <img src="images/ch_02_thumbnail.png" alt="Thumbnail">
+                        </a>
+                        <div class="card-title">CH - 10</div> 
+                    </div>
+                    <div class="card-group" data-category="CH">
+                        <a href="#" class="category-card" data-sketchfab-url="https://sketchfab.com/models/a49f1b8e4f5c4ecf9e1fe7d81915ad38/embed" data-title="CH - 11" data-software="Maya, Blender, Substance Painter" data-artstation-url="https://www.artstation.com/" data-extra-img="images/ch_02_sheet.png"> 
+                            <img src="images/ch_02_thumbnail.png" alt="Thumbnail">
+                        </a>
+                        <div class="card-title">CH - 11</div> 
+                    </div>
+                </div>
+
+                <div class="section-label-container">
+                    <span class="section-label-text">Stylized</span>
+                    <div class="section-line"></div>
+                </div>
+                <div class="category-grid">
+                    <div class="card-group" data-category="CH">
+                        <a href="#" class="category-card" data-sketchfab-url="https://sketchfab.com/models/a49f1b8e4f5c4ecf9e1fe7d81915ad38/embed" data-title="CH - 03" data-software="Maya, Blender, Substance Painter" data-artstation-url="https://www.artstation.com/" data-extra-img="images/ch_03_sheet.png"> 
                             <img src="images/ch_03_thumbnail.png" alt="Thumbnail">
                         </a>
                         <div class="card-title">CH - 03</div> 
                     </div>
+                    <div class="card-group" data-category="CH">
+                        <a href="#" class="category-card" data-sketchfab-url="https://sketchfab.com/models/a49f1b8e4f5c4ecf9e1fe7d81915ad38/embed" data-title="CH - 12" data-software="Maya, Blender, Substance Painter" data-artstation-url="https://www.artstation.com/" data-extra-img="images/ch_03_sheet.png"> 
+                            <img src="images/ch_03_thumbnail.png" alt="Thumbnail">
+                        </a>
+                        <div class="card-title">CH - 12</div> 
+                    </div>
+                    <div class="card-group" data-category="CH">
+                        <a href="#" class="category-card" data-sketchfab-url="https://sketchfab.com/models/a49f1b8e4f5c4ecf9e1fe7d81915ad38/embed" data-title="CH - 13" data-software="Maya, Blender, Substance Painter" data-artstation-url="https://www.artstation.com/" data-extra-img="images/ch_03_sheet.png"> 
+                            <img src="images/ch_03_thumbnail.png" alt="Thumbnail">
+                        </a>
+                        <div class="card-title">CH - 13</div> 
+                    </div>
+                    <div class="card-group" data-category="CH">
+                        <a href="#" class="category-card" data-sketchfab-url="https://sketchfab.com/models/a49f1b8e4f5c4ecf9e1fe7d81915ad38/embed" data-title="CH - 14" data-software="Maya, Blender, Substance Painter" data-artstation-url="https://www.artstation.com/" data-extra-img="images/ch_03_sheet.png"> 
+                            <img src="images/ch_03_thumbnail.png" alt="Thumbnail">
+                        </a>
+                        <div class="card-title">CH - 14</div> 
+                    </div>
+                    <div class="card-group" data-category="CH">
+                        <a href="#" class="category-card" data-sketchfab-url="https://sketchfab.com/models/a49f1b8e4f5c4ecf9e1fe7d81915ad38/embed" data-title="CH - 15" data-software="Maya, Blender, Substance Painter" data-artstation-url="https://www.artstation.com/" data-extra-img="images/ch_03_sheet.png"> 
+                            <img src="images/ch_03_thumbnail.png" alt="Thumbnail">
+                        </a>
+                        <div class="card-title">CH - 15</div> 
+                    </div>
+                </div>
+            </section>
 
+            <section class="category-section" id="bgSection" style="display: none;">
+                <div class="section-label-container">
+                    <span class="section-label-text">Anime Environment</span>
+                    <div class="section-line"></div>
+                </div>
+                <div class="category-grid">
                     <div class="card-group" data-category="BG">
-                        <a href="#" class="category-card" 
-                           data-sketchfab-url="https://sketchfab.com/models/a49f1b8e4f5c4ecf9e1fe7d81915ad38/embed" 
-                           data-title="BG - 02" 
-                           data-software="Maya, Blender, Substance Painter" 
-                           data-artstation-url="https://www.artstation.com/"
-                           data-extra-img="images/bg_02_sheet.png"> 
+                        <a href="#" class="category-card" data-sketchfab-url="https://sketchfab.com/models/a49f1b8e4f5c4ecf9e1fe7d81915ad38/embed" data-title="BG - 01" data-software="Maya, Blender, Substance Painter" data-artstation-url="https://www.artstation.com/" data-extra-img="images/bg_01_sheet.png"> 
+                            <img src="images/bg_01_thumbnail.png" alt="Thumbnail">
+                        </a>
+                        <div class="card-title">BG - 01</div>
+                    </div>
+                    
+                    <div class="card-group" data-category="BG">
+                        <a href="#" class="category-card" data-sketchfab-url="https://sketchfab.com/models/a49f1b8e4f5c4ecf9e1fe7d81915ad38/embed" data-title="BG - 02" data-software="Maya, Blender, Substance Painter" data-artstation-url="https://www.artstation.com/" data-extra-img="images/bg_02_sheet.png"> 
                             <img src="images/bg_02_thumbnail.png" alt="Thumbnail">
                         </a>
                         <div class="card-title">BG - 02</div> 
                     </div>
 
                     <div class="card-group" data-category="BG">
-                        <a href="#" class="category-card" 
-                           data-sketchfab-url="https://sketchfab.com/models/a49f1b8e4f5c4ecf9e1fe7d81915ad38/embed" 
-                           data-title="BG - 03" 
-                           data-software="Maya, Blender, Substance Painter" 
-                           data-artstation-url="https://www.artstation.com/"
-                           data-extra-img="images/bg_03_sheet.png"> 
-                            <img src="images/bg_02_thumbnail.png" alt="Thumbnail">
+                        <a href="#" class="category-card" data-sketchfab-url="https://sketchfab.com/models/a49f1b8e4f5c4ecf9e1fe7d81915ad38/embed" data-title="BG - 03" data-software="Maya, Blender, Substance Painter" data-artstation-url="https://www.artstation.com/" data-extra-img="images/bg_03_sheet.png"> 
+                            <img src="images/bg_03_thumbnail.png" alt="Thumbnail">
                         </a>
                         <div class="card-title">BG - 03</div> 
+                    </div>
+                </div>
+
+                <div class="section-label-container" style="margin-top: 40px;">
+                    <span class="section-label-text">Diorama Interior</span>
+                    <div class="section-line"></div>
+                </div>
+                <div class="category-grid">
+                    <div class="card-group" data-category="BG">
+                        <a href="#" class="category-card" data-sketchfab-url="https://sketchfab.com/models/a49f1b8e4f5c4ecf9e1fe7d81915ad38/embed" data-title="BG - 04" data-software="Maya, Blender, Substance Painter" data-artstation-url="https://www.artstation.com/" data-extra-img="images/bg_01_sheet.png"> 
+                            <img src="images/bg_01_thumbnail.png" alt="Thumbnail">
+                        </a>
+                        <div class="card-title">BG - 04</div>
+                    </div>
+                    <div class="card-group" data-category="BG">
+                        <a href="#" class="category-card" data-sketchfab-url="https://sketchfab.com/models/a49f1b8e4f5c4ecf9e1fe7d81915ad38/embed" data-title="BG - 05" data-software="Maya, Blender, Substance Painter" data-artstation-url="https://www.artstation.com/" data-extra-img="images/bg_02_sheet.png"> 
+                            <img src="images/bg_02_thumbnail.png" alt="Thumbnail">
+                        </a>
+                        <div class="card-title">BG - 05</div>
+                    </div>
+                    <div class="card-group" data-category="BG">
+                        <a href="#" class="category-card" data-sketchfab-url="https://sketchfab.com/models/a49f1b8e4f5c4ecf9e1fe7d81915ad38/embed" data-title="BG - 06" data-software="Maya, Blender, Substance Painter" data-artstation-url="https://www.artstation.com/" data-extra-img="images/bg_03_sheet.png"> 
+                            <img src="images/bg_03_thumbnail.png" alt="Thumbnail">
+                        </a>
+                        <div class="card-title">BG - 06</div>
                     </div>
                 </div>
             </section>
@@ -401,51 +554,65 @@
                 cursor.style.opacity = "0";
             });
 
-            setTimeout(() => { document.getElementById('header').classList.add('visible'); }, 200);
-            setTimeout(() => { document.getElementById('pageTitleContainer').classList.add('visible'); }, 300);
-            setTimeout(() => { document.getElementById('filterContainer').classList.add('visible'); }, 400);
+            // --- 순차적 애니메이션 ---
+            setTimeout(() => { document.getElementById('header').classList.add('visible'); }, 100);
+            setTimeout(() => { document.getElementById('pageTitleContainer').classList.add('visible'); }, 400);
+            setTimeout(() => { document.getElementById('filterContainer').classList.add('visible'); }, 700);
             
-            const cards = document.querySelectorAll('.card-group');
-            cards.forEach((group, index) => {
-                setTimeout(() => { group.classList.add('visible'); }, 500 + (index * 100));
+            // 모든 라벨 컨테이너와 카드 순차 등장
+            const allElements = document.querySelectorAll('.section-label-container, .card-group');
+            allElements.forEach((el, index) => {
+                setTimeout(() => {
+                    el.classList.add('visible');
+                }, 1000 + (index * 80));
             });
-            setTimeout(() => { document.getElementById('footer').classList.add('visible'); }, 1200);
 
+            setTimeout(() => { document.getElementById('footer').classList.add('visible'); }, 1800);
+
+            // --- 필터링 로직 ---
             const filterButtons = document.querySelectorAll('.filter-button');
+            const chSection = document.getElementById('chSection');
+            const bgSection = document.getElementById('bgSection');
+
             filterButtons.forEach(btn => {
                 btn.addEventListener('click', () => {
+                    const filterValue = btn.getAttribute('data-filter');
+                    
                     filterButtons.forEach(b => b.classList.remove('active'));
                     btn.classList.add('active');
-                    const filterValue = btn.getAttribute('data-filter');
-                    cards.forEach(card => {
-                        const cardCategory = card.getAttribute('data-category');
-                        if (filterValue === 'all' || cardCategory === filterValue) {
-                            card.classList.remove('hidden');
-                            card.style.opacity = "0";
-                            setTimeout(() => { card.style.opacity = "1"; }, 10);
-                        } else {
-                            card.classList.add('hidden');
-                        }
-                    });
+
+                    if(filterValue === 'CH') {
+                        chSection.style.display = 'flex';
+                        bgSection.style.display = 'none';
+                        chSection.querySelectorAll('.section-label-container, .card-group').forEach(el => {
+                            el.classList.remove('visible');
+                            setTimeout(() => el.classList.add('visible'), 50);
+                        });
+                    } else {
+                        chSection.style.display = 'none';
+                        bgSection.style.display = 'flex';
+                        bgSection.querySelectorAll('.section-label-container, .card-group').forEach(el => {
+                            el.classList.remove('visible');
+                            setTimeout(() => el.classList.add('visible'), 50);
+                        });
+                    }
                 });
             });
 
             const menuToggle = document.getElementById('menuToggle');
             const navMenu = document.getElementById('navMenu');
+            const worksContainer = document.getElementById('worksContainer');
             const worksLink = document.querySelector('.works-link');
             const worksIcons = document.getElementById('worksIcons');
 
-            // [수정된 스크롤 제어 로직] 
             let scrollPosition = 0;
 
             function toggleScroll() {
                 if (navMenu.classList.contains('open')) {
-                    // 메뉴 열릴 때: 현재 스크롤 위치 저장 후 body를 fixed로 고정
                     scrollPosition = window.pageYOffset;
                     document.body.style.top = `-${scrollPosition}px`;
                     document.body.classList.add('no-scroll');
                 } else {
-                    // 메뉴 닫힐 때: 고정 해제 후 원래 위치로 복원
                     document.body.classList.remove('no-scroll');
                     document.body.style.top = '';
                     window.scrollTo(0, scrollPosition);
@@ -457,9 +624,28 @@
                 toggleScroll();
             });
 
+            // --- Works 드롭다운 (클릭 후 호버 이탈 감지) ---
+            let isWorksOpenedByClick = false; // 클릭 여부를 추적하는 변수
+
             worksLink.addEventListener('click', (e) => { 
                 e.stopPropagation(); 
-                worksIcons.classList.toggle('open'); 
+                const isOpen = worksIcons.classList.contains('open');
+                
+                if (!isOpen) {
+                    worksIcons.classList.add('open');
+                    isWorksOpenedByClick = true; // 클릭으로 열림을 표시
+                } else {
+                    worksIcons.classList.remove('open');
+                    isWorksOpenedByClick = false; // 닫힐 때 초기화
+                }
+            });
+
+            // 마우스가 컨테이너를 벗어날 때만 닫기 (PC 환경)
+            worksContainer.addEventListener('mouseleave', () => {
+                if (window.innerWidth > 768 && isWorksOpenedByClick) {
+                    worksIcons.classList.remove('open');
+                    isWorksOpenedByClick = false; // 이탈 시 클릭 상태 초기화
+                }
             });
 
             document.addEventListener('click', (e) => {
@@ -467,6 +653,7 @@
                     if (navMenu.classList.contains('open')) {
                         navMenu.classList.remove('open');
                         worksIcons.classList.remove('open');
+                        isWorksOpenedByClick = false;
                         toggleScroll();
                     }
                 }
@@ -501,7 +688,6 @@
                     
                     detailModal.classList.add('visible');
                     
-                    // 모달 오픈 시 스크롤 방지 (메뉴와 동일한 로직 적용)
                     scrollPosition = window.pageYOffset;
                     document.body.style.top = `-${scrollPosition}px`;
                     document.body.classList.add('no-scroll');
@@ -512,8 +698,6 @@
                 detailModal.classList.remove('visible'); 
                 modalMedia.innerHTML = ''; 
                 modalExtraImage.innerHTML = ''; 
-                
-                // 스크롤 방지 해제
                 document.body.classList.remove('no-scroll');
                 document.body.style.top = '';
                 window.scrollTo(0, scrollPosition);
