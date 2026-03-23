@@ -80,7 +80,6 @@
         /* 3. 데스크탑 레이아웃 */
         .main-wrapper { 
             flex-grow: 1; display: flex; justify-content: center; align-items: center; 
-            /* 헤더는 그대로 두고 메인 콘텐츠만 아래로 내림 (기존 20px -> 80px) */
             padding: 80px 40px 40px 40px; 
             position: relative; 
         }
@@ -152,6 +151,29 @@
         .info-title { font-family: 'GowoonDodum', sans-serif; font-weight: bold; font-size: clamp(16px, 1.25vw, 24px); margin-bottom: 8px; }
         .info-block ul { font-family: 'GowoonDodum', sans-serif; list-style: none; padding: 0; margin: 0; font-size: clamp(12px, 1.04vw, 20px); line-height: 1.6; }
 
+        /* --- Client Logos 스타일 --- */
+        .client-logos {
+            display: flex;
+            flex-wrap: wrap;
+            /* 요청사항: keyring_logo와 coloso_logo 간격을 좁히기 위해 균등한 비율 간격으로 수정 */
+            gap: 1vw; 
+            align-items: center;
+            margin-top: 50px;
+            width: 100%;
+        }
+        .client-logos img {
+            height: clamp(20px, 3.2vw, 60px); 
+            width: auto;
+            filter: grayscale(100%);
+            opacity: 0.6;
+            transition: all 0.3s ease;
+            flex-shrink: 0;
+        }
+        .client-logos img:hover {
+            filter: grayscale(0%);
+            opacity: 1;
+        }
+
         /* --- 드롭다운 설정 --- */
         .works-dropdown-container { position: relative; display: inline-block; }
         .works-link { cursor: pointer; }
@@ -188,7 +210,7 @@
         .works-item:hover { background-color: #dddddd; color: white; transition-delay: 0s !important; }
         .works-item p { font-family: 'GowoonDodum', sans-serif; font-size: 0.9em; margin: 0; }
 
-        /* 푸터: 하단 여백 추가 (전체적으로 여유를 줌) */
+        /* 푸터 */
         footer { padding: 40px 40px; margin-top: auto; opacity: 0; transform: translateY(10px); transition: opacity 1.2s ease-out, transform 1.2s ease-out; }
         footer.visible { opacity: 1; transform: translateY(0); }
         .divider-container { display: flex; align-items: center; margin-bottom: 15px; }
@@ -199,7 +221,7 @@
         /* 4. 모바일 레이아웃 */
         @media (max-width: 768px) {
             header { padding: 15px 25px; }
-            .main-wrapper { padding: 40px 20px; } /* 모바일은 화면이 좁으니 적정 간격 유지 */
+            .main-wrapper { padding: 40px 20px; }
             .menu-toggle { display: flex; }
             nav {
                 position: fixed; top: 0; right: -100%; width: 100%; height: 100vh;
@@ -213,53 +235,27 @@
             .works-item { border: none; background: none; width: auto; height: auto; opacity: 1; transform: none; margin: 5px 0; transition: none; }
             .works-item p { font-size: 0.75em; color: #888; }
             
-            .profile-section { 
-                flex-direction: column; 
-                align-items: center; 
-                gap: 40px; 
-                margin-bottom: 60px; 
-            }
-            
-            .profile-left-column { 
-                display: contents; 
-            }
-            
-            .profile-image-container { 
-                width: 70vw; 
-                max-width: 320px; 
-                order: 1; 
-            } 
-            
-            .about-text-container { 
-                text-align: center; 
-                width: 100%; 
-                gap: 20px; 
-                order: 2; 
-            }
-            
-            .sns-container {
-                position: relative;
-                margin-top: 20px;
-                order: 3;
-                width: 100%;
-                justify-content: center;
-                gap: clamp(10px, 8vw, 50px);
-                transform: scale(0.8) translateY(20px);
-                transform-origin: center;
-            }
-            .sns-container.visible {
-                transform: scale(1) translateY(0);
-            }
-
-            .sns-icon { 
-                font-size: clamp(12px, 10vw, 45px) !important; 
-            }
-
+            .profile-section { flex-direction: column; align-items: center; gap: 40px; margin-bottom: 60px; }
+            .profile-left-column { display: contents; }
+            .profile-image-container { width: 70vw; max-width: 320px; order: 1; } 
+            .about-text-container { text-align: center; width: 100%; gap: 20px; order: 2; }
+            .sns-container { position: relative; margin-top: 20px; order: 3; width: 100%; justify-content: center; gap: clamp(10px, 8vw, 50px); transform: scale(0.8) translateY(20px); transform-origin: center; }
+            .sns-container.visible { transform: scale(1) translateY(0); }
+            .sns-icon { font-size: clamp(12px, 10vw, 45px) !important; }
             .title-group { margin: 0 auto; font-size: 18vw; } 
             .about-description { font-size: 4.5vw; padding: 0 10px; }
             .info-blocks { text-align: left; padding-left: 10%; margin-top: 10px; }
             .info-title { font-size: 5vw; }
             .info-block ul { font-size: 4vw; }
+            
+            .client-logos { 
+                justify-content: center; 
+                margin-top: 40px; 
+                gap: 20px; 
+            }
+            .client-logos img {
+                height: clamp(25px, 8vw, 45px);
+            }
         }
     </style>
 </head>
@@ -320,6 +316,11 @@
                             <li>Maya, Blender, 3ds Max, Zbrush, ClipStudio EX</li>
                             <li>Adobe Series (After effect, Premiere pro, Illustrator, Photoshop)</li>
                         </ul>
+                        <div class="client-logos">
+                            <img src="images/dev_logo.png" alt="Dev">
+                            <img src="images/keyring_logo.png" alt="Keyring">
+                            <img src="images/coloso_logo.png" alt="Coloso">
+                        </div>
                     </div>
                 </div>
             </div>
@@ -339,7 +340,6 @@
                 const sns = document.getElementById('snsContainer');
                 if(pic) pic.classList.add('visible');
                 if(sns) sns.classList.add('visible');
-                
                 document.getElementById('footer').classList.add('visible');
             }, 500);
             setTimeout(() => {
