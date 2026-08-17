@@ -187,13 +187,15 @@
         }
         .card-group.visible { opacity: 1; transform: translateY(0); }
 
-        /* [수정사항 적용] PC에서 CH 섹션 카드는 한 줄에 5개 유지 */
-        #chSection .card-group {
+        /* PC에서 기본 카드는 한 줄에 5개 유지 (CH, OTHERS Rig 등) */
+        #chSection .card-group,
+        #othersSection .card-group {
             width: calc((100% - 80px) / 5); 
         }
 
-        /* [수정사항 적용] PC에서 BG 섹션 카드는 한 줄에 3개 배치 (크기 증가) */
-        #bgSection .card-group {
+        /* PC에서 BG 섹션 및 OTHERS의 Logo 파트 카드는 한 줄에 3개 배치 */
+        #bgSection .card-group,
+        #othersSection .card-group[data-subcategory="logo"] {
             width: calc((100% - 40px) / 3); 
         }
 
@@ -205,10 +207,13 @@
         .category-card:hover { transform: translateY(-5px); }
         .category-card img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; border-radius: 13px; }
 
-        /* [수정] CH 카드 비율: 4:7 */
-        #chSection .category-card { padding-top: 175%; }
-        /* [수정] BG 카드 비율: 16:9 */
-        #bgSection .category-card { padding-top: 56.25%; }
+        /* CH 및 OTHERS 기본 카드 비율: 4:7 (세로형) */
+        #chSection .category-card,
+        #othersSection .category-card { padding-top: 175%; }
+        
+        /* BG 카드 및 OTHERS Logo 카드 비율: 16:9 (가로형) */
+        #bgSection .category-card,
+        #othersSection .card-group[data-subcategory="logo"] .category-card { padding-top: 56.25%; }
         
         .card-title { font-family: 'GowoonDodum', sans-serif; font-size: clamp(12px, 1vw, 20px); color: black; margin-top: 12px; font-weight: bold; }
 
@@ -272,10 +277,12 @@
             .works-item { border: none; background: none; width: auto; height: auto; opacity: 1; transform: none; margin: 5px 0; transition: none; }
             .works-item p { font-size: 0.75em; color: #888; }
             
-            /* 모바일 CH 섹션: 한 줄에 2개 */
-            #chSection .card-group { width: calc((100% - 20px) / 2); }
-            /* 모바일 BG 섹션: 한 줄에 1개 (시인성 확보) */
-            #bgSection .card-group { width: 100%; }
+            /* 모바일 CH 및 OTHERS 기본 카드: 한 줄에 2개 */
+            #chSection .card-group,
+            #othersSection .card-group { width: calc((100% - 20px) / 2); }
+            /* 모바일 BG 및 OTHERS Logo 카드: 한 줄에 1개 */
+            #bgSection .card-group,
+            #othersSection .card-group[data-subcategory="logo"] { width: 100%; }
             
             .category-grid { padding: 0 20px; gap: 20px; }
             .section-label-container { padding: 0 20px; }
@@ -336,6 +343,7 @@
             <div class="filter-container" id="filterContainer">
                 <button class="filter-button active" data-filter="CH">CH</button>
                 <button class="filter-button" data-filter="BG">BG</button>
+                <button class="filter-button" data-filter="OTHERS">OTHERS</button>
             </div>
 
             <section class="category-section" id="chSection">
@@ -504,6 +512,47 @@
                     </div>
                 </div>
             </section>
+
+            <section class="category-section" id="othersSection" style="display: none;">
+                <div class="section-label-container">
+                    <span class="section-label-text">Logo</span>
+                    <div class="section-line"></div>
+                </div>
+                <div class="category-grid">
+                    <!-- Logo 카드 그룹에 data-subcategory="logo" 속성 추가 -->
+                    <div class="card-group" data-category="OTHERS" data-subcategory="logo">
+                        <a href="#" class="category-card" data-sketchfab-url="https://sketchfab.com/models/a49f1b8e4f5c4ecf9e1fe7d81915ad38/embed" data-title="Logo - 01" data-software="Illustrator, Photoshop" data-artstation-url="https://www.artstation.com/" data-extra-img="images/ch_01_sheet.png"> 
+                            <img src="images/ch_01_thumbnail.png" alt="Thumbnail">
+                        </a>
+                        <div class="card-title">Logo - 01</div>
+                    </div>
+                    <div class="card-group" data-category="OTHERS" data-subcategory="logo">
+                        <a href="#" class="category-card" data-sketchfab-url="https://sketchfab.com/models/a49f1b8e4f5c4ecf9e1fe7d81915ad38/embed" data-title="Logo - 02" data-software="Illustrator, Photoshop" data-artstation-url="https://www.artstation.com/" data-extra-img="images/ch_01_sheet.png"> 
+                            <img src="images/ch_01_thumbnail.png" alt="Thumbnail">
+                        </a>
+                        <div class="card-title">Logo - 02</div>
+                    </div>
+                    <div class="card-group" data-category="OTHERS" data-subcategory="logo">
+                        <a href="#" class="category-card" data-sketchfab-url="https://sketchfab.com/models/a49f1b8e4f5c4ecf9e1fe7d81915ad38/embed" data-title="Logo - 03" data-software="Illustrator, Photoshop" data-artstation-url="https://www.artstation.com/" data-extra-img="images/ch_01_sheet.png"> 
+                            <img src="images/ch_01_thumbnail.png" alt="Thumbnail">
+                        </a>
+                        <div class="card-title">Logo - 03</div>
+                    </div>
+                </div>
+
+                <div class="section-label-container">
+                    <span class="section-label-text">Rig</span>
+                    <div class="section-line"></div>
+                </div>
+                <div class="category-grid">
+                    <div class="card-group" data-category="OTHERS">
+                        <a href="#" class="category-card" data-sketchfab-url="https://sketchfab.com/models/a49f1b8e4f5c4ecf9e1fe7d81915ad38/embed" data-title="Rig - 01" data-software="Maya, Blender" data-artstation-url="https://www.artstation.com/" data-extra-img="images/ch_02_sheet.png"> 
+                            <img src="images/ch_02_thumbnail.png" alt="Thumbnail">
+                        </a>
+                        <div class="card-title">Rig - 01</div>
+                    </div>
+                </div>
+            </section>
         </main>
 
         <div id="detailModal" class="detail-modal">
@@ -573,6 +622,7 @@
             const filterButtons = document.querySelectorAll('.filter-button');
             const chSection = document.getElementById('chSection');
             const bgSection = document.getElementById('bgSection');
+            const othersSection = document.getElementById('othersSection');
 
             filterButtons.forEach(btn => {
                 btn.addEventListener('click', () => {
@@ -584,14 +634,24 @@
                     if(filterValue === 'CH') {
                         chSection.style.display = 'flex';
                         bgSection.style.display = 'none';
+                        othersSection.style.display = 'none';
                         chSection.querySelectorAll('.section-label-container, .card-group').forEach(el => {
                             el.classList.remove('visible');
                             setTimeout(() => el.classList.add('visible'), 50);
                         });
-                    } else {
+                    } else if(filterValue === 'BG') {
                         chSection.style.display = 'none';
                         bgSection.style.display = 'flex';
+                        othersSection.style.display = 'none';
                         bgSection.querySelectorAll('.section-label-container, .card-group').forEach(el => {
+                            el.classList.remove('visible');
+                            setTimeout(() => el.classList.add('visible'), 50);
+                        });
+                    } else if(filterValue === 'OTHERS') {
+                        chSection.style.display = 'none';
+                        bgSection.style.display = 'none';
+                        othersSection.style.display = 'flex';
+                        othersSection.querySelectorAll('.section-label-container, .card-group').forEach(el => {
                             el.classList.remove('visible');
                             setTimeout(() => el.classList.add('visible'), 50);
                         });
